@@ -1,0 +1,68 @@
+    .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+    width: 100%;
+    /*position: fixed;*/
+    top: 0;
+    left: 0;
+  }
+  
+  .logo {
+      width: 200px;
+      padding: none;
+  }
+  
+  .extra-buttons {
+      display: flex;
+  }
+  
+  .search-container {
+      display: flex;
+      align-items: center;
+      position: relative;
+  }
+        
+  .tim-kiem {
+      padding: 8px;
+      padding-right: 30px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin: 0 10px;
+      width: 60vw;
+      height: 3vw;
+      flex: 1;
+  }
+        
+  .search-icon {
+      color: #000000;
+      position: absolute;
+      top: 50%;
+      right: 20px; 
+      transform: translateY(-50%);
+  }
+        
+  .search-icon:hover{
+      color: #A0522D;
+      cursor: pointer;
+  }
+  
+  .nav2 {
+      background-color: transparent;
+      border: none;
+      color: rgb(0, 0, 0);
+      padding: 8px 15px;
+      margin: 0 5px;
+      cursor: pointer;
+      font-size: 15px;
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+  
+  .nav2:hover{
+      color: #9d0000;
+  }

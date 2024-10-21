@@ -1,0 +1,24 @@
+.fter{
+    background-color: #e4e4e4;
+  }
+  
+  .footer h1{
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  text-align: center;
+  margin-top: 10px;
+  }
+  
+  .footer-chu{
+  font-family: 'Times New Roman', Times, serif;
+  text-align: center;
+  font-size: 20px;
+  }
+  
+  .footer-mxh{
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .footer-nam{
+    text-align: center;
+  }
