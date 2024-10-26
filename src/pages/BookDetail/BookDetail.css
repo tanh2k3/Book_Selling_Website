@@ -1,0 +1,172 @@
+.book-detail-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    font-family: "Inter", Helvetica, Arial, sans-serif;
+  }
+  
+  .book-info {
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    gap: 20px;
+  }
+  
+  .book-gallery {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .book-image {
+    width: 300px;  /* Increased width for better visibility */
+    height: auto;
+  }
+  
+  .thumbnail-gallery {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .thumbnail {
+    width: 50px;
+    height: auto;
+    cursor: pointer;
+  }
+  
+  .book-details {
+    flex: 1;
+  }
+  
+  .book-author, .book-price, .book-rating {
+    margin-bottom: 10px;
+  }
+  
+  .discounted-price {
+    color: #e60023;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .original-price {
+    margin-left: 10px;
+    text-decoration: line-through;
+    color: #999;
+  }
+  
+  .discount {
+    margin-left: 10px;
+    color: #ff0000;
+    font-size: 16px;
+  }
+  
+  .book-features ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .book-features li {
+    margin-bottom: 10px;
+  }
+  
+  .book-purchase-info {
+    flex: 1;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .purchase-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .quantity-selector button {
+    padding: 10px;
+    font-size: 16px;
+    width: 40px;
+  }
+  
+  .quantity-selector input {
+    width: 40px;
+    text-align: center;
+    padding: 8px;
+  }
+  
+  .total-price {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .buy-now, .add-to-cart, .buy-later {
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: none;
+    width: 100%;  /* Make buttons full width */
+  }
+  
+  .buy-now {
+    background-color: #e60023;
+    color: white;
+  }
+  
+  .add-to-cart {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .buy-later {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+  
+  .shipping-info, .supplementary-services {
+    margin-top: 20px;
+  }
+  
+  .shipping-info button {
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .similar-products {
+    margin-top: 40px;
+  }
+  
+  .similar-books {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .similar-book-item {
+    text-align: center;
+  }
+  
+  .similar-book-item img {
+    width: 100px;  /* Make similar product images bigger */
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .similar-book-item p {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
