@@ -4,15 +4,15 @@ import {formatPrice} from "../../utils/index.js"
 
 const CardItem = (item) => {
   const defaultItem = {
-    image: "https://cafebiz.cafebizcdn.vn/2019/3/12/photo-1-1552354590822522314238.jpg",
+    imgSrc: "https://cafebiz.cafebizcdn.vn/2019/3/12/photo-1-1552354590822522314238.jpg",
     title: "Title",
     description: "Description",
     price: 100000,
     discount: 10,
-    amountSell:20
+    sold:20
   };
 
-  const { image, title, description, price, discount, amountSell } = { ...defaultItem, ...item };
+  const { imgSrc, title, description, price, discount, sold } = { ...defaultItem, ...item };
 
   const priceAfterDiscount = (price) => {
     return formatPrice(price - (price * discount) / 100);
@@ -21,15 +21,15 @@ const CardItem = (item) => {
   return (
     <div className="cardItem">
       <div className="imageItem">
-        <img src={image} alt={title} />
+        <img src={imgSrc} alt={title} />
       </div>
       <h3>{title}</h3>
-        <p className="currPrice">{priceAfterDiscount(price)} VND</p>
+        <p className="currPrice">{priceAfterDiscount(price)}₫</p>
         <div className="oldPrice">
           <p className="discountPercent">{discount}%</p>
-          <strong>{formatPrice(price)} VND</strong>
+          <strong>{formatPrice(price)}₫</strong>
       </div>
-      <p className="amount">Đã bán: {amountSell}</p>
+      <p className="amount">Đã bán: {sold}</p>
     </div>
   );
 };
