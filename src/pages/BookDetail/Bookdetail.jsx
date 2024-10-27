@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from "react";
 import ItemsList from "./itemsList";
 import ProductsList from "./productList";
-import TopSellingProduct from "./TopSellingProduct";
-import ClassicBrand from "./ClassicBrand";
 
 const HomePage = () => {
   const [books, setBooks] = useState([]);
@@ -83,9 +81,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <TopSellingProduct />
-      <h2>Khám phá theo danh mục</h2>
-      <ClassicBrand/>
+      <h1>Home Page</h1>
       <h2>Danh sách sản phẩm</h2>
       <ItemsList />
       <ProductsList books={books} />
