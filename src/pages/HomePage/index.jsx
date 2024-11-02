@@ -4,12 +4,14 @@ import ItemsList from "./itemsList";
 import ProductsList from "./productList";
 import TopSellingProduct from "./TopSellingProduct";
 import ClassicBrand from "./ClassicBrand";
+import Voucher from "./Voucher/Voucher";
+import FlashSale from "./FlashSale/FlashSale";
 
 const HomePage = () => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
- 
+
     const fetchedBooks = [
       {
         id: "1",
@@ -75,7 +77,7 @@ const HomePage = () => {
         discount: "-30%",
         sold: "Đã bán 5",
       },
-      
+
     ];
 
     setBooks(fetchedBooks);
@@ -84,8 +86,13 @@ const HomePage = () => {
   return (
     <div>
       <TopSellingProduct />
+
       <h2>Khám phá theo danh mục</h2>
-      <ClassicBrand/>
+      <ClassicBrand />
+
+      <FlashSale />
+      {/* <Voucher /> */}
+
       <h2>Danh sách sản phẩm</h2>
       <ItemsList />
       <ProductsList books={books} />
