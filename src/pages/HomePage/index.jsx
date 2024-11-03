@@ -6,6 +6,8 @@ import TopSellingProduct from "./TopSellingProduct";
 import ClassicBrand from "./ClassicBrand";
 import VoucherList from "./Voucher/Voucher";
 import FlashSale from "./FlashSale/FlashSale";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 const HomePage = () => {
   const [books, setBooks] = useState([]);
@@ -85,6 +87,7 @@ const HomePage = () => {
 
   return (
     <div>
+      <Header/>
       <TopSellingProduct />
 
       <h2>Khám phá theo danh mục</h2>
@@ -96,6 +99,7 @@ const HomePage = () => {
       <h2>Danh sách sản phẩm</h2>
       <ItemsList />
       <ProductsList books={books} />
+      <Footer/>
     </div>
   );
 };
