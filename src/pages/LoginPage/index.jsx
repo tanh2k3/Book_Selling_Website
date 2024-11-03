@@ -2,11 +2,10 @@ import { useState } from 'react';
 import './LoginPage.css';
 import { FaUser, FaLock } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
-import axios from "axios";
+import axios from 'axios';
 import { useUser } from '../../context/UserContext.jsx';
 
-function LoginPage() 
-{
+function LoginPage() {
   const { user, setUser } = useUser();
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
@@ -22,7 +21,7 @@ function LoginPage()
         localStorage.setItem('user', JSON.stringify(userData));
         localStorage.setItem('token', token);
         setUser({ ...userData, token });
-        if(user.email==="trantuananh.bo2093@gmail.com") navigate('/admin');
+        if (user.email === "trantuananh.bo2093@gmail.com") navigate('/admin');
         else navigate('/');
       } else {
         alert("Login failed");
@@ -45,12 +44,12 @@ function LoginPage()
           <h1>Đăng nhập</h1>
           <div className="input-box">
             <input type="text" placeholder="Email" value={username}
-              onChange={(e) => setUsername(e.target.value)} required/>
+              onChange={(e) => setUsername(e.target.value)} required />
             <FaUser className="icon" />
           </div>
           <div className="input-box">
             <input type="password" placeholder="Mật khẩu" value={password}
-              onChange={(e) => setPassword(e.target.value)} required/>
+              onChange={(e) => setPassword(e.target.value)} required />
             <FaLock className="icon" />
           </div>
           <button type='submit'>Đăng nhập</button>
