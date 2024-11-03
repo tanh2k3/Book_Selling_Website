@@ -4,7 +4,7 @@ import ItemsList from "./itemsList";
 import ProductsList from "./productList";
 import TopSellingProduct from "./TopSellingProduct";
 import ClassicBrand from "./ClassicBrand";
-import Voucher from "./Voucher/Voucher";
+import VoucherList from "./Voucher/Voucher";
 import FlashSale from "./FlashSale/FlashSale";
 
 const HomePage = () => {
@@ -91,7 +91,7 @@ const HomePage = () => {
       <ClassicBrand />
 
       <FlashSale />
-      {/* <Voucher /> */}
+      <VoucherList numberOfVouchers={10} />
 
       <h2>Danh sách sản phẩm</h2>
       <ItemsList />
