@@ -1,0 +1,57 @@
+.voucher-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+#voucher-list-div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 0px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.voucher-list h2 {
+    display: flex;
+    align-items: center;
+    margin-left: 6px;
+    margin-top: 10px;
+    margin-bottom: -10px;
+    font-size: 24px;
+    color: #CD0000;
+}
+
+.voucher {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    /* padding: 16px; */
+    max-width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.voucher:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.voucher img {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+.voucher p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+#hsd {
+    color: #CD0000;
+}

@@ -1,20 +1,24 @@
-.top-selling-product {
+.flash-sale {
     margin: 20px;
     padding: 10px;
     background-color: #f9f9f9;
     border-radius: 8px;
 }
 
-.top-selling-product h2 {
+.flash-sale h2 {
     display: flex;
     align-items: center;
+    margin-left: 6px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     font-size: 24px;
-    color: #ff4500;
+    color: #CD0000;
 }
 
-.top-selling-product h2 svg {
-    margin-right: 8px;
-    color: #ff4500;
+.flash-sale h2 svg {
+    margin: 0 0px;
+    padding: 0;
+    color: #CD0000;
 }
 
 .topsell-containerProduct {
