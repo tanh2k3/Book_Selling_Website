@@ -47,7 +47,7 @@ function Header() {
           <div className="search-icon"><FaSearch /></div>
         </div>
         <div className="extra-buttons">
-          { /*user ?
+          { user ?
             (<>
               <Link style={{textDecoration : 'none'}}
                 to="/giohang" className="navv2"><FaShoppingCart /></Link>
@@ -61,15 +61,7 @@ function Header() {
                 to="/login" className="nav2"><LuLogIn />Đăng nhập</Link>
               <Link style={{textDecoration : 'none'}} 
                 to="/register" className="nav2"><LuLogIn />Đăng ký</Link>
-            </>)*/
-
-            <>
-              <Link style={{textDecoration : 'none'}}
-                to="/giohang" className="navv2"><FaShoppingCart /></Link>
-              <Link style={{textDecoration : 'none'}} 
-                to="/profile" className="navv2"><MdAccountCircle /></Link>
-              <button className='navv2' onClick={handleLogout}><MdLogout /></button>
-            </>
+            </>)
           }
         </div> 
       </div>
