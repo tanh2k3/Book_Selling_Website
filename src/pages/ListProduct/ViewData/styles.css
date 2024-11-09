@@ -1,0 +1,15 @@
+.viewdata{
+    width: 75%;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #eee;
+    border-radius: 5px;
+    margin: 0 auto;    
+}
+.datacontainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
