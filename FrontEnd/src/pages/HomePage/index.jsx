@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
-import ItemsList from "./itemsList";
-import ProductsList from "./productList";
+import ItemsList from "./ItemsList/ItemsList";
+import ProductsList from "./ProductsList/ProductsList";
 import TopSellingProduct from "./TopSellingProduct";
 import ClassicBrand from "./ClassicBrand";
 import VoucherList from "./Voucher/Voucher";

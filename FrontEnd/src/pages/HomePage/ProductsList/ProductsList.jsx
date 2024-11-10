@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import './productList.css';
-import CardItem from "../../components/CardItem";
+import './ProductsList.css';
+import CardItem from "../../../components/CardItem";
 
-const productList = ({ books }) => {
+const ProductsList = ({ books }) => {
   return (
     <div className="products-container">
       {books.map((book, index) => (
@@ -13,4 +13,4 @@ const productList = ({ books }) => {
   );
 };
 
-export default productList;
+export default ProductsList;
