@@ -1,36 +1,58 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
 const jwt = require('jsonwebtoken');
-//const { sendMail } = require('./emailService');
-const app = express();
-const {ObjectId} = require('mongodb');
-app.use(bodyParser.json());
-app.use(cors());
+const cors = require('cors');
+const bcrypt = require('bcrypt');
 require('dotenv').config();
-const path = require('path');
-const SECRET_KEY = 'your_secret_key';
+const app = express();
 
-// Kết nối MongoDB
-const uri = "mongodb+srv://trantuananhbo2093:FPa18YPpQAi7VkSM@cluster0.lydwo.mongodb.net/bookDB?retryWrites=true&w=majority&appName=Cluster0";
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+app.use(express.json());
+app.use(cors());
+
+const SECRET_KEY = process.env.SECRET_KEY || 'your_secret_key';
+
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log('Error:', err));
 
+// Import models
 const User = require('./models/User');
+const Product = require('./models/Product');
 
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    User.findOne({ email: username, password: password }).then((data) => {
-      if (data) {
-        const token = jwt.sign({ userId: data._id, email: data.email }, SECRET_KEY, { expiresIn: '1h' });
-        res.send({ status: 'success', token: token, user: data });
+// Login endpoint
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await User.findOne({ email: username });
+    if (user) {
+      const validPassword = await bcrypt.compare(password, user.password);
+      if (validPassword) {
+        const token = jwt.sign({ userId: user._id, email: user.email }, SECRET_KEY, { expiresIn: '1h' });
+        return res.status(200).json({ status: 'success', token: token, user: user });
       } else {
-        res.send({ status: 'fail' });
+        return res.status(401).json({ status: 'fail', message: 'Invalid credentials' });
       }
-    });
-  });
+    } else {
+      return res.status(404).json({ status: 'fail', message: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+});
 
-const port = 3001;
+// Endpoint to display the product list
+app.get('/api/products', async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.status(200).json(products);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+});
+
+// Start the server
+const port = process.env.PORT || 3001;
 app.listen(port, () => console.log(`Server is running on port ${port}`));
