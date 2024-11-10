@@ -59,7 +59,6 @@ function LoginPage() {
           </div>
         </form>
       </div>
-      <Link to="/verify">VerifyAcc</Link>
     </div>
   );
 }

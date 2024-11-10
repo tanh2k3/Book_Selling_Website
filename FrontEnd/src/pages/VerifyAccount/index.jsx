@@ -96,7 +96,7 @@ function VerifyAccount(props) {
                         <img src={logo} alt="logo" />
                         <h2>Xác thực tài khoản</h2>
                         <p>Nhập email của bạn</p>
-                        <form onSubmit={searchAccount}>
+                        <form onSubmit={searchAccount}> 
                             <input type="email" placeholder="...@gmail.com" id="verify_email" required />
                             <button type='submit'>Gửi</button>
                         </form>

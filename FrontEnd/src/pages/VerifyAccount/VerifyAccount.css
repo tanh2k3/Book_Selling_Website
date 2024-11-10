@@ -77,7 +77,7 @@
     cursor: pointer;
     text-decoration: underline;
     margin: 0;
-    color: #A0522D;
+    color: #CD0000;
 }
 .verify_border #arrow_back {
     font-size: 1.3em;
@@ -87,6 +87,6 @@
     cursor: pointer;
 }
 .verify_border #arrow_back:hover {
-    background-color: #A0522D;
+    background-color: #CD0000;
     color: rgb(255, 255, 255);
 }

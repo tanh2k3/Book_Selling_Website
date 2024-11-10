@@ -19,6 +19,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/verify" element={<VerifyAccount />} />
           <Route path="/list" element={<ListProduct />} />
+          <Route path="/forgot-password" element={<VerifyAccount isresetpass={true} />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>
