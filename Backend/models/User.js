@@ -7,6 +7,13 @@ const UserSchema = new mongoose.Schema(
     password: String,
     sdt: String,
     role: { type: String, default: "user" },
+    favorite: { type: Array, default: [] },
+    cart: [
+      {
+        product: { type: mongoose.Schema.Types.ObjectId, ref: "products" },
+        quantity: Number,
+      },
+    ],
   },
   { versionKey: false }
 );

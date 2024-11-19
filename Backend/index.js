@@ -28,7 +28,7 @@ const startServer = async () => {
   app.use("/product", require("./controllers/productController"));
   app.use("/voucher", require("./controllers/voucherController"));
   app.use("/order", require("./controllers/orderController"));
-
+  app.use("/review", require("./controllers/reviewController"));
   // Start the server
   const port = process.env.PORT || 3001;
   app.listen(port, () => console.log(`Server is running on port ${port}`));
