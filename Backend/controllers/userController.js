@@ -20,7 +20,7 @@ router.post("/login", async (req, res) => {
       const validPassword = password === user.password;
       if (validPassword) {
         const token = jwt.sign(
-          { userId: user._id, email: user.email },
+          { userId: user._id, email: user.email, role: user.role },
           SECRET_KEY,
           { expiresIn: "1h" }
         );
@@ -91,6 +91,7 @@ router.post("/register", async (req, res) => {
           password,
           sdt,
           verifynumber: v_number,
+          role: "user",
         });
         await newUser.save();
         sendMail(email, "Xác thực tài khoản", v_number);
@@ -139,6 +140,7 @@ router.post("/verify", async (req, res) => {
         sdt: data.sdt,
         email: data.email,
         password: data.password,
+        role: "user",
       });
       await newUser.save();
       await Unc.deleteOne({ email: email });
