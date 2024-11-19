@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import './BookDetail.css';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import "./BookDetail.css";
 
 const BookDetail = () => {
   const { id } = useParams(); // Get the book ID from the URL
@@ -8,22 +8,22 @@ const BookDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log('Fetching book with ID:', id);
-    fetch(`http://localhost:3001/api/books/${id}`)
-      .then(response => {
-        console.log('Response status:', response.status);
+    console.log("Fetching book with ID:", id);
+    fetch(`http://localhost:3001/product/${id}`)
+      .then((response) => {
+        console.log("Response status:", response.status);
         if (!response.ok) {
-          throw new Error('Failed to fetch book details');
+          throw new Error("Failed to fetch book details");
         }
         return response.json();
       })
-      .then(data => {
-        console.log('Fetched book data:', data);
+      .then((data) => {
+        console.log("Fetched book data:", data);
         setBook(data);
         setLoading(false);
       })
-      .catch(error => {
-        console.error('Error fetching book details:', error);
+      .catch((error) => {
+        console.error("Error fetching book details:", error);
         setLoading(false);
       });
   }, [id]);
