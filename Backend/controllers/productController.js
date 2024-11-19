@@ -1,31 +1,34 @@
 const express = require("express");
 const router = express.Router();
 const Product = require("../models/Product");
+const mongoose = require("mongoose");
 const { checkAdmin } = require("../services/verityService");
 
 // Get all products
 router.get("/", async (req, res) => {
   try {
     const products = await Product.find();
-    res.status(200).json({ status: "success", data: products });
+    res.status(200).json(products);
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error fetching products:", error);
     res.status(500).json({ status: "error", message: "Server error" });
   }
 });
 
-// Get product by id
 router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid book ID format" });
+  }
   try {
-    const product = await Product.findById(req.params.id);
-    if (!product) {
-      return res
-        .status(404)
-        .json({ status: "fail", message: "Product not found" });
+    const book = await Product.findById(id);
+    if (book) {
+      res.status(200).json(book);
+    } else {
+      res.status(404).json({ message: "Book not found" });
     }
-    res.status(200).json({ status: "success", data: product });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error fetching book:", error);
     res.status(500).json({ status: "error", message: "Server error" });
   }
 });
