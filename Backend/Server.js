@@ -23,7 +23,7 @@ const Unc = require('./models/Unc');
 const Product = require('./models/Product');
 
 // Login endpoint
-/*app.post('/login', (req, res) => {
+app.post('/login', (req, res) => {
   const { username, password } = req.body;
   User.findOne({ email: username, password: password }).then((data) => {
     if (data) {
@@ -33,8 +33,8 @@ const Product = require('./models/Product');
       res.send({ status: 'fail' });
     }
   });
-});*/
-app.post('/login', async (req, res) => {
+});
+/*app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ email: username });
@@ -53,7 +53,7 @@ app.post('/login', async (req, res) => {
     console.error('Error:', error);
     res.status(500).json({ status: 'error', message: 'Server error' });
   }
-});
+});*/
 
 app.post('/forgot-password', (req, res) => {
   const { email } = req.body;
