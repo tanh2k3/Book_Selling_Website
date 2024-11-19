@@ -10,6 +10,8 @@ const BookDetail = () => {
   const [feedback, setFeedback] = useState('');
   const [stars, setStars] = useState(0);
   const [feedbackList, setFeedbackList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const feedbacksPerPage = 5; // Number of feedbacks per page
 
   useEffect(() => {
     fetch(`http://localhost:3001/product/${id}`)
@@ -31,10 +33,7 @@ const BookDetail = () => {
 
   const handleFeedbackSubmit = (e) => {
     e.preventDefault();
-    if (feedback.trim() === '' || stars < 1) {
-      alert('Please provide a valid feedback and star rating.');
-      return;
-    }
+    if (feedback.trim() === '' || stars < 1) return;
 
     fetch(`http://localhost:3001/feedback/${id}`, {
       method: 'POST',
@@ -52,18 +51,14 @@ const BookDetail = () => {
       .catch((error) => console.error('Error submitting feedback:', error));
   };
 
-  const handleDeleteFeedback = (feedbackId) => {
-    fetch(`http://localhost:3001/feedback/${feedbackId}`, {
-      method: 'DELETE',
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Failed to delete feedback');
-        }
-        setFeedbackList(feedbackList.filter((item) => item._id !== feedbackId));
-      })
-      .catch((error) => console.error('Error deleting feedback:', error));
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
+
+  // Get current feedbacks for the page
+  const indexOfLastFeedback = currentPage * feedbacksPerPage;
+  const indexOfFirstFeedback = indexOfLastFeedback - feedbacksPerPage;
+  const currentFeedbacks = feedbackList.slice(indexOfFirstFeedback, indexOfLastFeedback);
 
   if (loading) {
     return <p>Loading book details...</p>;
@@ -101,7 +96,7 @@ const BookDetail = () => {
 
       <div className="book-detail-right">
         <h3>Leave Your Feedback:</h3>
-        <form onSubmit={handleFeedbackSubmit}>
+        <form onSubmit={handleFeedbackSubmit} className="feedback-form">
           <StarRating rating={stars} onRatingChange={setStars} />
           <textarea
             value={feedback}
@@ -109,38 +104,43 @@ const BookDetail = () => {
             placeholder="Write your feedback here..."
             rows="4"
           />
-          <button type="submit">Submit</button>
+          <div className="submit-button-container">
+            <button type="submit">Submit</button>
+          </div>
         </form>
 
         <h3>Feedbacks:</h3>
-        <ul className="feedback-list">
-          {feedbackList.map((item) => (
-            <li key={item._id} className="feedback-item">
-              <div className="feedback-content">
-                <div>
-                  <p className="feedback-stars">
-                    {Array.from({ length: item.stars }, (_, i) => (
-                      <span key={i} className="star filled">★</span>
-                    ))}
-                    {Array.from({ length: 5 - item.stars }, (_, i) => (
-                      <span key={i} className="star">★</span>
-                    ))}
-                  </p>
-                  <p>{item.content}</p>
-                  <small className="feedback-time">
-                    {new Date(item.timestamp).toLocaleString()}
-                  </small>
-                </div>
-                <button
-                  onClick={() => handleDeleteFeedback(item._id)}
-                  className="delete-button"
-                >
-                  Delete
-                </button>
-              </div>
+        <ul>
+          {currentFeedbacks.map((item, index) => (
+            <li key={index} className="feedback-item">
+              <p className="feedback-stars">
+                {Array.from({ length: item.stars }, (_, i) => (
+                  <span key={i} className="star filled">★</span>
+                ))}
+                {Array.from({ length: 5 - item.stars }, (_, i) => (
+                  <span key={i} className="star">★</span>
+                ))}
+              </p>
+              <p>{item.content}</p>
+              <small className="feedback-time">
+                {new Date(item.timestamp).toLocaleString()}
+              </small>
             </li>
           ))}
         </ul>
+
+        {/* Pagination Controls */}
+        <div className="pagination-controls">
+          {Array.from({ length: Math.ceil(feedbackList.length / feedbacksPerPage) }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => handlePageChange(i + 1)}
+              className={currentPage === i + 1 ? 'active-page' : ''}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
