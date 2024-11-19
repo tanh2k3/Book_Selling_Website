@@ -48,7 +48,7 @@
   justify-content: space-between;
   align-items: flex-start;
   background-color: #fff;
-  padding: 10px;
+  padding: 15px;
   border-radius: 5px;
   margin-bottom: 15px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
@@ -57,7 +57,7 @@
 .feedback-content {
   display: flex;
   flex-direction: column;
-  width: calc(100% - 60px); /* Adjusted width to make space for the delete button */
+  width: calc(100% - 70px); /* Adjust width to ensure space for the delete button */
 }
 
 .feedback-stars {
@@ -106,6 +106,18 @@ textarea {
   resize: vertical;
 }
 
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the button */
+}
+
+.submit-button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%; /* Ensures the container takes full width */
+}
+
 button {
   background-color: #007bff;
   color: #fff;
@@ -120,3 +132,29 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.pagination-controls button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pagination-controls button:hover {
+  background-color: #0056b3;
+}
+
+.pagination-controls .active-page {
+  background-color: #0056b3;
+}
+
