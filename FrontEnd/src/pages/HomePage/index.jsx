@@ -14,7 +14,6 @@ const HomePage = () => {
       <ClassicBrand />
       <FlashSale />
       <VoucherList numberOfVouchers={10} />
-      <h2>Danh sách sản phẩm</h2>
       <ItemsList />
       <ProductsList />
     </div>
