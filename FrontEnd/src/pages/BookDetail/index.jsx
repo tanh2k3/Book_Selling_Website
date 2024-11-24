@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import StarRating from "./StarRating";
 import "./BookDetail.css";
 
 const BookDetail = () => {
   const { id } = useParams();
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [feedback, setFeedback] = useState('');
-  const [stars, setStars] = useState(0);
   const [feedbackList, setFeedbackList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const feedbacksPerPage = 5; // Number of feedbacks per page
+  const [feedback, setFeedback] = useState("");
+  const [stars, setStars] = useState(0);
 
   useEffect(() => {
+    // Fetch book details
     fetch(`http://localhost:3001/product/${id}`)
       .then((response) => response.json())
       .then((data) => {
@@ -25,6 +23,7 @@ const BookDetail = () => {
         setLoading(false);
       });
 
+    // Fetch feedbacks for this book
     fetch(`http://localhost:3001/feedback/${id}`)
       .then((response) => response.json())
       .then((data) => setFeedbackList(data))
@@ -33,32 +32,23 @@ const BookDetail = () => {
 
   const handleFeedbackSubmit = (e) => {
     e.preventDefault();
-    if (feedback.trim() === '' || stars < 1) return;
+    if (feedback.trim() === "" || stars < 1) return;
 
     fetch(`http://localhost:3001/feedback/${id}`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ content: feedback, stars }),
     })
       .then((response) => response.json())
       .then((data) => {
         setFeedbackList([data.feedback, ...feedbackList]);
-        setFeedback('');
+        setFeedback("");
         setStars(0);
       })
-      .catch((error) => console.error('Error submitting feedback:', error));
+      .catch((error) => console.error("Error submitting feedback:", error));
   };
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  // Get current feedbacks for the page
-  const indexOfLastFeedback = currentPage * feedbacksPerPage;
-  const indexOfFirstFeedback = indexOfLastFeedback - feedbacksPerPage;
-  const currentFeedbacks = feedbackList.slice(indexOfFirstFeedback, indexOfLastFeedback);
 
   if (loading) {
     return <p>Loading book details...</p>;
@@ -70,77 +60,156 @@ const BookDetail = () => {
 
   return (
     <div className="book-detail-container">
-      <div className="book-detail-left">
-        <h1>{book.title}</h1>
-        <img src={book.imgSrc} alt={book.title} />
-        <p>Author: {book.author}</p>
-        <p>Price: {book.price}</p>
-        <p>Rating: {book.rating} / 5</p>
-        <p>Sold: {book.soldCount}</p>
-        <h3>Features:</h3>
-        <ul>
-          {book.features.map((feature, index) => (
-            <li key={index}>{feature}</li>
-          ))}
-        </ul>
+      {/* Book Details Section */}
+      <div className="book-detail">
+        <div className="book-detail-left">
+          <h1 className="book-title">{book.title}</h1>
+          <img src={book.imgSrc} alt={book.title} className="main-image" />
+          <div className="gallery">
+            {book.galleryImages?.map((imgSrc, index) => (
+              <img
+                key={index}
+                src={imgSrc}
+                alt={`Gallery ${index}`}
+                className="gallery-image"
+              />
+            ))}
+          </div>
+          <h3>Description:</h3>
+          <p className="book-description">
+            {book.description || "No description available for this book."}
+          </p>
+        </div>
+
+        {/* Book Information Table */}
+        <div className="book-detail-right">
+          <table className="book-details-table">
+            <tbody>
+              <tr>
+                <td>Author</td>
+                <td>{book.author}</td>
+              </tr>
+              <tr>
+                <td>Translator</td>
+                <td>{book.translator || "N/A"}</td>
+              </tr>
+              <tr>
+                <td>SKU</td>
+                <td>{book.sku || "N/A"}</td>
+              </tr>
+              <tr>
+                <td>Publisher</td>
+                <td>{book.publisher || "N/A"}</td>
+              </tr>
+              <tr>
+                <td>Publication Year</td>
+                <td>{book.publicationYear || "N/A"}</td>
+              </tr>
+              <tr>
+                <td>Language</td>
+                <td>{book.language || "N/A"}</td>
+              </tr>
+              <tr>
+                <td>Weight</td>
+                <td>{book.weight || "N/A"}</td>
+              </tr>
+              <tr>
+                <td>Dimensions</td>
+                <td>{book.dimensions || "N/A"}</td>
+              </tr>
+              <tr>
+                <td>Pages</td>
+                <td>{book.pages || "N/A"}</td>
+              </tr>
+              <tr>
+                <td>Binding</td>
+                <td>{book.binding || "N/A"}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Similar Books Section */}
+      <div className="similar-books-section">
         <h3>Similar Books:</h3>
-        <div className="similar-books">
-          {book.similarBooks.map((similarBook, index) => (
-            <div key={index}>
+        <div className="similar-books-container">
+          {book.similarBooks.slice(0, 5).map((similarBook, index) => (
+            <div key={index} className="similar-book-card">
               <img src={similarBook.imgSrc} alt={similarBook.title} />
               <p>{similarBook.title}</p>
             </div>
           ))}
+          <button
+            className="scroll-button left"
+            onClick={() =>
+              document.querySelector(".similar-books-container").scrollBy({
+                left: -200,
+                behavior: "smooth",
+              })
+            }
+          >
+            &lt;
+          </button>
+          <button
+            className="scroll-button right"
+            onClick={() =>
+              document.querySelector(".similar-books-container").scrollBy({
+                left: 200,
+                behavior: "smooth",
+              })
+            }
+          >
+            &gt;
+          </button>
         </div>
       </div>
 
-      <div className="book-detail-right">
-        <h3>Leave Your Feedback:</h3>
-        <form onSubmit={handleFeedbackSubmit} className="feedback-form">
-          <StarRating rating={stars} onRatingChange={setStars} />
-          <textarea
-            value={feedback}
-            onChange={(e) => setFeedback(e.target.value)}
-            placeholder="Write your feedback here..."
-            rows="4"
-          />
-          <div className="submit-button-container">
-            <button type="submit">Submit</button>
-          </div>
-        </form>
 
+      {/* Feedback Section */}
+      <div className="feedback-section">
         <h3>Feedbacks:</h3>
-        <ul>
-          {currentFeedbacks.map((item, index) => (
+        <ul className="feedback-list">
+          {feedbackList.map((feedback, index) => (
             <li key={index} className="feedback-item">
               <p className="feedback-stars">
-                {Array.from({ length: item.stars }, (_, i) => (
+                {Array.from({ length: feedback.stars }, (_, i) => (
                   <span key={i} className="star filled">★</span>
                 ))}
-                {Array.from({ length: 5 - item.stars }, (_, i) => (
+                {Array.from({ length: 5 - feedback.stars }, (_, i) => (
                   <span key={i} className="star">★</span>
                 ))}
               </p>
-              <p>{item.content}</p>
+              <p>{feedback.content}</p>
               <small className="feedback-time">
-                {new Date(item.timestamp).toLocaleString()}
+                {new Date(feedback.timestamp).toLocaleString()}
               </small>
             </li>
           ))}
         </ul>
 
-        {/* Pagination Controls */}
-        <div className="pagination-controls">
-          {Array.from({ length: Math.ceil(feedbackList.length / feedbacksPerPage) }, (_, i) => (
-            <button
-              key={i}
-              onClick={() => handlePageChange(i + 1)}
-              className={currentPage === i + 1 ? 'active-page' : ''}
-            >
-              {i + 1}
-            </button>
-          ))}
-        </div>
+        {/* Feedback Form */}
+        <form className="feedback-form" onSubmit={handleFeedbackSubmit}>
+          <h4>Leave your feedback:</h4>
+          <div className="rating-input">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                className={`star ${stars >= star ? "filled" : ""}`}
+                onClick={() => setStars(star)}
+              >
+                ★
+              </span>
+            ))}
+          </div>
+          <textarea
+            placeholder="Write your feedback here..."
+            rows="4"
+            value={feedback}
+            onChange={(e) => setFeedback(e.target.value)}
+          />
+          <button type="submit">Submit</button>
+        </form>
       </div>
     </div>
   );

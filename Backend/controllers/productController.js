@@ -15,67 +15,125 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Get a product by ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: "Invalid book ID format" });
+    return res.status(400).json({ message: "Invalid product ID format" });
   }
   try {
-    const book = await Product.findById(id);
-    if (book) {
-      res.status(200).json(book);
+    const product = await Product.findById(id);
+    if (product) {
+      res.status(200).json(product);
     } else {
-      res.status(404).json({ message: "Book not found" });
+      res.status(404).json({ message: "Product not found" });
     }
   } catch (error) {
-    console.error("Error fetching book:", error);
+    console.error("Error fetching product:", error);
     res.status(500).json({ status: "error", message: "Server error" });
   }
 });
 
-// Create product - Admin
-router.get("/", checkAdmin, async (req, res) => {
+// Create a new product - Admin only
+router.post("/", checkAdmin, async (req, res) => {
   try {
-    const product = new Product(req.body);
+    const productData = {
+      imgSrc: req.body.imgSrc,
+      title: req.body.title,
+      author: req.body.author,
+      translator: req.body.translator,
+      price: req.body.price,
+      originalPrice: req.body.originalPrice,
+      discount: req.body.discount,
+      rating: req.body.rating,
+      reviewsCount: req.body.reviewsCount,
+      soldCount: req.body.soldCount,
+      features: req.body.features,
+      similarBooks: req.body.similarBooks,
+      galleryImages: req.body.galleryImages,
+      sku: req.body.sku,
+      ageGroup: req.body.ageGroup,
+      supplier: req.body.supplier,
+      publisher: req.body.publisher,
+      publicationYear: req.body.publicationYear,
+      language: req.body.language,
+      weight: req.body.weight,
+      dimensions: req.body.dimensions,
+      pages: req.body.pages,
+      binding: req.body.binding,
+    };
+
+    const product = new Product(productData);
     await product.save();
     res.status(201).json({ status: "success", data: product });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error creating product:", error);
     res.status(500).json({ status: "error", message: "Server error" });
   }
 });
 
-// Update product - Admin
+// Update an existing product - Admin only
 router.put("/:id", checkAdmin, async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid product ID format" });
+  }
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(id);
     if (!product) {
-      return res
-        .status(404)
-        .json({ status: "fail", message: "Product not found" });
+      return res.status(404).json({ status: "fail", message: "Product not found" });
     }
-    product.set(req.body);
+
+    const updatedData = {
+      imgSrc: req.body.imgSrc,
+      title: req.body.title,
+      author: req.body.author,
+      translator: req.body.translator,
+      price: req.body.price,
+      originalPrice: req.body.originalPrice,
+      discount: req.body.discount,
+      rating: req.body.rating,
+      reviewsCount: req.body.reviewsCount,
+      soldCount: req.body.soldCount,
+      features: req.body.features,
+      similarBooks: req.body.similarBooks,
+      galleryImages: req.body.galleryImages,
+      sku: req.body.sku,
+      ageGroup: req.body.ageGroup,
+      supplier: req.body.supplier,
+      publisher: req.body.publisher,
+      publicationYear: req.body.publicationYear,
+      language: req.body.language,
+      weight: req.body.weight,
+      dimensions: req.body.dimensions,
+      pages: req.body.pages,
+      binding: req.body.binding,
+    };
+
+    product.set(updatedData);
     await product.save();
     res.status(200).json({ status: "success", data: product });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error updating product:", error);
     res.status(500).json({ status: "error", message: "Server error" });
   }
 });
 
-// Delete product - Admin
+// Delete a product - Admin only
 router.delete("/:id", checkAdmin, async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid product ID format" });
+  }
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(id);
     if (!product) {
-      return res
-        .status(404)
-        .json({ status: "fail", message: "Product not found" });
+      return res.status(404).json({ status: "fail", message: "Product not found" });
     }
-    await product.remove();
-    res.status(200).json({ status: "success", data: product });
+    await product.deleteOne();
+    res.status(200).json({ status: "success", message: "Product deleted successfully" });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error deleting product:", error);
     res.status(500).json({ status: "error", message: "Server error" });
   }
 });
