@@ -3,12 +3,14 @@ const { sendMail } = require("../services/emailService");
 const bcrypt = require("bcrypt");
 const express = require("express");
 const router = express.Router();
+const {ObjectId} = require('mongodb');
 
 require("dotenv").config();
 const SECRET_KEY = process.env.SECRET_KEY || "your_secret_key";
 
 const User = require("../models/User");
 const Unc = require("../models/Unc");
+const Order = require("../models/Order");
 
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
@@ -171,6 +173,48 @@ router.post("/resend", async (req, res) => {
     console.error("Error:", error);
     res.status(500).json({ status: "error", message: "Server error" });
   }
+});
+
+router.post('/update-name', (req, res) => {
+  const { email, name } = req.body;
+  User.findOneAndUpdate({ email: email }, { name: name }, { new: true }).then((user) => {
+    if (user) {
+      res.send({ status: 'success', user });
+    } else {
+      res.send({ status: 'fail', message: 'User not found' });
+    }
+  }).catch(error => res.send({ status: 'fail', message: error.message }));
+});
+
+router.post('/update-phone', (req, res) => {
+  const { email, phone } = req.body;
+  User.findOneAndUpdate({ email: email }, { sdt: phone }, { new: true }).then((user) => {
+    if (user) {
+      res.send({ status: 'success', user });
+    } else {
+      res.send({ status: 'fail', message: 'User not found' });
+    }
+  }).catch(error => res.send({ status: 'fail', message: error.message }));
+});
+
+router.post('/update-password', (req, res) => {
+  const { email, password } = req.body;
+  User.findOneAndUpdate({ email: email }, { password: password }, { new: true }).then((user) => {
+    if (user) {
+      res.send({ status: 'success', user });
+    } else {
+      res.send({ status: 'fail', message: 'User not found' });
+    }
+  }).catch(error => res.send({ status: 'fail', message: error.message }));
+});
+
+router.get('/orders/:id', (req, res) => {
+  let { id } = req.params;
+  id = new ObjectId(id);
+  Order.find({ "userId": id }).then((data)=> {
+      res.status(200);
+      res.send(data);
+  })
 });
 
 module.exports = router;

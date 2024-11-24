@@ -1,9 +1,8 @@
-/*import React, { useState, useEffect  } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import CardSP from './CardSP';
 import './Profile.css';
-import { useUser } from './UserContext';
+import { useUser } from '../../context/UserContext';
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 
@@ -120,12 +119,21 @@ const Orders = () => {
     const {user} = useUser();
     useEffect(() => {
         const fetchOrders = async () => {
+          try {
             const response = await axios.get(`http://localhost:3001/orders/${user._id}`);
-            if (response.status === 200) setOrders(response.data);
-            else alert('Internal server error');
-        }
+            if (response.status === 200) {
+              setOrders(response.data);
+            } else {
+              alert('Failed to fetch orders');
+            }
+          } catch (error) {
+            console.error('Error fetching orders:', error);
+            alert('Error fetching orders');
+          }
+        };
         fetchOrders();
-    },[]);
+      }, []);
+      
 
     return (
         <div>
@@ -147,12 +155,12 @@ const Orders = () => {
                             {orders.map((order, index) => (
                                 <tr key={index}>
                                     <td className="stt">{index+1}</td>
-                                    <td className="stt">{order.order_quantity}</td>
-                                    <td>{order.order_price}</td>
-                                    <td>{order.order_status}</td>
-                                    <td>{order.order_pttt}</td>
-                                    <td>{order.order_date1}</td>
-                                    <td>{order.order_date2}</td>
+                                    <td className="stt">{order.total}</td>
+                                    <td>{order.total}</td>
+                                    <td>{order.status}</td>
+                                    <td>{order.total}</td>
+                                    <td>{order.createdAt}</td>
+                                    <td>{order.createdAt}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -177,6 +185,7 @@ const FavoriteProducts = () => {
             })
             .catch(error => console.error(error));
     }, [userId]);
+    console.log(favorites);
 
     const handleRemoveFavorite = (productId) => {
         axios.post('http://localhost:3001/remove-favorite', { userId, productId })
@@ -188,15 +197,11 @@ const FavoriteProducts = () => {
             .catch(error => console.error(error));
     };
 
-    if (favorites.length === 0) {
-        return <h2>Không có sản phẩm yêu thích nào</h2>;
-    }
-    console.log(favorites);
-
     const handleCardClick = (productId) => {
         navigate(`/productfilter/:category/${productId}`);
     };
-    
+
+    if (favorites.length === 0) {return <h2>Không có sản phẩm yêu thích nào</h2>;}
     return (
         <div>
             <h1>Sản phẩm yêu thích</h1>
@@ -209,19 +214,11 @@ const FavoriteProducts = () => {
                         <p className="cardsppp-price">{favorite.fp_id_sp.product_price}₫</p>
                         <button className="cardsppp-button" onClick={() => 
                         handleRemoveFavorite(favorite.fp_id_sp)}>Xóa</button>
-                </div>
+                    </div>
                 ))}
             </div>
         </div>
     );
 };
 
-export default Profile;*/
-function Profile()
-{
-    return(
-        <div>profile</div>
-    )
-}
-
-export default Profile
+export default Profile;
