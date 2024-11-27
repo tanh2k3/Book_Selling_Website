@@ -1,15 +1,18 @@
 .fter{
-    background-color: #e4e4e4;
+    /*background-color: #e4e4e4;*/
+    background-color: #CD0000;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #ffffff;
   }
   
   .footer h1{
   font-family:Verdana, Geneva, Tahoma, sans-serif;
   text-align: center;
   margin-top: 10px;
+  color: #FFD700;
   }
   
   .footer-chu{
-  font-family: 'Times New Roman', Times, serif;
   text-align: center;
   font-size: 20px;
   }

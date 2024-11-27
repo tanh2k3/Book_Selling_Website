@@ -5,16 +5,16 @@ function Footer()
 {
     return(
         <footer className="fter">
-            <hr/>
+            <hr style={{border:"1px"}}/>
             <div className="footer">
-              <h1>Tên website</h1>
+              <h1>Bookie</h1>
               <br/>
-              <p className="footer-chu">Giới thiệu về trang web</p>
+              <p className="footer-chu">Bookie là trang web chuyên cung cấp các sản phẩm về sách và văn phòng phẩm chất lượng, đáp ứng mọi nhu cầu học tập và làm việc.</p>
               <br/>
-              <p className="footer-mxh">Facebook: ... <FaCircle style={{fontSize : '5px'}} /> Instagram: ... <FaCircle style={{fontSize : '5px'}}/> Tiktok: ...</p>
+              <p className="footer-mxh">Facebook: Bookie Việt Nam <FaCircle style={{fontSize : '5px'}} /> Instagram: @bookie.ig <FaCircle style={{fontSize : '5px'}}/> Tiktok: @bookie.vn</p>
               <br/>
             </div>
-            <p className="footer-nam">&copy; {new Date().getFullYear()} Tên website</p>
+            <p className="footer-nam">&copy; {new Date().getFullYear()} Bookie</p>
         </footer>
     );
 }

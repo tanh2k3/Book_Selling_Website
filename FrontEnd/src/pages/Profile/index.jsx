@@ -53,6 +53,7 @@ const PersonalInfo = ({ user, setUser }) => {
     };
     return (
         <div>
+            <div style={{height:"30px"}}/>
             <h1>Thông tin cá nhân</h1>
             <div className="info-item">
                 <span>Họ và tên: </span>
@@ -82,6 +83,7 @@ const PersonalInfo = ({ user, setUser }) => {
                     <button className='content-button' onClick={() => setIsEditingPhone(true)}><MdDriveFileRenameOutline style={{"marginBottom":"-4px"}} /></button>
                 </>)}
             </div>
+            <div style={{height:"10px"}}/>
             <div className="info-item">
                 <span>Email: </span>
                 <span>{user.email}</span>
@@ -137,6 +139,7 @@ const Orders = () => {
 
     return (
         <div>
+            <div style={{height:"30px"}}/>
             <h1>Đơn hàng</h1>
             <div id="orders">
                     <table>
@@ -165,7 +168,8 @@ const Orders = () => {
                             ))}
                         </tbody>
                     </table>
-                </div>
+            </div>
+            <div style={{height:"200px"}}/>
         </div>
     );
 };
@@ -217,6 +221,7 @@ const FavoriteProducts = () => {
                     </div>
                 ))}
             </div>
+            <div style={{height:"300px"}}/>
         </div>
     );
 };

@@ -5,7 +5,7 @@ import { MdAccountCircle, MdLogout } from "react-icons/md";
 import { LuLogIn } from "react-icons/lu";
 import { useUser } from '../../context/UserContext';
 import './Header.css';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo_yellow.png';
 
 function Header() {
   /*const handleSearch = () => {
@@ -41,7 +41,9 @@ function Header() {
 
     return(
       <div className="navbar">
-        <img src={logo} className="logo"/>
+        <Link to="/">
+          <img src={logo} className="logo"/>
+        </Link>
         <div className="search-container">
           <input type="text" placeholder="Search" className="tim-kiem" onChange={handleInputChange}/>
           <div className="search-icon"><FaSearch /></div>
