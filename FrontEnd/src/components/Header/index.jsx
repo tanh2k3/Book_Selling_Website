@@ -27,6 +27,13 @@ function Header() {
       setSearchTerm(e.target.value);
     };
 
+    const handleSearch = () => {
+      console.log(searchTerm);
+      if (searchTerm.trim() !== '') {
+        navigate(`/list?title=${searchTerm}`);
+      }
+    }
+
     const handleLogout = () => {
       if (window.confirm('Bạn có chắc chắn muốn đăng xuất không?')) 
       {
@@ -43,8 +50,8 @@ function Header() {
       <div className="navbar">
         <img src={logo} className="logo"/>
         <div className="search-container">
-          <input type="text" placeholder="Search" className="tim-kiem" onChange={handleInputChange}/>
-          <div className="search-icon"><FaSearch /></div>
+          <input type="text" placeholder="Tìm kiếm" className="tim-kiem" onChange={handleInputChange}/>
+          <div className="search-icon" onClick={handleSearch}><FaSearch /></div>
         </div>
         <div className="extra-buttons">
           { user ?

@@ -7,5 +7,17 @@
     align-items: flex-start;
     margin-top: 20px;
     background-color: #f5f5f5;
+    text-align: center;
 }
 
+.listproductlayout{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+#btn_detail:hover{
+    background-color: #f5f5f5;
+    color: #000;
+}
