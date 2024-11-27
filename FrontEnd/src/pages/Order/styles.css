@@ -1,0 +1,59 @@
+
+.listproductlayout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.listproduct {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.listproduct > div {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    width: 200px;
+    text-align: center;
+}
+
+.name_book {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.author_book,
+.price_book {
+    font-size: 16px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    margin: 10px 0;
+}
+
+input[type="number"] {
+    width: 50px;
+    margin: 5px 0;
+}
+
+input[type="checkbox"] {
+    margin-top: 10px;
+}
+
+.total {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+#btn_detail {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}

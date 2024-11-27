@@ -15,17 +15,20 @@ const HomePage = () => {
     <div>
       <Header />
       <Routes>
-        <Route path="/" element={
-          <>
-            <TopSellingProduct />
-            <h2>Khám phá theo danh mục</h2>
-            <ClassicBrand />
-            <FlashSale />
-            <VoucherList numberOfVouchers={10} />
-            <h2>Danh sách sản phẩm</h2>
-            <ItemsList />
-            <ProductsList />
-          </>} 
+        <Route
+          path="/"
+          element={
+            <>
+              <TopSellingProduct />
+              <h2>Khám phá theo danh mục</h2>
+              <ClassicBrand />
+              <FlashSale />
+              <VoucherList numberOfVouchers={10} />
+              <h2>Danh sách sản phẩm</h2>
+              <ItemsList />
+              <ProductsList />
+            </>
+          }
         />
         <Route path="/profile" element={<Profile />} />
       </Routes>

@@ -7,6 +7,7 @@ import RegisterPage from "./pages/RegisterPage";
 import { UserProvider } from "./context/UserContext";
 import VerifyAccount from "./pages/VerifyAccount";
 import ListProduct from "./pages/ListProduct";
+import Order from "./pages/Order";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/verify" element={<VerifyAccount />} />
           <Route path="/list" element={<ListProduct />} />
+          <Route path="/order" element={<Order />} />
           <Route path="/forgot-password" element={<VerifyAccount isresetpass={true} />} />
         </Routes>
       </BrowserRouter>
