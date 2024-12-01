@@ -1,69 +1,110 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+// import Slide from "../../../components/Slide";
 import "./Voucher.css";
 
-// Function to generate a voucher code
-const generateVoucherCode = () => {
-    const prefix = 'KCAAB';
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = prefix;
-    for (let i = 0; i < 10; i++) {
-        result += chars[Math.floor(Math.random() * chars.length)];
+// Hien thi chi tiet 1 voucher
+const Voucher = ({
+    voucherCode,
+    voucherValue,
+    maxDiscountValue,
+    minOrderValue,
+    voucherType,
+    voucherDescription,
+    voucherExpiration,
+    usedCount,
+}) => {
+    const handleCopy = () => {
+        navigator.clipboard.writeText(voucherCode)
+            .then(() => {
+                alert("Voucher code copied!");
+            })
+            .catch((error) => {
+                console.error("Error copying!:", error);
+            });
+    };
+
+    return (
+        <div className="voucher">
+            <img src="src/assets/voucher.png" alt="Voucher" />
+            <p><b onClick={handleCopy} style={{ cursor: "pointer", color: "#CD0000" }}>{voucherCode}</b></p>
+            <p><b>
+                Giảm {voucherType === 1
+                    ? `${voucherValue.toLocaleString('vi-VN')}₫`
+                    : `${voucherValue}%, tối đa ${maxDiscountValue.toLocaleString('vi-VN')}₫`}
+            </b></p>
+            <p>Đơn tối thiểu: {minOrderValue.toLocaleString('vi-VN')}₫</p>
+            <p>HSD: {new Intl.DateTimeFormat("vi-VN", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(voucherExpiration))}</p>
+            <p>Đã sử dụng: {usedCount}</p>
+        </div>
+    );
+};
+
+// Hien thi danh sach voucher
+const VoucherList = () => {
+    const [vouchers, setVouchers] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch("http://localhost:3001/voucher")
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.status === "success") {
+                    const sortedData = data.data.sort((a, b) => b.usedCount - a.usedCount).slice(0, 5);
+                    setVouchers(sortedData);
+                } else {
+                    console.error("Error fetching vouchers:", data.message);
+                }
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error fetching vouchers:", error);
+                setLoading(false);
+            });
+
+    }, []);
+
+    if (loading) {
+        return <div className="voucher-loading">Đang tải danh sách voucher...</div>;
     }
-    return result;
-};
-
-// Function to generate a random voucher value
-const generateVoucherValue = () => {
-    return Math.floor(Math.random() * 26) + 5; // Random value between 5 and 30
-};
-
-const generateVoucherExpiration = () => {
-    const cal = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000); // Tạo đối tượng Date từ số
-    const ans = cal.toLocaleDateString('vi-VN', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-    });
-    return ans;
-}
-
-const Voucher = ({ voucherValue, minOrderValue, expiration, voucherCode }) => (
-    <div className="voucher">
-        <img src="src/assets/voucher.png" alt="Voucher" />
-        <p><b>Giảm {voucherValue}% giá trị đơn hàng</b></p>
-        <p>Đơn tối thiểu: {minOrderValue.toLocaleString('vi-VN')}₫</p>
-        <p id="hsd">HSD: {expiration} </p>
-        <p> Code: {voucherCode}</p>
-    </div>
-);
-
-const VoucherList = ({ numberOfVouchers }) => {
-    const vouchers = Array.from({ length: numberOfVouchers }, () => {
-        const voucherValue = generateVoucherValue();
-        const minOrderValue = (30 + 4 * voucherValue) * 1000;
-        return {
-            voucherValue,
-            minOrderValue,
-            expiration: generateVoucherExpiration(),
-            voucherCode: generateVoucherCode()
-        };
-    });
 
     return (
         <div className="voucher-list">
             <h2>VOUCHER</h2>
             <div id="voucher-list-div">
-                {vouchers.map((voucher, index) => (
+                {vouchers.map((voucher) => (
                     <Voucher
-                        key={index}
-                        voucherValue={voucher.voucherValue}
-                        minOrderValue={voucher.minOrderValue}
-                        expiration={voucher.expiration}
+                        key={voucher.voucherCode}
                         voucherCode={voucher.voucherCode}
+                        voucherValue={voucher.voucherValue}
+                        maxDiscountValue={voucher.maxDiscountValue}
+                        minOrderValue={voucher.minOrderValue}
+                        voucherType={voucher.voucherType}
+                        voucherDescription={voucher.voucherDescription}
+                        voucherExpiration={voucher.voucherExpiration}
+                        usedCount={voucher.usedCount}
                     />
                 ))}
             </div>
 
+            {/* <Slide numToShow={5}>
+                {vouchers.map((voucher) => (
+                    <Voucher
+                        key={voucher.voucherCode}
+                        voucherCode={voucher.voucherCode}
+                        voucherValue={voucher.voucherValue}
+                        maxDiscountValue={voucher.maxDiscountValue}
+                        minOrderValue={voucher.minOrderValue}
+                        voucherType={voucher.voucherType}
+                        voucherDescription={voucher.voucherDescription}
+                        voucherExpiration={voucher.voucherExpiration}
+                        usedCount={voucher.usedCount}
+                    />
+                ))}
+            </Slide> */}
+
+            <div className="view-more">
+                <a href="/voucher" className="view-more-link">Xem thêm</a>
+            </div>
         </div>
     );
 };

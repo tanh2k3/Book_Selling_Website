@@ -5,7 +5,7 @@ const voucherSchema = new mongoose.Schema({
   voucherValue: { type: Number, required: true },
   maxDiscountValue: { type: Number},
   minOrderValue: { type: Number, required: true },
-  voucherType: { type: Number, required: true }, // 1: giam truc tiep, 2: giam %
+  voucherType: { type: Number, required: true }, // 1: Giam truc tiep, 2: Giam %
   voucherDescription: { type: String },
   voucherExpiration: { type: Date },
   usedCount: { type: Number, default: 0 },
