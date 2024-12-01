@@ -34,7 +34,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Create a new product - Admin only
+
 router.post("/", checkAdmin, async (req, res) => {
   try {
     const productData = {
@@ -44,13 +44,12 @@ router.post("/", checkAdmin, async (req, res) => {
       translator: req.body.translator,
       price: req.body.price,
       originalPrice: req.body.originalPrice,
-      discount: req.body.discount,
+      discount: req.body.discount, 
       rating: req.body.rating,
       reviewsCount: req.body.reviewsCount,
-      soldCount: req.body.soldCount,
+      soldCount: req.body.soldCount, 
       features: req.body.features,
       similarBooks: req.body.similarBooks,
-      galleryImages: req.body.galleryImages,
       sku: req.body.sku,
       ageGroup: req.body.ageGroup,
       supplier: req.body.supplier,
@@ -61,6 +60,8 @@ router.post("/", checkAdmin, async (req, res) => {
       dimensions: req.body.dimensions,
       pages: req.body.pages,
       binding: req.body.binding,
+      description: req.body.description, 
+      type: req.body.type, 
     };
 
     const product = new Product(productData);
@@ -91,13 +92,12 @@ router.put("/:id", checkAdmin, async (req, res) => {
       translator: req.body.translator,
       price: req.body.price,
       originalPrice: req.body.originalPrice,
-      discount: req.body.discount,
+      discount: req.body.discount, 
       rating: req.body.rating,
       reviewsCount: req.body.reviewsCount,
-      soldCount: req.body.soldCount,
+      soldCount: req.body.soldCount, 
       features: req.body.features,
       similarBooks: req.body.similarBooks,
-      galleryImages: req.body.galleryImages,
       sku: req.body.sku,
       ageGroup: req.body.ageGroup,
       supplier: req.body.supplier,
@@ -108,6 +108,8 @@ router.put("/:id", checkAdmin, async (req, res) => {
       dimensions: req.body.dimensions,
       pages: req.body.pages,
       binding: req.body.binding,
+      description: req.body.description, 
+      type: req.body.type, 
     };
 
     product.set(updatedData);
