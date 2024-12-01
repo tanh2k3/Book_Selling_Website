@@ -65,20 +65,11 @@ const BookDetail = () => {
         <div className="book-detail-left">
           <h1 className="book-title">{book.title}</h1>
           <img src={book.imgSrc} alt={book.title} className="main-image" />
-          <div className="gallery">
-            {book.galleryImages?.map((imgSrc, index) => (
-              <img
-                key={index}
-                src={imgSrc}
-                alt={`Gallery ${index}`}
-                className="gallery-image"
-              />
-            ))}
+          {/* Action Buttons */}
+          <div className="action-buttons">
+            <button className="add-to-cart">Thêm vào giỏ hàng</button>
+            <button className="buy-now">Mua ngay</button>
           </div>
-          <h3>Description:</h3>
-          <p className="book-description">
-            {book.description || "No description available for this book."}
-          </p>
         </div>
 
         {/* Book Information Table */}
@@ -127,48 +118,27 @@ const BookDetail = () => {
               </tr>
             </tbody>
           </table>
+          <h3>Thông tin cuốn sách</h3>
+          <p className="book-description">
+            {book.description || "No description available for this book."}
+          </p>
         </div>
       </div>
 
-      {/* Similar Books Section */}
       <div className="similar-books-section">
-        <h3>Similar Books:</h3>
+        <h3>Có thể bạn thích </h3>
         <div className="similar-books-container">
-          {book.similarBooks.slice(0, 5).map((similarBook, index) => (
+          {book.similarBooks.slice(0, 8).map((similarBook, index) => (
             <div key={index} className="similar-book-card">
               <img src={similarBook.imgSrc} alt={similarBook.title} />
               <p>{similarBook.title}</p>
             </div>
           ))}
-          <button
-            className="scroll-button left"
-            onClick={() =>
-              document.querySelector(".similar-books-container").scrollBy({
-                left: -200,
-                behavior: "smooth",
-              })
-            }
-          >
-            &lt;
-          </button>
-          <button
-            className="scroll-button right"
-            onClick={() =>
-              document.querySelector(".similar-books-container").scrollBy({
-                left: 200,
-                behavior: "smooth",
-              })
-            }
-          >
-            &gt;
-          </button>
         </div>
       </div>
 
-
-      {/* Feedback Section */}
       <div className="feedback-section">
-        <h3>Feedbacks:</h3>
+        <h3>Đánh giá của độc giả</h3>
         <ul className="feedback-list">
           {feedbackList.map((feedback, index) => (
             <li key={index} className="feedback-item">
@@ -188,9 +158,8 @@ const BookDetail = () => {
           ))}
         </ul>
 
-        {/* Feedback Form */}
         <form className="feedback-form" onSubmit={handleFeedbackSubmit}>
-          <h4>Leave your feedback:</h4>
+          <h4>Hãy đánh giá để giúp những độc giả khác lựa chọn được cuốn sách phù hợp nhất!</h4>
           <div className="rating-input">
             {[1, 2, 3, 4, 5].map((star) => (
               <span
@@ -203,12 +172,12 @@ const BookDetail = () => {
             ))}
           </div>
           <textarea
-            placeholder="Write your feedback here..."
+            placeholder="Viết bình luận của bạn tại đây..."
             rows="4"
             value={feedback}
             onChange={(e) => setFeedback(e.target.value)}
           />
-          <button type="submit">Submit</button>
+          <button type="submit">Gửi</button>
         </form>
       </div>
     </div>
