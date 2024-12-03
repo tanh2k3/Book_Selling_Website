@@ -11,7 +11,7 @@
 #voucher-list-div {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 24px;
     margin: 0px;
     padding: 10px;
     background-color: #f9f9f9;
@@ -31,7 +31,8 @@
 .voucher {
     border: 1px solid #ddd;
     border-radius: 8px;
-    /* padding: 16px; */
+    padding-left: 10px;
+    padding-right: 10px;
     max-width: 300px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -52,6 +53,40 @@
     font-size: 16px;
 }
 
-#hsd {
-    color: #CD0000;
+.slide-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    /* padding: 10px; */
+}
+
+.slide-container .slide {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    /* padding: 10px; */
+}
+
+.view-more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: -5px;
+    margin-bottom: 10px;
+}
+
+.view-more-link {
+    text-decoration: none;
+    font-size: 16px;
+    color: #007bff;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.view-more-link:hover {
+    background-color: #007bff;
+    color: white;
 }
