@@ -51,7 +51,7 @@ const VoucherPage = () => {
                             <p><b>
                                 Giảm: {voucher.voucherType === 1
                                     ? `${voucher.voucherValue.toLocaleString('vi-VN')}₫`
-                                    : `${voucher.voucherValue}% ${voucher.maxDiscountValue ? `, tối đa ${voucher.maxDiscountValue.toLocaleString('vi-VN')}₫` : ''}`}
+                                    : `${voucher.voucherValue}%, tối đa ${voucher.maxDiscountValue.toLocaleString('vi-VN')}₫`}
                             </b></p>
                             <p>Đơn tối thiểu: {voucher.minOrderValue.toLocaleString('vi-VN')}₫</p>
                             <p>HSD: {new Intl.DateTimeFormat("vi-VN", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(voucher.voucherExpiration))}</p>
