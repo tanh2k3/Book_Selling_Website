@@ -5,25 +5,11 @@
     border-radius: 8px;
 }
 
-.flash-sale h2 {
-    display: flex;
-    align-items: center;
-    margin-left: 6px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 24px;
-    color: #CD0000;
-}
 
 .flash-sale h2 svg {
     margin: 0 0px;
     padding: 0;
     color: #CD0000;
-}
-
-.topsell-containerProduct {
-    display: flex;
-    flex-direction: row;
 }
 
 .slide-container {

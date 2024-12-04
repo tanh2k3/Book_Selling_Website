@@ -36,16 +36,26 @@ const sampleBooks = [
     pages: 200,
     binding: "Paperback",
     description: "A comprehensive guide to leadership and business strategies.",
+<<<<<<< HEAD
     type: "V" 
+=======
+    type: "V"
+>>>>>>> feature/trinhh
   },
   {
     imgSrc: "https://cdn0.fahasa.com/media/catalog/product/_/2/_2024_-thay_doi_ti_hon_hieu_qua_bat_ngo-tb8-02.jpg",
     title: "Atomic Habits",
     author: "James Clear",
     translator: "Vũ Phi Yên - Trần Như Quỳnh",
+<<<<<<< HEAD
     price: 141000,
     originalPrice: 189000,
     discount: 10, 
+=======
+    price: 170100,
+    originalPrice: 189000,
+    discount: 10,
+>>>>>>> feature/trinhh
     rating: 4.9,
     reviewsCount: 500,
     soldCount: 3000,
@@ -71,16 +81,26 @@ const sampleBooks = [
     pages: 320,
     binding: "Hardcover",
     description: "Atomic Habits \n- Thay Đổi Tí Hon Hiệu Quả Bất Ngờ (Tái Bản 2023) Wall Street Journal Bestseller,USA Today Bestseller, Publisher's Weekly BestsellerNằm trong Top 20 tựa sách thể loại non-fiction bán chạy và được tìm đọc nhiều nhất của Amazon suốt 40 tuần tính đến tháng 9/2019ột thay đổi tí hon có thể biến đổi cuộc đời bạn không?Hẳn là khó đồng ý với điều đó. Nhưng nếu bạn thay đổi thêm một chút? Một chút nữa? Rồi thêm một chút nữa? Đến một lúc nào đó, bạn phải công nhận rằng cuộc sống của mình đã chuyển biến nhờ vào một thay đổi nhỏ…Và đó chính là sức mạnh của thói quen nguyên tử.",
+<<<<<<< HEAD
     type: "V" 
+=======
+    type: "V"
+>>>>>>> feature/trinhh
   },
   {
     imgSrc: "https://cdn0.fahasa.com/media/catalog/product/9/7/9786043775662.jpg",
     title: "Giáo trình chuẩn HSK",
     author: "Khương Lệ Bình, Vương Phương, Vương Phong, Lưu Lệ Bình",
     translator: "TS Nguyễn Thị Minh Hồng",
+<<<<<<< HEAD
     price: 145000,
     originalPrice: 198000,
     discount: 10, 
+=======
+    price: 168300,
+    originalPrice: 198000,
+    discount: 15,
+>>>>>>> feature/trinhh
     rating: 4.9,
     reviewsCount: 500,
     soldCount: 7.400,
@@ -106,16 +126,26 @@ const sampleBooks = [
     pages: 141,
     binding: "Bìa mềm",
     description: "Kết hợp thi cử và giảng dạy: Được biên soạn phù hợp với nội dung, hình thức cũng như các cấp độ của đề thi HSK thật, bộ sách này có thể được sử dụng đồng thời cho cả hai mục đích là giảng dạy tiếng Trung Quốc và luyện thi HSK. • Bố cục chặt chẽ và khoa học: Các điểm ngữ pháp được giải thích cặn kẽ, phần ngữ âm và chữ Hán được trình bày từ đơn giản đến phức tạp theo từng cấp độ",
+<<<<<<< HEAD
     type: "V" 
+=======
+    type: "V"
+>>>>>>> feature/trinhh
   },
   {
     imgSrc: "https://cdn0.fahasa.com/media/catalog/product/9/7/9786044777481.jpg",
     title: "38 Bức Thư Rockefeller Viết Cho Con Trai",
     author: "Thanh Hương",
     translator: "NXB Văn Học",
+<<<<<<< HEAD
     price: 69000,
     originalPrice: 113000,
     discount: 10, 
+=======
+    price: 67800,
+    originalPrice: 113000,
+    discount: 40,
+>>>>>>> feature/trinhh
     rating: 4.9,
     reviewsCount: 500,
     soldCount: 3000,
@@ -141,7 +171,11 @@ const sampleBooks = [
     pages: 268,
     binding: "Bìa Mềm",
     description: "NGƯỜI SỐNG TRÊN ĐỜI, NHƯ THẾ NÀO LÀ THIỆN, LẠI NHƯ THẾ NÀO LÀ ÁC? THẾ NÀO LÀ SỰ THIÊN LỆCH, MÀ THẾ NÀO MỚI LÀ CHÍNH ĐÍNH?",
+<<<<<<< HEAD
     type: "V" 
+=======
+    type: "V"
+>>>>>>> feature/trinhh
   },
   {
     imgSrc: "https://cdn0.fahasa.com/media/catalog/product/n/i/ninja-rantaro_bia_tap-41.jpg",
@@ -150,7 +184,11 @@ const sampleBooks = [
     translator: "Nguyễn Vân Anh",
     price: 180000,
     originalPrice: 200000,
+<<<<<<< HEAD
     discount: 10, 
+=======
+    discount: 10,
+>>>>>>> feature/trinhh
     rating: 4.9,
     reviewsCount: 500,
     soldCount: 3000,
@@ -176,7 +214,11 @@ const sampleBooks = [
     pages: 244,
     binding: "Hardcover",
     description: "“Rất vui khi được gặp lại các cháu. Bác đoán vào năm học mới chắc hẳn có nhiều bạn sẽ được bầu làm ban cán sự lớp đúng không? Ban cán sự của trường đào tạo ninja năm học mới này sẽ có nhiều hoạt động rất sôi nổi, các cháu hãy cùng chờ xem nhé! Ninja Rantaro tập này sẽ lấy bối cảnh là “địa ngục”, chắc các cháu cũng từng được nghe kể địa ngục là nơi như thế nào rồi nhỉ. Bác chỉ lấy ví dụ chẳng hạn nếu ai nói dối khi xuống địa ngục sẽ bị kéo mất lưỡi. Nghe sợ ghê ha! Bác dự định sẽ cho nhân vật Diêm Vương xuất hiện, Diêm Vương sẽ được vẽ dựa trên hình mẫu bức tượng trong chùa Gangoji ở Nara nên rất đẹp đấy!”",
+<<<<<<< HEAD
     type: "V" 
+=======
+    type: "V"
+>>>>>>> feature/trinhh
   },
   // {
   //   imgSrc: "",

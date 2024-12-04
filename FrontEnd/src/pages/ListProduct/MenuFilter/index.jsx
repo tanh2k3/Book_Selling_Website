@@ -1,90 +1,98 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
 
-function MenuFilter({ data = [], setData }) {
-  const [cost, setCost] = useState(0);
-  const [costMax, setCostMax] = useState(0);
-  const [costMin, setCostMin] = useState(0);
-  const [discount, setDiscount] = useState(0);
-  const [discountMax, setDiscountMax] = useState(0);
-  const [discountMin, setDiscountMin] = useState(0);
+function MenuFilter({ books, setMinPrice, setMaxPrice, setType, setIsSortByPrice, setIsSortByRating, setIsSortByDiscount }) {
+  const [localMinPrice, setLocalMinPrice] = useState(0);
+  const [localMaxPrice, setLocalMaxPrice] = useState(999999999);
+  const [localType, setLocalType] = useState("");
+  const [sortByPrice, setSortByPrice] = useState(false);
+  const [sortByRating, setSortByRating] = useState(false);
+  const [sortByDiscount, setSortByDiscount] = useState(false);
+  const [listType, setListType] = useState([]);
+
+  const handleFilterChange = () => {
+    setMinPrice(localMinPrice);
+    setMaxPrice(localMaxPrice);
+    setType(localType);
+    setIsSortByPrice(sortByPrice);
+    setIsSortByRating(sortByRating);
+    setIsSortByDiscount(sortByDiscount);
+  };
 
   useEffect(() => {
-    data.forEach((item) => {
-      if (item.price > costMax) {
-        setCostMax(item.price);
+    let minPrice = 999999999;
+    let maxPrice = 0;
+    const types = new Set();
+    books.forEach((book) => {
+      console.log(book);
+      types.add(book.type);
+      if (book.price < minPrice) {
+        minPrice = book.price;
       }
-      if (item.price < costMin) {
-        setCostMin(item.price);
-      }
-      if (item.discount > discountMax) {
-        setDiscountMax(item.discount);
-      }
-      if (item.discount < discountMin) {
-        setDiscountMin(item.discount);
+      if (book.price > maxPrice) {
+        maxPrice = book.price;
       }
     });
-    setCost(costMax);
-    setDiscount(discountMax);
-    console.log(cost, costMax, costMin, discount, discountMax, discountMin);
-  }, [data]);
-
-  const handleCostChange = (e) => {
-    setCost(e.target.value);
-  };
-
-  const handleDiscountChange = (e) => {
-    setDiscount(e.target.value);
-  };
+    setListType([...types]);
+    setLocalMinPrice(minPrice);
+    setLocalMaxPrice(maxPrice);
+  }, [books]);
 
   return (
-    <div className="menufilter">
-      <div className="filtercost">
-        <h3>Lọc theo giá bán</h3>
-        <div className="filtercost__range">
-          <input
-            type="range"
-            min={costMin}
-            max={costMax}
-            value={cost}
-            className="slider"
-            id="myRange"
-            onChange={handleCostChange}
-          />
-          <p>
-            Giá: <span id="demo">{cost}</span>
-          </p>
-        </div>
+    <div className="menu-filter">
+      <h1>Sắp xếp</h1>
+      <div>
+        <label>Giá thấp nhấp:</label>
+        <input
+          type="number"
+          value={localMinPrice}
+          onChange={(e) => setLocalMinPrice(Number(e.target.value))}
+        />
       </div>
-      <div className="filterdiscount">
-        <h3>Lọc theo giảm giá</h3>
-        <div className="filterdiscount__range">
-          <input
-            type="range"
-            min={discountMin}
-            max={discountMax}
-            className="slider"
-            value={discount}
-            onChange={handleDiscountChange}
-          />
-          <p>
-            Giảm giá: <span id="demo">{discount}</span>
-          </p>
-        </div>
+      <div>
+        <label>Giá cao nhất:</label>
+        <input
+          type="number"
+          value={localMaxPrice}
+          onChange={(e) => setLocalMaxPrice(Number(e.target.value))}
+        />
       </div>
-      <div className="filtertype">
-        <h3>Filter by type</h3>
-        <div className="filtertype__checkbox">
-          <label>
-            <input type="checkbox" name="type" value="hardcover" />
-            Hardcover
-          </label>
-          <label>
-            <input type="checkbox" name="type" value="paperback" />
-            Paperback
-          </label>
-        </div>
+      <div>
+        <label>Thể loại:</label>
+        <select value={localType} onChange={(e) => setLocalType(e.target.value)}>
+          <option value="">Tất cả</option>
+          {listType.map((type) => (
+            <option key={type} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
       </div>
+      <div>
+        <label>Sắp xếp theo Giá:</label>
+        <input
+          type="checkbox"
+          checked={sortByPrice}
+          onChange={(e) => setSortByPrice(e.target.checked)}
+        />
+      </div>
+      <div>
+        <label>Sắp xếp theo đánh giá:</label>
+        <input
+          type="checkbox"
+          checked={sortByRating}
+          onChange={(e) => setSortByRating(e.target.checked)}
+        />
+      </div>
+      <div>
+        <label>Sắp xếp theo giảm giá:</label>
+        <input
+          type="checkbox"
+          checked={sortByDiscount}
+          onChange={(e) => setSortByDiscount(e.target.checked)}
+        />
+      </div>
+      <button onClick={handleFilterChange}>Áp dụng</button>
     </div>
   );
 }
