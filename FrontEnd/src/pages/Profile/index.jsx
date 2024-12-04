@@ -175,6 +175,12 @@ const Orders = () => {
 };
 
 const FavoriteProducts = () => {
+
+    /*// Lấy danh sách sản phẩm yêu thích
+  const favorites = user.favorite
+  .map(fav => products.find(product => product._id === fav.favProId))
+  .filter(Boolean);*/ 
+  
     const [favorites, setFavorites] = useState([]);
     const {user} = useUser();
     const userId = user._id;
@@ -189,7 +195,6 @@ const FavoriteProducts = () => {
             })
             .catch(error => console.error(error));
     }, [userId]);
-    console.log(favorites);
 
     const handleRemoveFavorite = (productId) => {
         axios.post('http://localhost:3001/remove-favorite', { userId, productId })
@@ -208,6 +213,7 @@ const FavoriteProducts = () => {
     if (favorites.length === 0) {return <h2>Không có sản phẩm yêu thích nào</h2>;}
     return (
         <div>
+            <div style={{height:"30px"}}/>
             <h1>Sản phẩm yêu thích</h1>
             <div className="favorites-list">
                 {favorites.map(favorite => (
