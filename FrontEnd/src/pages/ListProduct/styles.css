@@ -1,4 +1,4 @@
-.listproduct{
+.list_product{
     width: 100%;
     padding: 10px;
     display: flex;
@@ -10,7 +10,7 @@
     text-align: center;
 }
 
-.listproductlayout{
+.list_productlayout{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

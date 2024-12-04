@@ -75,8 +75,8 @@ const Order = () => {
     <>
       <Header />
       <div>
-        <h1>Order Details</h1>
         <div className="listproductlayout">
+        <h1>Order Details</h1>
           <div className="listproduct">
             {books.length > 0 ? (
               books.map((book) => (

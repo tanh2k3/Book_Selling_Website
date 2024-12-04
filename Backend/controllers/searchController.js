@@ -15,16 +15,42 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/filter", async (req, res) => {
-  const limit = req.query.limit || 10;
-  const offset = req.query.offset || 0;
-  const title = req.query.title || "";
   try {
-    const products = await Product.find({
-      title: { $regex: title, $options: "i" },
-    })
-      .limit(parseInt(limit))
-      .skip(parseInt(offset));
-    res.status(200).json(products);
+    const {
+      type = "",
+      title = "",
+    } = req.body;
+    const { page = 1, limit = 10 } = req.query;
+    const {
+      isSortByPrice = false,
+      isSortByRating = false,
+      isSortByDiscount = false,
+    } = req.body;
+    // Construct the query object
+    const query = {};
+    if (type !== "") query.type = type;
+    if (title !== "") query.title = { $regex: title, $options: "i" };
+  
+
+    // Get total count of matching products
+    const total = await Product.find(query).countDocuments();
+
+    // Get products with pagination
+    let products = await Product.find(query)
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+
+    // Apply sorting if specified
+    if (isSortByPrice) {
+      products = products.sort((a, b) => a.price - b.price);
+    }
+    if (isSortByRating) {
+      products = products.sort((a, b) => b.rating - a.rating);
+    }
+    if (isSortByDiscount) {
+      products = products.sort((a, b) => b.discount - a.discount);
+    }
+    res.status(200).json({ products, total });
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).json({ status: "error", message: "Server error" });

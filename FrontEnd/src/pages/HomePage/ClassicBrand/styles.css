@@ -3,14 +3,14 @@
     margin: 20px;
     padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: #f9f9f9;
 }
 
-.classic-brand h1 {
-    font-size: 2em;
+.classic-brand h2 {
+    font-size: 1.5em;
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .clabra-container {
