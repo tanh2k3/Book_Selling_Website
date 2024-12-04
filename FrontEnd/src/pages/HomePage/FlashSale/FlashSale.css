@@ -21,11 +21,6 @@
     color: #CD0000;
 }
 
-.topsell-containerProduct {
-    display: flex;
-    flex-direction: row;
-}
-
 .slide-container {
     position: relative;
     width: 100%;
