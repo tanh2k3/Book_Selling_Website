@@ -44,10 +44,10 @@ router.post("/", checkAdmin, async (req, res) => {
       translator: req.body.translator,
       price: req.body.price,
       originalPrice: req.body.originalPrice,
-      discount: req.body.discount, 
+      discount: req.body.discount,
       rating: req.body.rating,
       reviewsCount: req.body.reviewsCount,
-      soldCount: req.body.soldCount, 
+      soldCount: req.body.soldCount,
       features: req.body.features,
       similarBooks: req.body.similarBooks,
       sku: req.body.sku,
@@ -60,13 +60,8 @@ router.post("/", checkAdmin, async (req, res) => {
       dimensions: req.body.dimensions,
       pages: req.body.pages,
       binding: req.body.binding,
-<<<<<<< HEAD
-      description: req.body.description, 
-      type: req.body.type, 
-=======
       description: req.body.description,
       type: req.body.type,
->>>>>>> feature/trinhh
     };
 
     const product = new Product(productData);
@@ -97,10 +92,10 @@ router.put("/:id", checkAdmin, async (req, res) => {
       translator: req.body.translator,
       price: req.body.price,
       originalPrice: req.body.originalPrice,
-      discount: req.body.discount, 
+      discount: req.body.discount,
       rating: req.body.rating,
       reviewsCount: req.body.reviewsCount,
-      soldCount: req.body.soldCount, 
+      soldCount: req.body.soldCount,
       features: req.body.features,
       similarBooks: req.body.similarBooks,
       sku: req.body.sku,
@@ -113,13 +108,8 @@ router.put("/:id", checkAdmin, async (req, res) => {
       dimensions: req.body.dimensions,
       pages: req.body.pages,
       binding: req.body.binding,
-<<<<<<< HEAD
-      description: req.body.description, 
-      type: req.body.type, 
-=======
       description: req.body.description,
       type: req.body.type,
->>>>>>> feature/trinhh
     };
 
     product.set(updatedData);
