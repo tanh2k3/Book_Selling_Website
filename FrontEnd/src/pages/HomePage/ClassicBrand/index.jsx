@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./styles.css";
 
 const ClassicBrand = () => {
@@ -20,7 +21,7 @@ const ClassicBrand = () => {
 
   return (
     <div className="classic-brand">
-      <h1>Thương hiệu kinh điển</h1>
+      <h2>Thương hiệu kinh điển</h2>
       <div className="clabra-container">
         {classicBrand.map((brand, index) => (
           <div className="clabra-item" key={index}>
@@ -30,7 +31,7 @@ const ClassicBrand = () => {
         ))}
       </div>
       <div className="clabra-more">
-        <a href="/">Xem thêm</a>
+        <Link to="/list" className="viewAll">Xem tất cả</Link>
       </div>
     </div>
   );

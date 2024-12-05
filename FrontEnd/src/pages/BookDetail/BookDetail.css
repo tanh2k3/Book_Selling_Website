@@ -26,26 +26,6 @@
   border-radius: 10px;
 }
 
-.gallery {
-  margin-top: 10px;
-  display: flex;
-  gap: 10px;
-}
-
-.gallery-image {
-  width: 80px;
-  height: 100px;
-  border-radius: 5px;
-  object-fit: cover;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.gallery-image:hover {
-  transform: scale(1.2);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
 .book-title {
   font-size: 24px;
   font-weight: bold;
@@ -161,7 +141,7 @@ textarea {
 }
 
 button {
-  background-color: #007bff;
+  background-color: red;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -277,4 +257,45 @@ button:active {
   cursor: not-allowed;
 }
 
+.book-detail-left {
+  flex: 1;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
 
+.action-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px; 
+}
+
+.add-to-cart,
+.buy-now {
+  padding: 12px 29px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.add-to-cart {
+  background-color: #28a745;
+  color: white;
+}
+
+.add-to-cart:hover {
+  background-color: #218838;
+}
+
+.buy-now {
+  background-color: #dc3545;
+  color: white;
+}
+
+.buy-now:hover {
+  background-color: #c82333;
+}

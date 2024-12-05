@@ -3,7 +3,7 @@ import "./styles.css";
 import { formatPrice } from "../../utils/index.js";
 import { Link } from "react-router-dom";
 
-const CardItem = ({ item }) => {
+const CardItem = ({ book }) => {
   const defaultItem = {
     id: 0,
     imgSrc:
@@ -13,31 +13,38 @@ const CardItem = ({ item }) => {
     price: 100000,
     discount: 10,
     sold: 20,
+    rating: 4,
   };
 
-  const { id, imgSrc, title, description, price, discount, sold } = {
+  const { _id, imgSrc, title, description, price, discount, sold, rating } = {
     ...defaultItem,
-    ...item,
+    ...book,
   };
 
   const priceAfterDiscount = (price) => {
     return formatPrice(price - (price * discount) / 100);
   };
 
+  const formatTitle = (title) => {
+    if (title.length > 30) {
+      return title.slice(0, 30) + "...";
+    }
+    return title;
+  }
+
   return (
     <div className="cardItem">
-      <div className="imageItem">
-        <img src={imgSrc} alt={title} />
-      </div>
-      <Link to={`/book/${id}`} className="product-title-link">
-        <h3 className="product-title">{title}</h3>
+      <Link to={`/book/${_id}`} key={_id}>
+        <div className="book-card">
+          <img src={imgSrc} alt={title} />
+          <h2 className ="book-title-item">{formatTitle(title)}</h2>
+          <div className="book-price">
+            <p className="book-discount"> {discount > 0 ? `-${discount}%` : ""}</p>
+            <p>{priceAfterDiscount(price)}₫</p>
+          </div>
+          <p>Đánh giá: {rating} / 5</p>
+        </div>
       </Link>
-      <p className="currPrice">{priceAfterDiscount(price)}₫</p>
-      <div className="oldPrice">
-        <p className="discountPercent">{discount}%</p>
-        <strong>{formatPrice(price)}₫</strong>
-      </div>
-      <p className="amount">Đã bán: {sold}</p>
     </div>
   );
 };

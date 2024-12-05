@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./ProductsList.css";
+import CardItem from "../../../components/CardItem";
 
 const ProductsList = () => {
   const [books, setBooks] = useState([]);
@@ -13,17 +14,18 @@ const ProductsList = () => {
   }, []);
 
   return (
-    <div className="products-container">
-      {books.map((book) => (
-        <Link to={`/book/${book._id}`} key={book._id}>
-          <div className="book-card">
-            <img src={book.imgSrc} alt={book.title} />
-            <h2>{book.title}</h2>
-            <p>Price: {book.price}</p>
-            <p>Rating: {book.rating} / 5</p>
-          </div>
+    <div className="top-selling-product">
+      <div className="title-componet">
+        <h3>Danh sách sản phẩm</h3>
+        <Link to="/list" className="viewAll">
+          Xem tất cả
         </Link>
-      ))}
+      </div>
+      <div className="products-container">
+        {books.map((book) => (
+          <CardItem book={book} />
+        ))}
+      </div>
     </div>
   );
 };
