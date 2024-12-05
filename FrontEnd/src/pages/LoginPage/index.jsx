@@ -21,7 +21,7 @@ function LoginPage() {
         localStorage.setItem('user', JSON.stringify(userData));
         localStorage.setItem('token', token);
         setUser({ ...userData, token });
-        if (userData.email === "trantuananh.bo2093@gmail.com") navigate('/admin');
+        if (userData.role === "admin") navigate('/admin');
         else navigate('/');
       } else {
         alert("Login failed");

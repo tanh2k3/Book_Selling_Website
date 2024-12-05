@@ -60,13 +60,8 @@ router.post("/", checkAdmin, async (req, res) => {
       dimensions: req.body.dimensions,
       pages: req.body.pages,
       binding: req.body.binding,
-<<<<<<< HEAD
-      description: req.body.description, 
-      type: req.body.type, 
-=======
       description: req.body.description,
       type: req.body.type,
->>>>>>> feature/trinhh
     };
 
     const product = new Product(productData);
@@ -113,13 +108,8 @@ router.put("/:id", checkAdmin, async (req, res) => {
       dimensions: req.body.dimensions,
       pages: req.body.pages,
       binding: req.body.binding,
-<<<<<<< HEAD
-      description: req.body.description, 
-      type: req.body.type, 
-=======
       description: req.body.description,
       type: req.body.type,
->>>>>>> feature/trinhh
     };
 
     product.set(updatedData);
