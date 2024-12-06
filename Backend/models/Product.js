@@ -5,12 +5,12 @@ const productSchema = new mongoose.Schema({
   title: { type: String, required: true },
   author: { type: String, required: true },
   translator: { type: String },
-  price: { type: Number, required: true },  
+  price: { type: Number, required: true },
   originalPrice: { type: Number },
-  discount: { type: Number },  
+  discount: { type: Number },
   rating: { type: Number },
   reviewsCount: { type: Number },
-  soldCount: { type: Number },  
+  soldCount: { type: Number },
   features: [{ type: String }],
   similarBooks: [
     {
@@ -28,13 +28,13 @@ const productSchema = new mongoose.Schema({
   dimensions: { type: String },
   pages: { type: Number },
   binding: { type: String },
-  
+
   // New fields
   description: { type: String }, // Product description
-  type: { 
-    type: String, 
+  type: {
+    type: String,
     enum: ['V', 'E', 'O', 'G'], // Enums for V, E, O, G
-    required: true 
+    required: true
   }
 });
 
