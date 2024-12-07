@@ -33,7 +33,18 @@ const productSchema = new mongoose.Schema({
   description: { type: String }, // Product description
   type: {
     type: String,
-    enum: ['V', 'E', 'O', 'G'], // Enums for V, E, O, G
+    enum: ['V', 'K', 'G', 'T', 'A', 'N', 'C', 'Đ', 'Y', 'D'],
+    // V: Văn học
+    // K: Kinh tế - Kinh doanh
+    // G: Giáo dục - Học thuật
+    // T: Thiếu nhi
+    // A: Kỹ năng sống
+    // N: Nuôi dạy con
+    // C: Chính trị - Pháp luật
+    // Đ: Điện ảnh - Âm nhạc - Hội họa
+    // Y: Y học - Sức khỏe
+    // D: Du lịch - Thể thao
+
     required: true
   }
 });
