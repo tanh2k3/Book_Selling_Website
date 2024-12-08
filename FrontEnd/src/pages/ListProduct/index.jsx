@@ -26,16 +26,19 @@ function ListProduct() {
     const searchParams = new URLSearchParams(location.search);
     const title = searchParams.get("title");
     const type = searchParams.get("type");
+    const isSortByDiscount = searchParams.get("isSortByDiscount");
+
     setTitle(title || "");
     setType(type || "");
-    console.log(title, type);
+    // console.log(title, type);
+    setIsSortByDiscount(isSortByDiscount === "true"); // Kiểm tra tham số isSortByDiscount
   }, [location.search]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.post(
-          `http://localhost:3001/search/filter?page=${page}&limit=${limit}`,
+          `http://localhost:3001/search/filter?page=${page}&limit=${limit}&isSortByDiscount=${isSortByDiscount}`,
           {
             title,
             type,
@@ -46,6 +49,7 @@ function ListProduct() {
             isSortByDiscount,
           }
         );
+
         setBooks(data.products);
         setTotal(data.total);
       } catch (error) {

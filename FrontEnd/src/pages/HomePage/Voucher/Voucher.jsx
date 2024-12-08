@@ -39,8 +39,8 @@ const Voucher = ({
           {voucherType === 1
             ? `${voucherValue.toLocaleString("vi-VN")}₫`
             : `${voucherValue}%, tối đa ${maxDiscountValue.toLocaleString(
-                "vi-VN"
-              )}₫`}
+              "vi-VN"
+            )}₫`}
         </b>
       </p>
       <p>Đơn tối thiểu: {minOrderValue.toLocaleString("vi-VN")}₫</p>
@@ -111,22 +111,6 @@ const VoucherList = () => {
           />
         ))}
       </div>
-
-      {/* <Slide numToShow={5}>
-                {vouchers.map((voucher) => (
-                    <Voucher
-                        key={voucher.voucherCode}
-                        voucherCode={voucher.voucherCode}
-                        voucherValue={voucher.voucherValue}
-                        maxDiscountValue={voucher.maxDiscountValue}
-                        minOrderValue={voucher.minOrderValue}
-                        voucherType={voucher.voucherType}
-                        voucherDescription={voucher.voucherDescription}
-                        voucherExpiration={voucher.voucherExpiration}
-                        usedCount={voucher.usedCount}
-                    />
-                ))}
-            </Slide> */}
     </div>
   );
 };
