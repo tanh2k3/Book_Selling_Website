@@ -23,7 +23,7 @@ const HomePage = () => {
               <TopSellingProduct />
               <ClassicBrand />
               <FlashSale />
-              <VoucherList numberOfVouchers={10} />
+              <VoucherList />
               <ItemsList />
               <ProductsList />
             </>

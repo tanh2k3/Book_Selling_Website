@@ -142,7 +142,7 @@ const sampleBooks = [
         title: "Đàn ông Sao Hoả, đàn bà Sao Kim",
         author: "John Gray",
         translator: "Nguyễn Thanh Nhàn",
-        price: 13800,
+        price: 138000,
         originalPrice: 188000,
         discount: 27,
         rating: 4.8,

@@ -13,8 +13,9 @@ const FlashSale = () => {
         fetch("http://localhost:3001/product")
             .then((response) => response.json())
             .then((data) => {
-                const sortedData = data.data.sort((a, b) => a.price / a.originalPrice - b.price / b.originalPrice).slice(0, 10);
+                const sortedData = data.sort((a, b) => b.discount - a.discount).slice(0, 10);
                 setBooks(sortedData);
+                setLoading(false);
             })
             .catch((error) => {
                 console.error("Error fetching books:", error);
@@ -23,36 +24,25 @@ const FlashSale = () => {
     }, []);
 
     if (loading) {
-        return <div className="flashsale-loading">Đang tải danh sách sản phẩm Flash Sale...</div>;
+        return <div className="flashsale-loading">Đang tải danh sách sản phẩm Sale...</div>;
     }
 
     return (
         <div className="flash-sale">
-            <h3>
-                S A L E <IoIosFlash />
-            </h3>
+            <div className="title-componet">
+                <h3>
+                    S A L E <IoIosFlash />
+                </h3>
+                <Link to="/list?isSortByDiscount=true" className="viewAll">
+                    Xem tất cả
+                </Link>
+            </div>
+
             <Slide numToShow={6}>
-                {books.map((item, index) => (
-                    <div className="slide" key={index}>
-                        <CardItem
-                            item={{
-                                title: item.title,
-                                price: item.originalPrice,
-                                discount: item.discount,
-                                sold: item.soldCount,
-                            }}
-                        />
-                    </div>
+                {books.map((book) => (
+                    <CardItem key={book._id} book={book} />
                 ))}
             </Slide>
-
-            {/* <Slide numToShow={6}>
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
-                    <div className="slide" key={index}>
-                        <CardItem item={{ title: "Sách đang Sale", price: Math.floor(50 + Math.random() * 150) * 1000, discount: Math.floor(20 + Math.random() * 15 * (0.5 + Math.random())), sold: Math.floor(20 + Math.random() * 100) }} />
-                    </div>
-                ))}
-            </Slide> */}
         </div>
     );
 };

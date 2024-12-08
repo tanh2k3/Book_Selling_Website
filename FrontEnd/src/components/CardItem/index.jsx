@@ -22,7 +22,9 @@ const CardItem = ({ book }) => {
   };
 
   const priceAfterDiscount = (price) => {
-    return formatPrice(price - (price * discount) / 100);
+    // return formatPrice(price - (price * discount) / 100);
+    return price;
+    // Boi vi price la gia da giam roi, gia goc là originalPrice
   };
 
   const formatTitle = (title) => {
@@ -37,7 +39,7 @@ const CardItem = ({ book }) => {
       <Link to={`/book/${_id}`} key={_id}>
         <div className="book-card">
           <img src={imgSrc} alt={title} />
-          <h2 className ="book-title-item">{formatTitle(title)}</h2>
+          <h2 className="book-title-item">{formatTitle(title)}</h2>
           <div className="book-price">
             <p className="book-discount"> {discount > 0 ? `-${discount}%` : ""}</p>
             <p>{priceAfterDiscount(price)}₫</p>
