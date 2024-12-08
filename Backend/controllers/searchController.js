@@ -21,16 +21,16 @@ router.post("/filter", async (req, res) => {
       title = "",
     } = req.body;
     const { page = 1, limit = 10 } = req.query;
+    const isSortByDiscount = req.query.isSortByDiscount === "true";
     const {
       isSortByPrice = false,
       isSortByRating = false,
-      isSortByDiscount = false,
     } = req.body;
     // Construct the query object
     const query = {};
     if (type !== "") query.type = type;
     if (title !== "") query.title = { $regex: title, $options: "i" };
-  
+
 
     // Get total count of matching products
     const total = await Product.find(query).countDocuments();
