@@ -32,10 +32,18 @@ function Header() {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="navbar">
       <Link to="/">
-        <img src={logo} className="logo" />
+        <div className="logo_container">
+          <img src={logo} className="logo" />
+        </div>
       </Link>
       <div className="search-container">
         <input
@@ -43,9 +51,10 @@ function Header() {
           placeholder="Tìm kiếm"
           className="tim-kiem"
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
           value={searchTerm}
         />
-        <div className="search-icon" onClick={handleSearch}>
+        <div className="search-icon" onClick={handleSearch} >
           <FaSearch />
         </div>
       </div>

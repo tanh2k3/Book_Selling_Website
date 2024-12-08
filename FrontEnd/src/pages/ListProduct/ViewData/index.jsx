@@ -28,7 +28,7 @@ function ViewData(data ) {
         >
           -
         </button>
-        <span>Trang {page}</span>
+        <span>Trang {page} / {Math.ceil(total / 10)}</span>
         <button
           onClick={() => {
             setPage(page + 1);
