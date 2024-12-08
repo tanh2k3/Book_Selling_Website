@@ -243,4 +243,10 @@ router.delete('/cart/:userId/:productId', async (req, res) => {
   }
 });
 
+router.get('/api/users/number', (req, res) => {
+  User.countDocuments({}).then((data) => {
+      res.status(200).send(data.toString());
+  });
+});
+
 module.exports = router;
