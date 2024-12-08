@@ -31,7 +31,7 @@
   }
   
   .menufilter button {
-    width: 27%;
+    min-width: 20%;
     padding: 5px;
     margin :5px;
     background-color: rgb(220, 79, 79);

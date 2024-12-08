@@ -63,10 +63,6 @@ function MenuFilter({
     });
   };
 
-  useEffect(() => {
-    updateURL();
-  }, [title, type, author, isSortByPrice, isSortByRating, isSortByDiscount]);
-
   const [localTitle, setLocalTitle] = useState(title);
   const [localAuthor, setLocalAuthor] = useState(author);
   const [localType, setLocalType] = useState(type);
@@ -90,6 +86,7 @@ function MenuFilter({
     setTitle(localTitle);
     setAuthor(localAuthor);
     setType(localType);
+    updateURL();
   };
 
   // Enum options for Type
@@ -150,10 +147,10 @@ function MenuFilter({
 
       <div>
         <h4>Khoảng giá:</h4>
-        <button onClick={() => handleFilterPrice(10, 20)}>10-20</button>
-        <button onClick={() => handleFilterPrice(20, 30)}>20-30</button>
-        <button onClick={() => handleFilterPrice(30, 40)}>30-40</button>
-        <button onClick={() => handleFilterPrice(40, 50)}>40-50</button>
+        <button onClick={() => handleFilterPrice(20000, 80000)}>20000-80000</button>
+        <button onClick={() => handleFilterPrice(80000, 160000)}>80000-160000</button>
+        <button onClick={() => handleFilterPrice(160000, 200000)}>160000-200000</button>
+        <button onClick={() => handleFilterPrice(200000, 240000)}>200000-240000</button>
         <div>
           <label>Giá tối thiểu:</label>
           <input

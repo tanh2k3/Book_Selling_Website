@@ -28,7 +28,12 @@ function ListProduct() {
     const title = searchParams.get("title");
     const type = searchParams.get("type");
     const author = searchParams.get("author");
-
+    const isSortByPrice = searchParams.get("isSortByPrice");
+    const isSortByRating = searchParams.get("isSortByRating");
+    const isSortByDiscount = searchParams.get("isSortByDiscount");
+    setIsSortByPrice(isSortByPrice === "true" ? 1 : 0);
+    setIsSortByRating(isSortByRating === "true" ? 1 : 0);
+    setIsSortByDiscount(isSortByDiscount === "true" ? 1 : 0);
     setTitle(title || "");
     setType(type || "");
     setAuthor(author || "");
