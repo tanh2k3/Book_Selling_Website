@@ -249,4 +249,12 @@ router.get('/api/users/number', (req, res) => {
   });
 });
 
+router.get('/accs', (req, res) => {
+  User.find().then(accs => {
+    res.send({ status: 'success', accs });
+  }).catch(error => {
+    res.send({ status: 'fail', message: error.message });
+  });
+});
+
 module.exports = router;
