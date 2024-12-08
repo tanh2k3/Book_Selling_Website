@@ -20,7 +20,7 @@ const sampleBooks = [
     ageGroup: "Người lớn",
     supplier: "Ancient Wisdom Publishers",
     publisher: "Nhà xuất bản Dân trí",
-    publicationYear: 1910,
+    publicationYear: 2020,
     language: "Tiếng Việt",
     weight: "250g",
     dimensions: "21 x 14 x 1.5 cm",
@@ -52,9 +52,10 @@ const sampleBooks = [
     dimensions: "22 x 14 x 2 cm",
     pages: 320,
     binding: "Bìa cứng",
-    description: "Atomic Habits \n- Thay Đổi Tí Hon Hiệu Quả Bất Ngờ (Tái Bản 2023) Wall Street Journal Bestseller,USA Today Bestseller, Publisher's Weekly Bestseller Nằm trong Top 20 tựa sách thể loại non-fiction bán chạy và được tìm đọc nhiều nhất của Amazon suốt 40 tuần tính đến tháng 9/2019 Một thay đổi tí hon có thể biến đổi cuộc đời bạn không? Hẳn là khó đồng ý với điều đó. Nhưng nếu bạn thay đổi thêm một chút? Một chút nữa? Rồi thêm một chút nữa? Đến một lúc nào đó, bạn phải công nhận rằng cuộc sống của mình đã chuyển biến nhờ vào một thay đổi nhỏ…Và đó chính là sức mạnh của thói quen nguyên tử.",
+    description: "Atomic Habits \n- Thay Đổi Tí Hon Hiệu Quả Bất Ngờ (Tái Bản 2023) \n Wall Street Journal Bestseller, USA Today Bestseller, Publisher's Weekly Bestseller \n Nằm trong Top 20 tựa sách thể loại non-fiction bán chạy và được tìm đọc nhiều nhất của Amazon suốt 40 tuần tính đến tháng 9/2019 \n Một thay đổi tí hon có thể biến đổi cuộc đời bạn không? Hẳn là khó đồng ý với điều đó. Nhưng nếu bạn thay đổi thêm một chút? Một chút nữa? Rồi thêm một chút nữa? Đến một lúc nào đó, bạn phải công nhận rằng cuộc sống của mình đã chuyển biến nhờ vào một thay đổi nhỏ…Và đó chính là sức mạnh của thói quen nguyên tử.",
     type: "A"
   },
+
   {
     imgSrc: "https://cdn0.fahasa.com/media/catalog/product/9/7/9786043775662.jpg",
     title: "Giáo trình chuẩn HSK",
@@ -78,7 +79,7 @@ const sampleBooks = [
     dimensions: "28.5 x 21 x 1 cm",
     pages: 141,
     binding: "Bìa mềm",
-    description: "Kết hợp thi cử và giảng dạy: Được biên soạn phù hợp với nội dung, hình thức cũng như các cấp độ của đề thi HSK thật, bộ sách này có thể được sử dụng đồng thời cho cả hai mục đích là giảng dạy tiếng Trung Quốc và luyện thi HSK. • Bố cục chặt chẽ và khoa học: Các điểm ngữ pháp được giải thích cặn kẽ, phần ngữ âm và chữ Hán được trình bày từ đơn giản đến phức tạp theo từng cấp độ",
+    description: "Kết hợp thi cử và giảng dạy: Được biên soạn phù hợp với nội dung, hình thức cũng như các cấp độ của đề thi HSK thật, bộ sách này có thể được sử dụng đồng thời cho cả hai mục đích là giảng dạy tiếng Trung Quốc và luyện thi HSK. \n Bố cục chặt chẽ và khoa học: Các điểm ngữ pháp được giải thích cặn kẽ, phần ngữ âm và chữ Hán được trình bày từ đơn giản đến phức tạp theo từng cấp độ",
     type: "G"
   },
   {
@@ -130,7 +131,7 @@ const sampleBooks = [
     dimensions: "18 x 13 x 1.2 cm",
     pages: 244,
     binding: "Bìa cứng",
-    description: "“Rất vui khi được gặp lại các cháu. Bác đoán vào năm học mới chắc hẳn có nhiều bạn sẽ được bầu làm ban cán sự lớp đúng không? Ban cán sự của trường đào tạo ninja năm học mới này sẽ có nhiều hoạt động rất sôi nổi, các cháu hãy cùng chờ xem nhé! Ninja Rantaro tập này sẽ lấy bối cảnh là “địa ngục”, chắc các cháu cũng từng được nghe kể địa ngục là nơi như thế nào rồi nhỉ. Bác chỉ lấy ví dụ chẳng hạn nếu ai nói dối khi xuống địa ngục sẽ bị kéo mất lưỡi. Nghe sợ ghê ha! Bác dự định sẽ cho nhân vật Diêm Vương xuất hiện, Diêm Vương sẽ được vẽ dựa trên hình mẫu bức tượng trong chùa Gangoji ở Nara nên rất đẹp đấy!”",
+    description: "“Rất vui khi được gặp lại các cháu. Bác đoán vào năm học mới chắc hẳn có nhiều bạn sẽ được bầu làm ban cán sự lớp đúng không? Ban cán sự của trường đào tạo ninja năm học mới này sẽ có nhiều hoạt động rất sôi nổi, các cháu hãy cùng chờ xem nhé! \n Ninja Rantaro tập này sẽ lấy bối cảnh là “địa ngục”, chắc các cháu cũng từng được nghe kể địa ngục là nơi như thế nào rồi nhỉ. Bác chỉ lấy ví dụ chẳng hạn nếu ai nói dối khi xuống địa ngục sẽ bị kéo mất lưỡi. Nghe sợ ghê ha! Bác dự định sẽ cho nhân vật Diêm Vương xuất hiện, Diêm Vương sẽ được vẽ dựa trên hình mẫu bức tượng trong chùa Gangoji ở Nara nên rất đẹp đấy!”",
     type: "T"
   }
 ];
@@ -140,11 +141,20 @@ const insertSampleData = async () => {
     await mongoose.connect('mongodb+srv://trantuananhbo2093:FPa18YPpQAi7VkSM@cluster0.lydwo.mongodb.net/bookDB?retryWrites=true&w=majority&appName=Cluster0'); // Replace with your MongoDB URI
     console.log('Connected to MongoDB');
 
-    await Product.deleteMany(); // Clear the existing collection
-    console.log('Existing data cleared.');
+    var count = await Product.countDocuments();
+    if (count > 0) {
+      console.log(`Collection is currently having ${count} entries`);
+      await Product.deleteMany();
+      console.log('Existing data cleared');
+    } else {
+      console.log('Collection is empty');
+    }
 
     await Product.insertMany(sampleBooks);
     console.log('Sample data inserted successfully.');
+
+    count = await Product.countDocuments();
+    console.log(`Collection is currently having ${count} entries`);
 
     mongoose.disconnect();
     console.log('Disconnected from MongoDB');
