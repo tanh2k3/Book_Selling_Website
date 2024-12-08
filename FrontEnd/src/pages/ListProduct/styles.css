@@ -6,7 +6,6 @@
     justify-content: space-between;
     align-items: flex-start;
     margin-top: 20px;
-    background-color: #f5f5f5;
     text-align: center;
 }
 
@@ -15,7 +14,6 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    padding: 10px;
 }
 #btn_detail:hover{
     background-color: #f5f5f5;

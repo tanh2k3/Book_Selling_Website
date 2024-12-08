@@ -2,6 +2,7 @@ import React from "react";
 import "./styles.css";
 import { formatPrice } from "../../utils/index.js";
 import { Link } from "react-router-dom";
+import ReactStars from "react-rating-stars-component";
 
 const CardItem = ({ book }) => {
   const defaultItem = {
@@ -16,15 +17,13 @@ const CardItem = ({ book }) => {
     rating: 4,
   };
 
-  const { _id, imgSrc, title, description, price, discount, sold, rating } = {
+  const { _id, imgSrc, title, description, price, discount, soldCount, rating } = {
     ...defaultItem,
     ...book,
   };
 
   const priceAfterDiscount = (price) => {
-    // return formatPrice(price - (price * discount) / 100);
-    return price;
-    // Boi vi price la gia da giam roi, gia goc là originalPrice
+    return formatPrice(price);
   };
 
   const formatTitle = (title) => {
@@ -32,19 +31,34 @@ const CardItem = ({ book }) => {
       return title.slice(0, 30) + "...";
     }
     return title;
-  }
+  };
 
   return (
     <div className="cardItem">
       <Link to={`/book/${_id}`} key={_id}>
         <div className="book-card">
-          <img src={imgSrc} alt={title} />
+          <div className="book-image">
+            <img src={imgSrc} alt={title} />
+          </div>
           <h2 className="book-title-item">{formatTitle(title)}</h2>
+          <div className="book-rating">
+            <ReactStars
+              count={5}
+              size={20}
+              activeColor="#ffd700"
+              value={rating}
+              isHalf={true}
+              edit={false}
+            />
+          </div>
           <div className="book-price">
-            <p className="book-discount"> {discount > 0 ? `-${discount}%` : ""}</p>
+            <p className="book-discount">
+              {" "}
+              {discount > 0 ? `-${discount}%` : ""}
+            </p>
             <p>{priceAfterDiscount(price)}₫</p>
           </div>
-          <p>Đánh giá: {rating} / 5</p>
+          <p> Đã bán: {soldCount}</p>
         </div>
       </Link>
     </div>
