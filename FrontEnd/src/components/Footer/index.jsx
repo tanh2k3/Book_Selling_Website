@@ -9,7 +9,7 @@ function Footer()
             <div className="footer">
               <h1>Bookie</h1>
               <br/>
-              <p className="footer-chu">Bookie là trang web chuyên cung cấp các sản phẩm về sách và văn phòng phẩm chất lượng, đáp ứng mọi nhu cầu học tập và làm việc.</p>
+              <p className="footer-chu">Bookie là trang web chuyên cung cấp các sản phẩm về sách, đáp ứng nhu cầu học tập và làm việc của học sinh, sinh viên,...</p>
               <br/>
               <p className="footer-mxh">Facebook: Bookie Việt Nam <FaCircle style={{fontSize : '5px'}} /> Instagram: @bookie.ig <FaCircle style={{fontSize : '5px'}}/> Tiktok: @bookie.vn</p>
               <br/>

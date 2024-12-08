@@ -6,26 +6,9 @@ import { useUser } from '../../context/UserContext';
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 
-const Profile = () => {
-    const [activeTab, setActiveTab] = useState('personalInfo');
-    const { user, setUser } = useUser();
-    return (
-        <div className="profile-container">
-            <div className="sidebar">
-                <button onClick={() => setActiveTab('personalInfo')}>Thông tin cá nhân</button>
-                <button onClick={() => setActiveTab('orders')}>Đơn hàng</button>
-                <button onClick={() => setActiveTab('favoriteProducts')}>Sản phẩm yêu thích</button>
-            </div>
-            <div className="content">
-                {activeTab === 'personalInfo' && <PersonalInfo user={user} setUser={setUser} />}
-                {activeTab === 'orders' && <Orders />}
-                {activeTab === 'favoriteProducts' && <FavoriteProducts />}
-            </div>
-        </div>
-    );
-};
+function Profile() {
 
-const PersonalInfo = ({ user, setUser }) => {
+    const { user, setUser } = useUser();
     const [name, setName] = useState(user.name);
     const [phone, setPhone] = useState(user.sdt);
     const [password, setPassword] = useState('');
@@ -51,9 +34,61 @@ const PersonalInfo = ({ user, setUser }) => {
             setError(`Error updating ${field}`);
         }
     };
-    return (
-        <div>
-            <div style={{height:"30px"}}/>
+
+
+
+
+    const [orders, setOrders] = useState([]);
+    useEffect(() => {
+        const fetchOrders = async () => {
+          try {
+            const response = await axios.get(`http://localhost:3001/orders/${user._id}`);
+            if (response.status === 200) {
+              setOrders(response.data);
+            } else {
+              alert('Failed to fetch orders');
+            }
+          } catch (error) {
+            console.error('Error fetching orders:', error);
+            alert('Error fetching orders');
+          }
+        };
+        fetchOrders();
+      }, []);
+
+
+
+    const navigate = useNavigate();
+    const [products, setProducts] = useState([]);
+    useEffect(() => {
+        fetch("http://localhost:3001/product")
+            .then((response) => response.json())
+            .then((data) => setProducts(data))
+            .catch((error) => console.error("Error fetching products:", error));
+    }, []);
+    //Lấy danh sách sản phẩm yêu thích
+    const favorites = user.favorite.map(fav => 
+        products.find(product => product._id === fav.favProId)).filter(Boolean);
+    console.log(user.favorite);
+    /*
+    const handleRemoveFavorite = (productId) => {
+        axios.post('http://localhost:3001/remove-favorite', { userId, productId })
+            .then(response => {
+                if (response.data.status === 'success') {
+                    setFavorites(favorites.filter(fav => fav.fp_id_sp !== productId));
+                }
+            })
+            .catch(error => console.error(error));
+    };*/
+
+    const handleCardClick = (productId) => {
+        navigate(`/book/${productId._id}`);
+    };
+
+    return(
+        <div className="content">
+            <div>
+            <div style={{height:"20px"}}/>
             <h1>Thông tin cá nhân</h1>
             <div className="info-item">
                 <span>Họ và tên: </span>
@@ -83,11 +118,12 @@ const PersonalInfo = ({ user, setUser }) => {
                     <button className='content-button' onClick={() => setIsEditingPhone(true)}><MdDriveFileRenameOutline style={{"marginBottom":"-4px"}} /></button>
                 </>)}
             </div>
-            <div style={{height:"10px"}}/>
+            <div style={{height:"15px"}}/>
             <div className="info-item">
                 <span>Email: </span>
                 <span>{user.email}</span>
             </div>
+            <div style={{height:"10px"}}/>
             <div className="info-item">
                 <span>Mật khẩu: </span>
                 {isEditingPassword ? 
@@ -113,34 +149,11 @@ const PersonalInfo = ({ user, setUser }) => {
             </div>
             {error && <p className="error-message">{error}</p>}
         </div>
-    );
-};
 
-const Orders = () => {
-    const [orders, setOrders] = useState([]);
-    const {user} = useUser();
-    useEffect(() => {
-        const fetchOrders = async () => {
-          try {
-            const response = await axios.get(`http://localhost:3001/orders/${user._id}`);
-            if (response.status === 200) {
-              setOrders(response.data);
-            } else {
-              alert('Failed to fetch orders');
-            }
-          } catch (error) {
-            console.error('Error fetching orders:', error);
-            alert('Error fetching orders');
-          }
-        };
-        fetchOrders();
-      }, []);
-      
-
-    return (
+        <h1>Đơn hàng</h1>
+        <div style={{height:"20px"}}/>
+        {orders.length === 0 ? <h2 style={{textAlign:"center"}}>Bạn chưa có đơn hàng nào</h2> :
         <div>
-            <div style={{height:"30px"}}/>
-            <h1>Đơn hàng</h1>
             <div id="orders">
                     <table>
                         <thead>
@@ -169,67 +182,29 @@ const Orders = () => {
                         </tbody>
                     </table>
             </div>
-            <div style={{height:"200px"}}/>
         </div>
-    );
-};
+        }
+        <div style={{height:"30px"}}/>
 
-const FavoriteProducts = () => {
-
-    /*// Lấy danh sách sản phẩm yêu thích
-  const favorites = user.favorite
-  .map(fav => products.find(product => product._id === fav.favProId))
-  .filter(Boolean);*/ 
-  
-    const [favorites, setFavorites] = useState([]);
-    const {user} = useUser();
-    const userId = user._id;
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        axios.get('http://localhost:3001/favorites', { params: { userId } })
-            .then(response => {
-                if (response.data.status === 'success') {
-                    setFavorites(response.data.favorites);
-                }
-            })
-            .catch(error => console.error(error));
-    }, [userId]);
-
-    const handleRemoveFavorite = (productId) => {
-        axios.post('http://localhost:3001/remove-favorite', { userId, productId })
-            .then(response => {
-                if (response.data.status === 'success') {
-                    setFavorites(favorites.filter(fav => fav.fp_id_sp !== productId));
-                }
-            })
-            .catch(error => console.error(error));
-    };
-
-    const handleCardClick = (productId) => {
-        navigate(`/productfilter/:category/${productId}`);
-    };
-
-    if (favorites.length === 0) {return <h2>Không có sản phẩm yêu thích nào</h2>;}
-    return (
+        <h1>Sản phẩm yêu thích</h1>
+        {favorites.length === 0 ? <h2 style={{textAlign:"center"}}>Không có sản phẩm yêu thích nào</h2> :
         <div>
-            <div style={{height:"30px"}}/>
-            <h1>Sản phẩm yêu thích</h1>
-            <div className="favorites-list">
-                {favorites.map(favorite => (
-                    <div key={favorite._id} className="cardsppp">
-                        <img className="cardsppp-image" src={favorite.fp_id_sp.product_link}
-                        onClick={() => navigate(`/productfilter/:category/${favorite.fp_id_sp._id}`)}/>
-                        <p className="cardsppp-title">{favorite.fp_id_sp.product_name}</p>
-                        <p className="cardsppp-price">{favorite.fp_id_sp.product_price}₫</p>
-                        <button className="cardsppp-button" onClick={() => 
-                        handleRemoveFavorite(favorite.fp_id_sp)}>Xóa</button>
-                    </div>
-                ))}
-            </div>
-            <div style={{height:"300px"}}/>
+        <div className="favorites-list">
+            {favorites.map(favorite => (
+                <div key={favorite._id} className="cardsppp">
+                    <img className="cardsppp-image" src={favorite.imgSrc}
+                    onClick={() => handleCardClick(favorite)}/>
+                    <p className="cardsppp-title">{favorite.title}</p>
+                    <p className="cardsppp-price">{favorite.price}₫</p>
+                    <button className="cardsppp-button" 
+                    //onClick={() => handleRemoveFavorite(favorite.fp_id_sp)}
+                    >Xóa</button>
+                </div>
+            ))}
+        </div>
+        </div>}
         </div>
     );
-};
+}
 
 export default Profile;
