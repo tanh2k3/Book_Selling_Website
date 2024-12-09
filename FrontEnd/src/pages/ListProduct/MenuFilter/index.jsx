@@ -23,17 +23,34 @@ function MenuFilter({
 }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const [localTitle, setLocalTitle] = useState(title);
+  const [localAuthor, setLocalAuthor] = useState(author);
+  const [localType, setLocalType] = useState(type);
+  const [localMinPrice, setLocalMinPrice] = useState(0);
+  const [localMaxPrice, setLocalMaxPrice] = useState(999999);
 
+  // Update local filter values when the parent values change
+  useEffect(() => {
+    setLocalTitle(title);
+    setLocalAuthor(author);
+    setLocalType(type);
+  }, [title, author, type]);
   // Handle sorting
   const handleSort = (type) => {
     switch (type) {
       case "price":
+        setIsSortByPrice(0);
+        setIsSortByRating(0);
         setIsSortByPrice(isSortByPrice === 1 ? -1 : 1);
         break;
       case "rating":
+        setIsSortByPrice(0);
+        setIsSortByDiscount(0);
         setIsSortByRating(isSortByRating === 1 ? -1 : 1);
         break;
       case "discount":
+        setIsSortByPrice(0);
+        setIsSortByRating(0);
         setIsSortByDiscount(isSortByDiscount === 1 ? -1 : 1);
         break;
       default:
@@ -44,6 +61,8 @@ function MenuFilter({
   // Handle price filter
   const handleFilterPrice = (min, max) => {
     if (max > min) {
+      setLocalMinPrice(min);
+      setLocalMaxPrice(max);
       setMinPrice(min);
       setMaxPrice(max);
     } else {
@@ -54,20 +73,14 @@ function MenuFilter({
   // Update the URL based on current filter values
   const updateURL = () => {
     const params = new URLSearchParams(location.search);
-    params.set("title", title);
-    params.set("type", type);
-    params.set("author", author);
+    params.set("title", localTitle);
+    params.set("author", localAuthor);
+    params.set("type", localType);
     navigate({
       pathname: location.pathname,
       search: params.toString(),
     });
   };
-
-  const [localTitle, setLocalTitle] = useState(title);
-  const [localAuthor, setLocalAuthor] = useState(author);
-  const [localType, setLocalType] = useState(type);
-  const [localMinPrice, setLocalMinPrice] = useState(0);
-  const [localMaxPrice, setLocalMaxPrice] = useState(999999);
 
   // Clear filters function
   const clearFilters = () => {
@@ -83,10 +96,10 @@ function MenuFilter({
 
   // Trigger search function
   const handleSearch = () => {
+    updateURL();
     setTitle(localTitle);
     setAuthor(localAuthor);
     setType(localType);
-    updateURL();
   };
 
   // Enum options for Type
@@ -139,18 +152,59 @@ function MenuFilter({
         </div>
         <div>
           <button onClick={clearFilters}>
-            <RiRefreshLine/>
+            <RiRefreshLine />
           </button>
-          <button onClick={handleSearch}><CiSearch/></button>
+          <button onClick={handleSearch}>
+            <CiSearch />
+          </button>
         </div>
       </div>
 
       <div>
         <h4>Khoảng giá:</h4>
-        <button onClick={() => handleFilterPrice(20000, 80000)}>20000-80000</button>
-        <button onClick={() => handleFilterPrice(80000, 160000)}>80000-160000</button>
-        <button onClick={() => handleFilterPrice(160000, 200000)}>160000-200000</button>
-        <button onClick={() => handleFilterPrice(200000, 240000)}>200000-240000</button>
+        <button
+          style={{
+            background:
+              localMinPrice === 20000 && localMaxPrice === 80000
+                ? "blue"
+                : "rgb(220, 79, 79)",
+          }}
+          onClick={() => handleFilterPrice(20000, 80000)}
+        >
+          20000-80000
+        </button>
+        <button
+          style={{
+            background:
+              localMinPrice === 80000 && localMaxPrice === 160000
+                ? "blue"
+                : "rgb(220, 79, 79)",
+          }}
+          onClick={() => handleFilterPrice(80000, 160000)}
+        >
+          80000-160000
+        </button>
+        <button
+          style={{
+            background:
+              localMinPrice === 160000 && localMaxPrice === 200000
+                ? "blue"
+                : "rgb(220, 79, 79)",}}
+          onClick={() => handleFilterPrice(160000, 200000)}
+        >
+          160000-200000
+        </button>
+        <button
+          style={{
+            background:
+              localMinPrice === 200000 && localMaxPrice === 240000
+                ? "blue"
+                : "rgb(220, 79, 79)",
+          }}
+          onClick={() => handleFilterPrice(200000, 240000)}
+        >
+          200000-240000
+        </button>
         <div>
           <label>Giá tối thiểu:</label>
           <input
@@ -187,9 +241,7 @@ function MenuFilter({
       </div>
 
       <div className="filterSort">
-        <h4 onClick={() => handleSort("discount")}>
-          Sắp xếp theo giảm giá:
-        </h4>
+        <h4 onClick={() => handleSort("discount")}>Sắp xếp theo giảm giá:</h4>
         {isSortByDiscount === 1 ? (
           <FaArrowDown />
         ) : isSortByDiscount === -1 ? (
@@ -201,9 +253,7 @@ function MenuFilter({
       </div>
 
       <div className="filterSort">
-        <h4 onClick={() => handleSort("rating")}>
-          Sắp xếp theo đánh giá:
-        </h4>
+        <h4 onClick={() => handleSort("rating")}>Sắp xếp theo đánh giá:</h4>
         {isSortByRating === 1 ? (
           <FaArrowDown />
         ) : isSortByRating === -1 ? (
