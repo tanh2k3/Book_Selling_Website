@@ -3,7 +3,8 @@ const { sendMail } = require("../services/emailService");
 const bcrypt = require("bcrypt");
 const express = require("express");
 const router = express.Router();
-const {ObjectId} = require('mongodb');
+const { ObjectId } = require("mongodb");
+const { checkLogin } = require("../services/verityService");
 
 require("dotenv").config();
 const SECRET_KEY = process.env.SECRET_KEY || "your_secret_key";
@@ -11,6 +12,7 @@ const SECRET_KEY = process.env.SECRET_KEY || "your_secret_key";
 const User = require("../models/User");
 const Unc = require("../models/Unc");
 const Order = require("../models/Order");
+const Product = require("../models/Product");
 
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
@@ -175,86 +177,239 @@ router.post("/resend", async (req, res) => {
   }
 });
 
-router.post('/update-name', (req, res) => {
+router.post("/update-name", (req, res) => {
   const { email, name } = req.body;
-  User.findOneAndUpdate({ email: email }, { name: name }, { new: true }).then((user) => {
-    if (user) {
-      res.send({ status: 'success', user });
-    } else {
-      res.send({ status: 'fail', message: 'User not found' });
-    }
-  }).catch(error => res.send({ status: 'fail', message: error.message }));
+  User.findOneAndUpdate({ email: email }, { name: name }, { new: true })
+    .then((user) => {
+      if (user) {
+        res.send({ status: "success", user });
+      } else {
+        res.send({ status: "fail", message: "User not found" });
+      }
+    })
+    .catch((error) => res.send({ status: "fail", message: error.message }));
 });
 
-router.post('/update-phone', (req, res) => {
+router.post("/update-phone", (req, res) => {
   const { email, phone } = req.body;
-  User.findOneAndUpdate({ email: email }, { sdt: phone }, { new: true }).then((user) => {
-    if (user) {
-      res.send({ status: 'success', user });
-    } else {
-      res.send({ status: 'fail', message: 'User not found' });
-    }
-  }).catch(error => res.send({ status: 'fail', message: error.message }));
+  User.findOneAndUpdate({ email: email }, { sdt: phone }, { new: true })
+    .then((user) => {
+      if (user) {
+        res.send({ status: "success", user });
+      } else {
+        res.send({ status: "fail", message: "User not found" });
+      }
+    })
+    .catch((error) => res.send({ status: "fail", message: error.message }));
 });
 
-router.post('/update-password', (req, res) => {
+router.post("/update-password", (req, res) => {
   const { email, password } = req.body;
-  User.findOneAndUpdate({ email: email }, { password: password }, { new: true }).then((user) => {
-    if (user) {
-      res.send({ status: 'success', user });
-    } else {
-      res.send({ status: 'fail', message: 'User not found' });
-    }
-  }).catch(error => res.send({ status: 'fail', message: error.message }));
+  User.findOneAndUpdate({ email: email }, { password: password }, { new: true })
+    .then((user) => {
+      if (user) {
+        res.send({ status: "success", user });
+      } else {
+        res.send({ status: "fail", message: "User not found" });
+      }
+    })
+    .catch((error) => res.send({ status: "fail", message: error.message }));
 });
 
-router.get('/orders/:id', (req, res) => {
+router.get("/orders/:id", (req, res) => {
   let { id } = req.params;
   id = new ObjectId(id);
-  Order.find({ "userId": id }).then((data)=> {
-      res.status(200);
-      res.send(data);
-  })
+  Order.find({ userId: id }).then((data) => {
+    res.status(200);
+    res.send(data);
+  });
 });
 
-// API xóa sản phẩm khỏi giỏ hàng
-router.delete('/cart/:userId/:productId', async (req, res) => {
-  const { userId, productId } = req.params;
-
+// refesh token
+router.post("/refresh-token", async (req, res) => {
+  const { token } = req.body;
   try {
-      // Tìm user theo userId
-      const user = await User.findById(userId);
-
-      if (!user) {
-          return res.status(404).json({ message: 'Người dùng không tồn tại.' });
+    jwt.verify(token, SECRET_KEY, async (error, decoded) => {
+      if (error) {
+        return res.status(401).json({ message: "Token không hợp lệ." });
       }
-
-      // Lọc bỏ sản phẩm khỏi giỏ hàng
-      const updatedCart = user.cart.filter(item => item.product.toString() !== productId);
-
-      // Cập nhật giỏ hàng trong cơ sở dữ liệu
-      user.cart = updatedCart;
-      await user.save();
-
-      res.status(200).json({ message: 'Sản phẩm đã được xóa khỏi giỏ hàng.', cart: updatedCart });
+      const newToken = jwt.sign(
+        { userId: decoded.userId, email: decoded.email, role: decoded.role },
+        SECRET_KEY,
+        { expiresIn: "1h" }
+      );
+      const user = await User.findById(decoded.userId);
+      res.status(200).json({ token: newToken, user });
+    });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Lỗi khi xóa sản phẩm khỏi giỏ hàng.' });
+    console.error(error);
+    res.status(500).json({ message: "Lỗi khi làm mới token." });
   }
 });
 
-router.get('/api/users/number', (req, res) => {
+// API xóa sản phẩm khỏi giỏ hàng
+router.delete("/cart", async (req, res) => {
+  const { userId, productId } = req.body;
+  try {
+    // Tìm user theo userId
+    const user = await User.findById(userId);
+    // Xóa sản phẩm khỏi giỏ hàng
+    user.cart = user.cart.filter(
+      (item) => item.product.toString() !== productId
+    );
+    await user.save();
+    res
+      .status(200)
+      .json({
+        message: "Sản phẩm đã được xóa khỏi giỏ hàng.",
+        cart: user.cart,
+      });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Lỗi khi xóa sản phẩm khỏi giỏ hàng." });
+  }
+});
+
+router.post("/cart", checkLogin, async (req, res) => {
+  const userId = req.user.userId;
+  const { productId, quantity } = req.body;
+  // req.user.userId
+  try {
+    // Tìm user theo userId
+    console.log(userId);
+    const user = await User.findById(userId);
+    // update user cart
+    if (!user) {
+      return res.status(404).json({ message: "Người dùng không tồn tại." });
+    }
+    const product = user.cart.find(
+      (item) => item.product.toString() === productId
+    );
+    if (product) {
+      product.quantity = quantity;
+    } else {
+      user.cart.push({ product: productId, quantity });
+    }
+    await user.save();
+    res
+      .status(200)
+      .json({
+        message: "Sản phẩm đã được thêm vào giỏ hàng.",
+        cart: user.cart,
+      });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Lỗi khi thêm sản phẩm vào giỏ hàng." });
+  }
+});
+
+router.get("/cart", checkLogin, async (req, res) => {
+  // req.user.userId
+  try {
+    // Tìm user theo userId
+    const user = await User.findById(req.user.userId).populate("cart.product");
+    if (!user) {
+      return res.status(404).json({ message: "Người dùng không tồn tại." });
+    }
+    res.status(200).json({ cart: user.cart });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Lỗi khi lấy giỏ hàng." });
+  }
+});
+// favorite
+router.get("/favorite", checkLogin, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).populate(
+      "favorite.product"
+    );
+    if (!user) {
+      return res.status(404).json({ message: "Người dùng không tồn tại." });
+    }
+    res.status(200).json({ favorite: user.favorite });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Lỗi khi lấy danh sách yêu thích." });
+  }
+});
+
+router.post("/favorite", checkLogin, async (req, res) => {
+  const { productId } = req.body;
+  const userId = req.user.userId;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Người dùng không tồn tại." });
+    }
+    console.log(user);
+    if (!user.favorite) {
+      user.favorite = [];
+    }
+    const product = user.favorite.find(
+      (item) => item.product.toString() === productId
+    );
+    if (product) {
+      user.favorite = user.favorite.filter(
+        (item) => item.product.toString() !== productId
+      );
+    } else {
+      user.favorite.push({ product: productId });
+    }
+    await user.save();
+    res
+      .status(200)
+      .json({
+        message: "Sản phẩm đã được thêm vào danh sách yêu thích.",
+        favorite: user.favorite,
+      });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Lỗi khi thêm sản phẩm vào danh sách yêu thích." });
+  }
+});
+
+router.delete("/favorite", checkLogin, async (req, res) => {
+  const { productId } = req.body;
+  const userId = req.user.userId;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Người dùng không tồn tại." });
+    }
+    user.favorite = user.favorite.filter(
+      (item) => item.product.toString() !== productId
+    );
+    await user.save();
+    res
+      .status(200)
+      .json({
+        message: "Sản phẩm đã được xóa khỏi danh sách yêu thích.",
+        favorite: user.favorite,
+      });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Lỗi khi xóa sản phẩm khỏi danh sách yêu thích." });
+  }
+});
+//
+router.get("/api/users/number", (req, res) => {
   User.countDocuments({}).then((data) => {
-      res.status(200).send(data.toString());
+    res.status(200).send(data.toString());
   });
 });
 
-router.get('/accs', (req, res) => {
-  User.find().then(accs => {
-    res.send({ status: 'success', accs });
-  }).catch(error => {
-    res.send({ status: 'fail', message: error.message });
-  });
+router.get("/accs", (req, res) => {
+  User.find()
+    .then((accs) => {
+      res.send({ status: "success", accs });
+    })
+    .catch((error) => {
+      res.send({ status: "fail", message: error.message });
+    });
 });
 
 module.exports = router;

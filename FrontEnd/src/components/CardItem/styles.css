@@ -1,4 +1,3 @@
-
 .book-card {
   background-color: #fff;
   border: 1px solid #ddd;
@@ -48,6 +47,7 @@
 .book-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
 }
 
 /* Remove underline for links */
@@ -112,4 +112,44 @@ a:hover {
     background-color: rgb(241, 93, 93);
     color : whitesmoke !important;
     border-radius: 5px;
+}
+.book-favourite, .book-cart {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: none;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.book-favourite:hover, .book-cart:hover {
+  background-color: #f0f0f0;
+}
+
+.book-favourite, .book-cart{
+  font-size: 20px;
+  color: rgb(61, 162, 216);
+}
+.book-cart {
+  top: 55px;
+}
+.cardItem{
+  position: relative;
+}
+.cardItem:hover .book-favourite, .cardItem:hover .book-cart {
+  display: flex;
+}
+
+.red_hide{
+  display: flex !important;
+  color: rgb(255, 87, 57) !important;
 }
