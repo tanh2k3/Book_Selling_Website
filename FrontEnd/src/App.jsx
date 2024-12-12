@@ -9,32 +9,12 @@ import ListProduct from "./pages/ListProduct";
 import Order from "./pages/Order";
 import VoucherPage from "./pages/VoucherPage";
 import Admin from "./pages/Admin";
-import axios from "axios";
-import { useUser } from "./context/UserContext"
 import { useEffect } from "react";
-
-// router.post("/refresh-token", async (req, res) => {
-//   const { token } = req.body;
-//   try {
-//     jwt.verify(token, SECRET_KEY, async (error, decoded) => {
-//       if (error) {
-//         return res.status(401).json({ message: "Token không hợp lệ." });
-//       }
-//       const newToken = jwt.sign(
-//         { userId: decoded.userId, email: decoded.email, role: decoded.role },
-//         SECRET_KEY,
-//         { expiresIn: "1h" }
-//       );
-//       const user = await User.findById(decoded.userId);
-//       res.status(200).json({ token: newToken, user });
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Lỗi khi làm mới token." });
-//   }
-// });
+import axios from "axios";
+import { useUser } from "./context/UserContext";
 
 function App() {
+  const { setUser } = useUser();
 
   useEffect(() => {
     const refreshToken = async () => {
@@ -45,13 +25,20 @@ function App() {
           localStorage.setItem("token", res.data.token);
           setUser(res.data.user);
         } catch (error) {
-          console.error(error);
+          localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            setUser(null);
+          console.error("Error refreshing token:", error);
         }
+      }
+      else {
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        setUser(null);
       }
     };
     refreshToken();
   }, []);
-
 
   return (
       <BrowserRouter>
