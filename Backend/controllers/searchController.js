@@ -21,7 +21,7 @@ router.post("/filter", async (req, res) => {
       title = "",
     } = req.body;
     const { page = 1, limit = 10 } = req.query;
-    const isSortByDiscount = req.query.isSortByDiscount === "true";
+    const isSortByDiscount = req.query.isSortByDiscount === "true" || req.body.isSortByDiscount === true;
     const {
       isSortByPrice = false,
       isSortByRating = false,
