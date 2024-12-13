@@ -1,31 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.css";
 import { formatPrice } from "../../utils/index.js";
 import { Link } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
-import { FaHeart } from "react-icons/fa";
-import { FaCartPlus } from "react-icons/fa";
+import { FaHeart, FaCartPlus } from "react-icons/fa";
 import axios from "axios";
-import { useState,useEffect } from "react";
+import { useUser } from "../../context/UserContext";
+
 const CardItem = ({ book }) => {
+  const { user, setUser } = useUser();
+
   const [isFavourite, setIsFavourite] = useState(false);
+  const [isCart, setIsCart] = useState(false);
+
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      for (let i = 0; i < user.favorite.length; i++) {
-        if (user.favorite[i].product === book._id) {
-          setIsFavourite(true);
-          console.log("true");
-          break;
-        }
-      }
+      setIsFavourite(user.favorite.some((item) => item.product === book._id));
+      setIsCart(user.cart.some((item) => item.product === book._id));
     }
-  }, []);
+  }, [user, book._id]);
 
   const defaultItem = {
     id: 0,
-    imgSrc:
-      "https://cafebiz.cafebizcdn.vn/2019/3/12/photo-1-1552354590822522314238.jpg",
+    imgSrc: "https://cafebiz.cafebizcdn.vn/2019/3/12/photo-1-1552354590822522314238.jpg",
     title: "Title",
     description: "Description",
     price: 100000,
@@ -34,16 +31,7 @@ const CardItem = ({ book }) => {
     rating: 4,
   };
 
-  const {
-    _id,
-    imgSrc,
-    title,
-    description,
-    price,
-    discount,
-    soldCount,
-    rating,
-  } = {
+  const { _id, imgSrc, title, description, price, discount, soldCount, rating } = {
     ...defaultItem,
     ...book,
   };
@@ -53,68 +41,104 @@ const CardItem = ({ book }) => {
   };
 
   const formatTitle = (title) => {
-    if (title.length > 30) {
-      return title.slice(0, 30) + "...";
-    }
-    return title;
+    return title.length > 30 ? `${title.slice(0, 30)}...` : title;
   };
-  const handleAddFavourite = () => {
-    const jwt = localStorage.getItem("token");
-    if (!jwt) {
-      alert("Vui lòng đăng nhập để thêm sản phẩm vào danh sách yêu thích.");
-    }
-    const userId = localStorage.getItem("userId");
-    const productId = _id;
-    const data = { productId };
-    axios.post("http://localhost:3001/favorite", data, {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    });
-    const user = JSON.parse(localStorage.getItem("user"));
-    user.favorite.push({ product: productId });
-    localStorage.setItem("user", JSON.stringify(user));
-    setIsFavourite(true);
-  };
-  const handleRemoveFavourite = () => {
-    const jwt = localStorage.getItem("token");
-    if (!jwt) {
-      alert("Vui lòng đăng nhập để xóa sản phẩm khỏi danh sách yêu thích.");
-    }
-    const userId = localStorage.getItem("userId");
-    const productId = _id;
-    axios.delete(`http://localhost:3001/favorite`, {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-      data: { productId },
-    });
-    const user = JSON.parse(localStorage.getItem("user"));
-    for (let i = 0; i < user.favorite.length; i++) {
-      if (user.favorite[i].product === productId) {
-        user.favorite.splice(i, 1);
-        break;
+
+  const handleAddFavourite = async () => {
+    try {
+      const jwt = localStorage.getItem("token");
+      if (!jwt) {
+        alert("Vui lòng đăng nhập để thêm sản phẩm vào danh sách yêu thích.");
+        return;
       }
+      const response = await axios.post(
+        "http://localhost:3001/favorite",
+        { productId: _id },
+        { headers: { Authorization: `Bearer ${jwt}` } }
+      );
+
+      setUser((prevUser) => ({
+        ...prevUser,
+        favorite: [...prevUser.favorite, { product: _id }],
+      }));
+
+      setIsFavourite(true);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
     }
-    localStorage.setItem("user", JSON.stringify(user));
-    setIsFavourite(false);
-  }
+  };
+
+  const handleRemoveFavourite = async () => {
+    try {
+      const jwt = localStorage.getItem("token");
+      if (!jwt) {
+        alert("Vui lòng đăng nhập để xóa sản phẩm khỏi danh sách yêu thích.");
+        return;
+      }
+      const response = await axios.delete("http://localhost:3001/favorite", {
+        headers: { Authorization: `Bearer ${jwt}` },
+        data: { productId: _id },
+      });
+
+      setUser((prevUser) => ({
+        ...prevUser,
+        favorite: prevUser.favorite.filter((item) => item.product !== _id),
+      }));
+
+      setIsFavourite(false);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleAddToCart = async () => {
-    const jwt = localStorage.getItem("token");
-    if (!jwt) {
-      alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
-    } else {
-      const userId = localStorage.getItem("userId");
-      const productId = _id;
-      const quantity = 1;
-      const data = { productId, quantity };
-      const response = await axios.post("http://localhost:3001/cart", data, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
+    try {
+      const jwt = localStorage.getItem("token");
+      if (!jwt) {
+        alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
+        return;
+      }
+      const response = await axios.post(
+        "http://localhost:3001/cart",
+        { productId: _id, quantity: 1 },
+        { headers: { Authorization: `Bearer ${jwt}` } }
+      );
+
+      setUser((prevUser) => ({
+        ...prevUser,
+        cart: [...prevUser.cart, { product: _id }],
+      }));
+
+      setIsCart(true);
       console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleRemoveCart = async () => {
+    try {
+      const jwt = localStorage.getItem("token");
+      if (!jwt) {
+        alert("Vui lòng đăng nhập để xóa sản phẩm khỏi giỏ hàng.");
+        return;
+      }
+      const response = await axios.delete("http://localhost:3001/cart", {
+        headers: { Authorization: `Bearer ${jwt}` },
+        data: { productId: _id },
+      });
+
+      setUser((prevUser) => ({
+        ...prevUser,
+        cart: prevUser.cart.filter((item) => item.product !== _id),
+      }));
+
+      setIsCart(false);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -141,17 +165,24 @@ const CardItem = ({ book }) => {
         </div>
         <div className="book-price">
           <p className="book-discount">
-            {" "}
             {discount > 0 ? `-${discount}%` : ""}
           </p>
           <p>{priceAfterDiscount(price)}₫</p>
         </div>
-        <p> Đã bán: {soldCount}</p>
-        <div className={isFavourite ? "book-favourite red_hide" : "book-favourite"} onClick={isFavourite ? handleRemoveFavourite : handleAddFavourite}>
-          <FaHeart />
-        </div>
-        <div className="book-cart" onClick={handleAddToCart}>
-          <FaCartPlus />
+        <p>Đã bán: {soldCount}</p>
+        <div className="book-icon">
+          <div
+            className={isFavourite ? "book-favourite red_hide" : "book-favourite"}
+            onClick={isFavourite ? handleRemoveFavourite : handleAddFavourite}
+          >
+            <FaHeart />
+          </div>
+          <div
+            className={isCart ? "book-cart red_hide" : "book-cart"}
+            onClick={isCart ? handleRemoveCart : handleAddToCart}
+          >
+            <FaCartPlus />
+          </div>
         </div>
       </div>
     </div>
