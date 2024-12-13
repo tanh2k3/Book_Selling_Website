@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Product = require("./Product");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -9,12 +10,12 @@ const UserSchema = new mongoose.Schema(
     role: { type: String, default: "user" },
     favorite: [
       {
-        favProId: String
+        product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
       }
     ],
     cart: [
       {
-        product: { type: mongoose.Schema.Types.ObjectId, ref: "products" },
+        product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
         quantity: Number,
       },
     ],

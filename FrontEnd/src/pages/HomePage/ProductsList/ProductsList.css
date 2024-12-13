@@ -4,12 +4,12 @@
   }
   
   .products-container {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 0 10px;
+    align-items: center;
+    justify-content: space-between
   }
   a {
     text-decoration: none;

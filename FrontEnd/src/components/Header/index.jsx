@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
 import { MdAccountCircle, MdLogout } from "react-icons/md";
 import { LuLogIn } from "react-icons/lu";
@@ -11,6 +11,32 @@ function Header() {
   const { user, setUser } = useUser();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [ totalCart, setTotalCart ] = useState(1);
+
+  const [isfixed, setIsFixed] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setIsFixed(true);
+      } else {
+        setIsFixed(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  
+  useEffect(() => {
+    if (user) {
+      setTotalCart(user.cart.length);
+    }
+  }, [user]);
 
   const handleInputChange = (e) => {
     const searchTrim = e.target.value.trim();
@@ -32,10 +58,18 @@ function Header() {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
-    <div className="navbar">
+    <div className={isfixed ? "navbar fixed" : "navbar"}>
       <Link to="/">
-        <img src={logo} className="logo" />
+        <div className="logo_container">
+          <img src={logo} className="logo" />
+        </div>
       </Link>
       <div className="search-container">
         <input
@@ -43,9 +77,10 @@ function Header() {
           placeholder="Tìm kiếm"
           className="tim-kiem"
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
           value={searchTerm}
         />
-        <div className="search-icon" onClick={handleSearch}>
+        <div className="search-icon" onClick={handleSearch} >
           <FaSearch />
         </div>
       </div>
@@ -55,9 +90,10 @@ function Header() {
             <Link
               style={{ textDecoration: "none" }}
               to="/giohang"
-              className="navv2"
+              className="navv2 gio_hang"
             >
               <FaShoppingCart />
+              <p className="total_cart">{totalCart}</p>
             </Link>
             <Link
               style={{ textDecoration: "none" }}

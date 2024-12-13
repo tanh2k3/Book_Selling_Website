@@ -56,30 +56,61 @@ function Profile() {
         fetchOrders();
       }, []);
 
+    const [favorites, setFavorites] = useState([]);
+    useEffect(() => {
+        const fetchFavorites = async () => {
+            try {
+                const jwt = localStorage.getItem("token");
+                if (!jwt) {
+                    alert("Vui lòng đăng nhập để xem danh sách yêu thích.");
+                }
+                const response = await axios.get("http://localhost:3001/favorite", {
+                    headers: {
+                        Authorization: `Bearer ${jwt}`,
+                    },
+                });
+                if (response.status === 200) {
+                    setFavorites(response.data.favorite);
+                } else {
+                    alert("Failed to fetch favorites");
+                }
+            } catch (error) {
+                console.error("Error fetching favorites:", error);
+                alert("Error fetching favorites");
+            }
+        };
+        fetchFavorites();
+    }, []);
 
+    const handleRemoveFavorite = async (productId) => {
+        try {
+            const jwt = localStorage.getItem("token");
+            if (!jwt) {
+                alert("Vui lòng đăng nhập để xóa sản phẩm khỏi danh sách yêu thích.");
+            }
+            const response = await axios.delete("http://localhost:3001/favorite", {
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                },
+                data: { productId },
+            });
+            if (response.status === 200) {
+                setUser((prevUser) => ({
+                    ...prevUser,
+                    favorite: prevUser.favorite.filter((item) => item.product !== productId),
+                }));
+                setFavorites(favorites.filter((favorite) => favorite.product._id !== productId));
+            } else {
+                alert("Failed to remove favorite");
+            }
+        }
+        catch (error) {
+            console.error('Error removing favorite:', error);
+        }
+    };
 
     const navigate = useNavigate();
-    const [products, setProducts] = useState([]);
-    useEffect(() => {
-        fetch("http://localhost:3001/product")
-            .then((response) => response.json())
-            .then((data) => setProducts(data))
-            .catch((error) => console.error("Error fetching products:", error));
-    }, []);
-    //Lấy danh sách sản phẩm yêu thích
-    const favorites = user.favorite.map(fav => 
-        products.find(product => product._id === fav.favProId)).filter(Boolean);
-    console.log(user.favorite);
-    /*
-    const handleRemoveFavorite = (productId) => {
-        axios.post('http://localhost:3001/remove-favorite', { userId, productId })
-            .then(response => {
-                if (response.data.status === 'success') {
-                    setFavorites(favorites.filter(fav => fav.fp_id_sp !== productId));
-                }
-            })
-            .catch(error => console.error(error));
-    };*/
+    
 
     const handleCardClick = (productId) => {
         navigate(`/book/${productId._id}`);
@@ -191,13 +222,14 @@ function Profile() {
         <div>
         <div className="favorites-list">
             {favorites.map(favorite => (
+                favorite = favorite.product,
                 <div key={favorite._id} className="cardsppp">
                     <img className="cardsppp-image" src={favorite.imgSrc}
                     onClick={() => handleCardClick(favorite)}/>
                     <p className="cardsppp-title">{favorite.title}</p>
                     <p className="cardsppp-price">{favorite.price}₫</p>
                     <button className="cardsppp-button" 
-                    //onClick={() => handleRemoveFavorite(favorite.fp_id_sp)}
+                        onClick={() => handleRemoveFavorite(favorite._id)}
                     >Xóa</button>
                 </div>
             ))}

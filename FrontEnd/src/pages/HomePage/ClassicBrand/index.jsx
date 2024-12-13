@@ -1,32 +1,54 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./styles.css";
 
 const ClassicBrand = () => {
-  const classicBrand = [
-    {
-      name: "Penguin Classics",
-      description: "A series of classic literature published by Penguin Books.",
-    },
-    {
-      name: "Oxford World's Classics",
-      description: "A series of classic works from Oxford University Press.",
-    },
-    {
-      name: "Everyman's Library",
-      description:
-        "A series of reprints of classic literature published by Alfred A. Knopf.",
-    },
-  ];
+  const [classicBrand, setClassicBrand] = useState([]);
+  const navigate = useNavigate(); // Hook để điều hướng
+
+  useEffect(() => {
+    const fetchClassicBrand = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/search/topAuthors");
+        setClassicBrand(response.data);
+      } catch (error) {
+        console.error("Error fetching classic brand:", error);
+      }
+    };
+    fetchClassicBrand();
+  }, []);
+
+  const formatBook = (book) => {
+    if (book.length > 50) {
+      return book.slice(0, 50) + "...";
+    }
+    return book;
+  };
+
+  const showBooks = (books) => {
+    return books.map((book, index) => (
+      <p key={index}>{index + 1}: {formatBook(book)}</p>
+    ));
+  };
+
+  // Hàm xử lý khi nhấp vào một phần tử
+  const handleClick = (author) => {
+    navigate(`/list?author=${author}`); // Chuyển hướng đến trang chi tiết tác giả
+  };
 
   return (
     <div className="classic-brand">
-      <h2>Thương hiệu kinh điển</h2>
+      <h2>Các tác giả nổi bật</h2>
       <div className="clabra-container">
         {classicBrand.map((brand, index) => (
-          <div className="clabra-item" key={index}>
-            <h2>{brand.name}</h2>
-            <p>{brand.description}</p>
+          <div
+            className="clabra-item"
+            key={index}
+            onClick={() => handleClick(brand._id)} // Gắn sự kiện onClick
+          >
+            <h2>{brand._id}</h2>
+            <div>{showBooks(brand.books)}</div>
           </div>
         ))}
       </div>

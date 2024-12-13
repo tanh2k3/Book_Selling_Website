@@ -140,4 +140,19 @@ router.delete("/:id", checkAdmin, async (req, res) => {
   }
 });
 
+// get list of products 
+router.post("/list", async (req, res) => {
+  try {
+    const ids = req.body.ids;
+    const products = await Product.find({ _id: { $in: ids } });
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({ status: "error", message: "Server error" });
+  }
+}
+  
+  );
+
+
 module.exports = router;

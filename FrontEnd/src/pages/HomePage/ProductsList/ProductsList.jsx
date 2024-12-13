@@ -7,7 +7,7 @@ const ProductsList = () => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/product")
+    fetch("http://localhost:3001/search/top24")
       .then((response) => response.json())
       .then((data) => setBooks(data))
       .catch((error) => console.error("Error fetching products:", error));
@@ -23,7 +23,7 @@ const ProductsList = () => {
       </div>
       <div className="products-container">
         {books.map((book) => (
-          <CardItem book={book} />
+          <CardItem book={book} key={book._id} />
         ))}
       </div>
     </div>

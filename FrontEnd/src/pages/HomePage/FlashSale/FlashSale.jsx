@@ -10,17 +10,17 @@ const FlashSale = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:3001/product")
-            .then((response) => response.json())
-            .then((data) => {
-                const sortedData = data.sort((a, b) => b.discount - a.discount).slice(0, 10);
-                setBooks(sortedData);
+        const fetchBooks = async () => {
+            try {
+                const response = await fetch("http://localhost:3001/search/sale10");
+                const data = await response.json();
+                setBooks(data);
                 setLoading(false);
-            })
-            .catch((error) => {
+            } catch (error) {
                 console.error("Error fetching books:", error);
-                setLoading(false);
-            });
+            }
+        };
+        fetchBooks();
     }, []);
 
     if (loading) {

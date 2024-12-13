@@ -20,7 +20,7 @@ const connectDB = async () => {
 
 // Define an async function to start the server
 const startServer = async () => {
-  await connectDB();
+  await connectDB(); 
 
   // Routes
   app.use("/", require("./controllers/userController"));
@@ -30,6 +30,7 @@ const startServer = async () => {
   app.use("/order", require("./controllers/orderController"));
   app.use("/review", require("./controllers/reviewController"));
   app.use("/feedback", require("./controllers/feedbackController"));
+  app.use("/revenue", require("./controllers/revenueController"));
   // Start the server
   const port = process.env.PORT || 3001;
   app.listen(port, () => console.log(`Server is running on port ${port}`));

@@ -4,16 +4,43 @@ import HomePage from "./pages/HomePage";
 import BookDetail from "./pages/BookDetail";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import { UserProvider } from "./context/UserContext";
 import VerifyAccount from "./pages/VerifyAccount";
 import ListProduct from "./pages/ListProduct";
 import Order from "./pages/Order";
 import VoucherPage from "./pages/VoucherPage";
 import Admin from "./pages/Admin";
+import { useEffect } from "react";
+import axios from "axios";
+import { useUser } from "./context/UserContext";
 
 function App() {
+  const { setUser } = useUser();
+
+  useEffect(() => {
+    const refreshToken = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const res = await axios.post("http://localhost:3001/refresh-token", { token });
+          localStorage.setItem("token", res.data.token);
+          setUser(res.data.user);
+        } catch (error) {
+          localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            setUser(null);
+          console.error("Error refreshing token:", error);
+        }
+      }
+      else {
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        setUser(null);
+      }
+    };
+    refreshToken();
+  }, []);
+
   return (
-    <UserProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/*" element={<HomePage />} />
@@ -28,7 +55,6 @@ function App() {
           <Route path="/admin" element={<Admin />} />
         </Routes>
       </BrowserRouter>
-    </UserProvider>
   );
 }
 
