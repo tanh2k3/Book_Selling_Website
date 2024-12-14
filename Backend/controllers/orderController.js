@@ -106,7 +106,7 @@ router.post("/:id", checkLogin, async (req, res) => {
 });
 
 // Update order status - Admin
-router.post("/:id/status", checkAdmin, async (req, res) => {
+router.put("/:id/status", checkAdmin, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
     if (!order) {
@@ -114,14 +114,15 @@ router.post("/:id/status", checkAdmin, async (req, res) => {
         .status(404)
         .json({ status: "fail", message: "Order not found" });
     }
-    order.status = req.body.status;
-    await order.save();
+    order.status = req.body.status; // Cập nhật trạng thái
+    await order.save(); // Lưu lại thay đổi
     res.status(200).json({ status: "success", data: order });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ status: "error", message: "Server error" });
   }
 });
+
 
 // Delete order - Admin
 router.delete("/:id", checkAdmin, async (req, res) => {

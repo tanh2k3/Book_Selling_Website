@@ -1,0 +1,49 @@
+.adorderbut{
+    display: flex;
+    margin-bottom: 20px;
+}
+.adorderbut button{
+    margin-left: 30px;
+    font-size: 20px;
+    padding: 5px;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 5px;
+    background-color: #CD0000;
+    cursor: pointer;
+    color: #ffffff;
+}
+.adorderbut button:hover{
+    color: #000000;
+    background-color: #FFD700;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 5px;
+}
+.adormadh{
+    cursor: pointer;
+}
+.adormadh:hover{
+    text-decoration: underline;
+}
+.adorttdh{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.adorttdh button{
+    border: none;
+    font-size: 30px;
+    background-color: #CD0000;
+    cursor: pointer;
+    color: black;
+}
+.adorttdh button:hover{
+    color: #CD0000;
+}
+.adorttnn{
+    margin-left: 20px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.adorxtt{
+    font-size: 18px;
+}
