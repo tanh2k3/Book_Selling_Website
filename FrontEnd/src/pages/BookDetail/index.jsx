@@ -37,8 +37,15 @@ const BookDetail = () => {
 
   const handleFeedbackSubmit = (e) => {
     e.preventDefault();
-    if (feedback.trim() === "" || stars < 1) return;
-
+  
+    // Prevent submission if no feedback or stars are selected
+    if (feedback.trim() === "" || stars < 1) {
+      alert("Thêm bình luận để đánh giá.");
+      return;
+    }
+  
+    console.log(`Submitting: Feedback = "${feedback}", Stars = ${stars}`);
+  
     fetch(`http://localhost:3001/feedback/${id}`, {
       method: "POST",
       headers: {
@@ -48,12 +55,21 @@ const BookDetail = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setFeedbackList([data.feedback, ...feedbackList]);
-        setFeedback("");
-        setStars(0);
+        setFeedbackList([data.feedback, ...feedbackList]); 
+        setFeedback(""); 
+        setStars(0); 
       })
       .catch((error) => console.error("Error submitting feedback:", error));
   };
+  
+
+  const [quantity, setQuantity] = useState(1);
+
+  const handleAddToCart = (quantity) => {
+    console.log(`Thêm ${quantity} sách vào giỏ hàng.`);
+  };
+
+
 
   if (loading) {
     return <p>Đang tải thông tin...</p>;
@@ -76,11 +92,54 @@ const BookDetail = () => {
         <div className="book-detail">
           <div className="book-detail-left">
             <h1 className="book-title">{book.title}</h1>
-            <img src={book.imgSrc} alt={book.title} className="main-image" />
+            <div className="book-main-content">
+              <img src={book.imgSrc} alt={book.title} className="main-image" />
+
+              {/* Quantity and Price Row */}
+              <div className="quantity-price-row">
+                {/* Số lượng */}
+                <div className="quantity-label">
+                  <p>Số lượng:</p>
+                </div>
+
+                {/* Quantity Control */}
+                <div className="quantity-control">
+                  <button
+                    className="decrement"
+                    onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+                  >
+                    -
+                  </button>
+                  <span className="quantity">{quantity}</span>
+                  <button
+                    className="increment"
+                    onClick={() => setQuantity(quantity + 1)}
+                  >
+                    +
+                  </button>
+                </div>
+
+                {/* Book Price */}
+                <div className="book-price">
+                  <p>
+                    Giá: <span className="price">{book.price?.toLocaleString()} VND</span>
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
             {/* Action Buttons */}
             <div className="action-buttons">
-              <button className="add-to-cart">Thêm vào giỏ hàng</button>
-              <button className="buy-now" onClick={handleBuyNow} >Yêu thích</button>
+              <button
+                className="add-to-cart"
+                onClick={() => handleAddToCart(quantity)}
+              >
+                Thêm vào giỏ hàng
+              </button>
+              <button className="buy-now" onClick={handleBuyNow}>
+                Yêu thích
+              </button>
             </div>
           </div>
 
@@ -184,7 +243,8 @@ const BookDetail = () => {
                 <span
                   key={star}
                   className={`star ${stars >= star ? "filled" : ""}`}
-                  onClick={() => setStars(star)}
+                  onClick={() => setStars(star)} 
+                  style={{ cursor: "pointer" }} 
                 >
                   ★
                 </span>
