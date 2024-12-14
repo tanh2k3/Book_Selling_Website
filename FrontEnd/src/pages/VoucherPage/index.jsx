@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import voucherImage from "../../assets/voucher.png"
 import "./VoucherPage.css";
 
 const VoucherPage = () => {
@@ -46,7 +47,7 @@ const VoucherPage = () => {
                 <div id="voucher-list-div">
                     {vouchers.map((voucher) => (
                         <div className="voucher" key={voucher.voucherCode}>
-                            <img src="src/assets/voucher.png" alt="Voucher" />
+                            <img src={voucherImage} alt="Voucher" />
                             <p><b onClick={() => handleCopy(voucher.voucherCode)} style={{ cursor: "pointer", color: "#CD0000" }}>{voucher.voucherCode}</b></p>
                             <p><b>
                                 Giảm: {voucher.voucherType === 1

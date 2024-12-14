@@ -2,19 +2,28 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import "./ItemsList.css";
-import Slide from "../../../components/Slide";
+import V from "../../../assets/V.jpg";
+import K from "../../../assets/K.jpg";
+import G from "../../../assets/G.png";
+import T from "../../../assets/T.png";
+import A from "../../../assets/A.png";
+import N from "../../../assets/N.jpg";
+import C from "../../../assets/C.png";
+import I from "../../../assets/I.jpeg";
+import Y from "../../../assets/Y.jpg";
+import D from "../../../assets/D.jpg";
 
 const items = [
-  { imgSrc: "src/assets/english_book.png", title: "Văn học", type: "V" },
-  { imgSrc: "src/assets/english_book.png", title: "Kinh tế - Kinh doanh", type: "K" },
-  { imgSrc: "src/assets/english_book.png", title: "Giáo dục - Học thuật", type: "G" },
-  { imgSrc: "src/assets/english_book.png", title: "Thiếu nhi", type: "T" },
-  { imgSrc: "src/assets/english_book.png", title: "Kỹ năng sống", type: "A" },
-  { imgSrc: "src/assets/english_book.png", title: "Nuôi dạy con", type: "N" },
-  { imgSrc: "src/assets/english_book.png", title: "Chính trị - Pháp luật", type: "C" },
-  { imgSrc: "src/assets/english_book.png", title: "Điện ảnh - Âm nhạc - Hội họa", type: "I" },
-  { imgSrc: "src/assets/english_book.png", title: "Y học - Sức khỏe", type: "Y" },
-  { imgSrc: "src/assets/english_book.png", title: "Du lịch - Thể thao", type: "D" },
+  { imgSrc: V, title: "Văn học", type: "V" },
+  { imgSrc: K, title: "Kinh tế - Kinh doanh", type: "K" },
+  { imgSrc: G, title: "Giáo dục - Học thuật", type: "G" },
+  { imgSrc: T, title: "Thiếu nhi", type: "T" },
+  { imgSrc: A, title: "Kỹ năng sống", type: "A" },
+  { imgSrc: N, title: "Nuôi dạy con", type: "N" },
+  { imgSrc: C, title: "Chính trị - Pháp luật", type: "C" },
+  { imgSrc: I, title: "Điện ảnh - Âm nhạc - Hội họa", type: "I" },
+  { imgSrc: Y, title: "Y học - Sức khỏe", type: "Y" },
+  { imgSrc: D, title: "Du lịch - Thể thao", type: "D" },
 ];
 
 const ItemsList = () => {
@@ -26,7 +35,7 @@ const ItemsList = () => {
 
   return (
     <div className="items-list-wrapper">
-      <h2 className="items-list-title">Danh mục sản phẩm</h2>
+      <h3 className="items-list-title">DANH MỤC SẢN PHẨM</h3>
       <div className="container">
         {items.map((item, index) => (
           <div key={index} className="itemtype" onClick={() => handleClick(item.type)}>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 // import Slide from "../../../components/Slide";
 import "./Voucher.css";
 import { Link } from "react-router-dom";
+import voucherImage from "../../../assets/voucher.png"
 
 // Hien thi chi tiet 1 voucher
 const Voucher = ({
@@ -27,7 +28,7 @@ const Voucher = ({
 
   return (
     <div className="voucher">
-      <img src="src/assets/voucher.png" alt="Voucher" />
+      <img src={voucherImage} alt="Voucher" />
       <p>
         <b onClick={handleCopy} style={{ cursor: "pointer", color: "#CD0000" }}>
           {voucherCode}
