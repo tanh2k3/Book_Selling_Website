@@ -8,6 +8,8 @@ import { UserProvider } from "./context/UserContext";
 import VerifyAccount from "./pages/VerifyAccount";
 import ListProduct from "./pages/ListProduct";
 import Order from "./pages/Order";
+import VoucherPage from "./pages/VoucherPage";
+import Admin from "./pages/Admin";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/list" element={<ListProduct />} />
           <Route path="/order" element={<Order />} />
           <Route path="/forgot-password" element={<VerifyAccount isresetpass={true} />} />
+          <Route path="/voucher" element={<VoucherPage />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>

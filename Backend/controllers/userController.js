@@ -217,4 +217,44 @@ router.get('/orders/:id', (req, res) => {
   })
 });
 
+// API xóa sản phẩm khỏi giỏ hàng
+router.delete('/cart/:userId/:productId', async (req, res) => {
+  const { userId, productId } = req.params;
+
+  try {
+      // Tìm user theo userId
+      const user = await User.findById(userId);
+
+      if (!user) {
+          return res.status(404).json({ message: 'Người dùng không tồn tại.' });
+      }
+
+      // Lọc bỏ sản phẩm khỏi giỏ hàng
+      const updatedCart = user.cart.filter(item => item.product.toString() !== productId);
+
+      // Cập nhật giỏ hàng trong cơ sở dữ liệu
+      user.cart = updatedCart;
+      await user.save();
+
+      res.status(200).json({ message: 'Sản phẩm đã được xóa khỏi giỏ hàng.', cart: updatedCart });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Lỗi khi xóa sản phẩm khỏi giỏ hàng.' });
+  }
+});
+
+router.get('/api/users/number', (req, res) => {
+  User.countDocuments({}).then((data) => {
+      res.status(200).send(data.toString());
+  });
+});
+
+router.get('/accs', (req, res) => {
+  User.find().then(accs => {
+    res.send({ status: 'success', accs });
+  }).catch(error => {
+    res.send({ status: 'fail', message: error.message });
+  });
+});
+
 module.exports = router;

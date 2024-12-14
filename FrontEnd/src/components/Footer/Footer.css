@@ -1,6 +1,6 @@
 .fter{
     /*background-color: #e4e4e4;*/
-    background-color: #CD0000;
+    background: radial-gradient(circle at 10% 20%, rgb(238, 56, 56) 0%, rgba(206, 21, 0, 0.92) 90.1%);
     font-family: Arial, Helvetica, sans-serif;
     color: #ffffff;
   }

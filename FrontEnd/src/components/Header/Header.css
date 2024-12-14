@@ -7,14 +7,19 @@
     /*position: fixed;*/
     top: 0;
     left: 0;
-    background-color: #CD0000;
+    background: radial-gradient(circle at 10% 20%, rgb(238, 56, 56) 0%, rgba(206, 21, 0, 0.92) 90.1%);
+}
+.logo_container{
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.logo {
+    width: 120px;
+    object-fit: contain; /* Giữ tỉ lệ ảnh trong khung, thêm khoảng trắng nếu cần */
   }
   
-  .logo {
-      width: 250px;
-      padding: none;
-      height: 100px;
-  }
   
   .extra-buttons {
       display: flex;

@@ -2,19 +2,26 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import "./ItemsList.css";
+import Slide from "../../../components/Slide";
 
 const items = [
-  { imgSrc: "src/assets/english_book.png", title: "Sách Tiếng Anh", type: "english" },
-  { imgSrc: "src/assets/vietnamese_book.png", title: "Sách tiếng Việt", type: "vietnamese" },
-  { imgSrc: "src/assets/van_phong_pham.png", title: "Văn phòng phẩm", type: "stationery" },
-  { imgSrc: "src/assets/qua_luu_niem.png", title: "Quà lưu niệm", type: "gifts" },
+  { imgSrc: "src/assets/english_book.png", title: "Văn học", type: "V" },
+  { imgSrc: "src/assets/english_book.png", title: "Kinh tế - Kinh doanh", type: "K" },
+  { imgSrc: "src/assets/english_book.png", title: "Giáo dục - Học thuật", type: "G" },
+  { imgSrc: "src/assets/english_book.png", title: "Thiếu nhi", type: "T" },
+  { imgSrc: "src/assets/english_book.png", title: "Kỹ năng sống", type: "A" },
+  { imgSrc: "src/assets/english_book.png", title: "Nuôi dạy con", type: "N" },
+  { imgSrc: "src/assets/english_book.png", title: "Chính trị - Pháp luật", type: "C" },
+  { imgSrc: "src/assets/english_book.png", title: "Điện ảnh - Âm nhạc - Hội họa", type: "I" },
+  { imgSrc: "src/assets/english_book.png", title: "Y học - Sức khỏe", type: "Y" },
+  { imgSrc: "src/assets/english_book.png", title: "Du lịch - Thể thao", type: "D" },
 ];
 
 const ItemsList = () => {
   const navigate = useNavigate();
 
   const handleClick = (type) => {
-    navigate(`/books/${type}`);
+    navigate(`/list?type=${type}`);
   };
 
   return (
@@ -22,7 +29,7 @@ const ItemsList = () => {
       <h2 className="items-list-title">Danh mục sản phẩm</h2>
       <div className="container">
         {items.map((item, index) => (
-          <div key={index} className="item" onClick={() => handleClick(item.type)}>
+          <div key={index} className="itemtype" onClick={() => handleClick(item.type)}>
             <img src={item.imgSrc} alt={item.title} />
             <p>{item.title}</p>
           </div>

@@ -2,8 +2,9 @@ import React from "react";
 import "./styles.css";
 import { formatPrice } from "../../utils/index.js";
 import { Link } from "react-router-dom";
+import ReactStars from "react-rating-stars-component";
 
-const CardItem = ({ item }) => {
+const CardItem = ({ book }) => {
   const defaultItem = {
     id: 0,
     imgSrc:
@@ -13,31 +14,53 @@ const CardItem = ({ item }) => {
     price: 100000,
     discount: 10,
     sold: 20,
+    rating: 4,
   };
 
-  const { id, imgSrc, title, description, price, discount, sold } = {
+  const { _id, imgSrc, title, description, price, discount, soldCount, rating } = {
     ...defaultItem,
-    ...item,
+    ...book,
   };
 
   const priceAfterDiscount = (price) => {
-    return formatPrice(price - (price * discount) / 100);
+    return formatPrice(price);
+  };
+
+  const formatTitle = (title) => {
+    if (title.length > 30) {
+      return title.slice(0, 30) + "...";
+    }
+    return title;
   };
 
   return (
     <div className="cardItem">
-      <div className="imageItem">
-        <img src={imgSrc} alt={title} />
-      </div>
-      <Link to={`/book/${id}`} className="product-title-link">
-        <h3 className="product-title">{title}</h3>
+      <Link to={`/book/${_id}`} key={_id}>
+        <div className="book-card">
+          <div className="book-image">
+            <img src={imgSrc} alt={title} />
+          </div>
+          <h2 className="book-title-item">{formatTitle(title)}</h2>
+          <div className="book-rating">
+            <ReactStars
+              count={5}
+              size={20}
+              activeColor="#ffd700"
+              value={rating}
+              isHalf={true}
+              edit={false}
+            />
+          </div>
+          <div className="book-price">
+            <p className="book-discount">
+              {" "}
+              {discount > 0 ? `-${discount}%` : ""}
+            </p>
+            <p>{priceAfterDiscount(price)}₫</p>
+          </div>
+          <p> Đã bán: {soldCount}</p>
+        </div>
       </Link>
-      <p className="currPrice">{priceAfterDiscount(price)}₫</p>
-      <div className="oldPrice">
-        <p className="discountPercent">{discount}%</p>
-        <strong>{formatPrice(price)}₫</strong>
-      </div>
-      <p className="amount">Đã bán: {sold}</p>
     </div>
   );
 };

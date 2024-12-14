@@ -1,53 +1,61 @@
+.items-list-wrapper{
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
 .container {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   flex-wrap: wrap; /* Allow items to wrap for smaller screens */
-  padding: 20px;
   background-color: #f7f7f7;
   font-family: 'Inter', Helvetica, Arial, sans-serif;
-  gap: 30px; /* Add spacing between items for better visual separation */
 }
 
-.item {
+.itemtype {
   text-align: center;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add smooth animation for hover */
 }
 
-.item:hover {
-  transform: translateY(-5px); /* Slightly lift the item on hover */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Add shadow effect on hover */
+.itemtype:hover {
+  transform: translateY(-5px); /* Slightly lift the itemtype on hover */
 }
 
-.item img {
-  width: 120px; /* Consistent size for better visibility */
-  height: 120px;
+.itemtype img {
+  width: 100px; /* Consistent size for better visibility */
+  height: 100px;
   border-radius: 50%;
   border: 2px solid #ddd; /* Add a subtle border */
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
 }
 
-.item img:hover {
+.itemtype img:hover {
   transform: scale(1.1); /* Slight zoom on hover */
   border-color: #007bff; /* Change border color on hover */
   box-shadow: 0 4px 10px rgba(0, 123, 255, 0.5); /* Add box shadow on hover */
 }
 
-.item p {
-  margin-top: 10px;
+.itemtype p {
   font-weight: bold;
+  display: flex;
+  width: 100px;
+  height: 50px;
+  justify-content: center;
+  align-self: center;
   font-size: 14px; /* Adjust font size for clarity */
   color: #333; /* Neutral text color for readability */
   text-transform: capitalize; /* Capitalize text for a uniform style */
   line-height: 1.4; /* Improve readability */
 }
 
-.item:hover p {
+.itemtype:hover p {
   color: #007bff; /* Add a hover effect for text color */
 }
 .items-list-wrapper {
-  padding: 20px;
   background-color: #f7f7f7;
   font-family: "Inter", Helvetica, Arial, sans-serif;
 }
@@ -57,28 +65,27 @@
   font-weight: bold;
   color: #333;
   margin-bottom: 20px;
-  text-align: center; /* Center the title */
 }
 
 
 @media (max-width: 768px) {
-  .item img {
+  .itemtype img {
     width: 90px; /* Adjust image size for smaller screens */
     height: 90px;
   }
 
-  .item p {
+  .itemtype p {
     font-size: 12px; /* Adjust font size for smaller screens */
   }
 }
 
 @media (max-width: 480px) {
-  .item img {
+  .itemtype img {
     width: 70px; /* Further reduce size for very small screens */
     height: 70px;
   }
 
-  .item p {
+  .itemtype p {
     font-size: 10px; /* Adjust font size for very small screens */
   }
 }

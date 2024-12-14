@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Voucher = require("../models/Voucher");
-const { checkAdmin } = require("../services/verityService");
+const { checkAdmin } = require("../services/verityService"); // Quyen admin
 
 router.get("/", async (req, res) => {
   try {

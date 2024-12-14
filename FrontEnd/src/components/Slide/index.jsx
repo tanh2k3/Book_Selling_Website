@@ -42,7 +42,7 @@ const Slide = ({ children, numToShow }) => {
             <button className="slide-button prev" onClick={() => sliderRef.current.slickPrev()}>
                 <FaChevronLeft />
             </button>
-            <Slider ref={sliderRef} {...settings} className="slide-container">
+            <Slider ref={sliderRef} {...settings} className="slide-container products-container">
                 {children}
             </Slider>
             <button className="slide-button next" onClick={() => sliderRef.current.slickNext()}>

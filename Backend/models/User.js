@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema(
     role: { type: String, default: "user" },
     favorite: [
       {
-        favProId: { type: mongoose.Schema.Types.ObjectId, ref: "products" }
+        favProId: String
       }
     ],
     cart: [
