@@ -62,12 +62,23 @@
 
 .quantity-control {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: center; 
+  justify-content: center; 
+  gap: 10px; 
 }
 
+.quantity {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  text-align: center; 
+  line-height: 1; 
+  min-width: 30px; 
+}
+
+
 .quantity-control button {
-  background-color: #28a745;
+  background-color: rgba(206, 21, 0, 0.92);
   color: white;
   border: none;
   padding: 5px 10px;
@@ -79,7 +90,7 @@
 }
 
 .quantity-control button:hover {
-  background-color: #218838;
+  background-color: #FFD700;
   transform: scale(1.05);
 }
 
@@ -98,7 +109,7 @@
   text-align: center;
 }
 
-/* Book Details Table */
+
 .book-details-table {
   width: 100%;
   border-collapse: collapse;
@@ -140,7 +151,7 @@
 }
 
 .add-to-cart {
-  background-color: #007bff;
+  background-color: #FFD700;
   color: white;
 }
 
@@ -315,6 +326,14 @@ button:active {
   justify-content: center;
   transition: background-color 0.3s ease;
   z-index: 2;
+}
+
+.book-description {
+  text-align: center; /* Center-align the text */
+  font-size: 16px; /* Adjust font size for readability */
+  color: #555; /* Set a neutral text color */
+  margin-top: 20px; /* Add some spacing from the previous element */
+  line-height: 1.5; /* Improve readability with proper line spacing */
 }
 
 .scroll-button:hover {

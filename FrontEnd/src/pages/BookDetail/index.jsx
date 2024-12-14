@@ -65,12 +65,13 @@ const BookDetail = () => {
 
   const [quantity, setQuantity] = useState(1);
 
+
   const handleAddToCart = (quantity) => {
     console.log(`Thêm ${quantity} sách vào giỏ hàng.`);
+ 
+    setQuantity(0);
   };
-
-
-
+  
   if (loading) {
     return <p>Đang tải thông tin...</p>;
   }
