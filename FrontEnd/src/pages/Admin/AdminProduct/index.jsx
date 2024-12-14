@@ -11,18 +11,10 @@ const AdminProduct = () => {
     author: "",
     translator: "",
     price: 0,
-    originalPrice: 0,
-    discount: 0,
-    rating: 0,
-    reviewsCount: 0,
-    soldCount: 0,
-    features: [],
-    similarBooks: [],
     sku: "",
     ageGroup: "",
     supplier: "",
     publisher: "",
-    publicationYear: "",
     language: "",
     weight: "",
     dimensions: "",
@@ -33,6 +25,25 @@ const AdminProduct = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const fieldLabels = {
+    imgSrc: "URL Hình Ảnh",
+    title: "Tiêu Đề",
+    author: "Tác Giả",
+    translator: "Người Biên Dịch",
+    price: "Giá",
+    sku: "Mã Sản Phẩm (SKU)",
+    ageGroup: "Nhóm Tuổi",
+    supplier: "Nhà Cung Cấp",
+    publisher: "Nhà Xuất Bản",
+    language: "Ngôn Ngữ",
+    weight: "Trọng Lượng",
+    dimensions: "Kích Thước",
+    pages: "Số Trang",
+    binding: "Loại Bìa",
+    description: "Mô Tả",
+    type: "Loại Sách",
+  };
 
   // Fetch all products
   useEffect(() => {
@@ -60,18 +71,10 @@ const AdminProduct = () => {
           author: "",
           translator: "",
           price: 0,
-          originalPrice: 0,
-          discount: 0,
-          rating: 0,
-          reviewsCount: 0,
-          soldCount: 0,
-          features: [],
-          similarBooks: [],
           sku: "",
           ageGroup: "",
           supplier: "",
           publisher: "",
-          publicationYear: "",
           language: "",
           weight: "",
           dimensions: "",
@@ -128,30 +131,43 @@ const AdminProduct = () => {
   return (
     <div className="admin-product-container">
       <h1>Quản Lý Sản Phẩm</h1>
+
+      {/* Add New Product */}
       <div className="admin-product-actions">
         <h2>Thêm Sản Phẩm Mới</h2>
         {Object.keys(newProduct).map((key) => (
-          <div key={key}>
-            <label>{key}</label>
-            <input
-              type={typeof newProduct[key] === "number" ? "number" : "text"}
-              placeholder={key}
-              value={newProduct[key]}
-              onChange={(e) =>
-                setNewProduct({ ...newProduct, [key]: e.target.value })
-              }
-            />
+          <div key={key} className="form-group">
+            <label>{fieldLabels[key]}</label>
+            {key === "description" ? (
+              <textarea
+                placeholder={fieldLabels[key]}
+                value={newProduct[key]}
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, [key]: e.target.value })
+                }
+              />
+            ) : (
+              <input
+                type={typeof newProduct[key] === "number" ? "number" : "text"}
+                placeholder={fieldLabels[key]}
+                value={newProduct[key]}
+                onChange={(e) =>
+                  setNewProduct({ ...newProduct, [key]: e.target.value })
+                }
+              />
+            )}
           </div>
         ))}
         <button onClick={handleAddProduct}>Thêm Sản Phẩm</button>
       </div>
 
+      {/* Product List */}
       <div className="admin-product-list">
         <h2>Danh Sách Sản Phẩm</h2>
         <table>
           <thead>
             <tr>
-              <th>Tên Sản Phẩm</th>
+              <th>Tiêu Đề</th>
               <th>Tác Giả</th>
               <th>Giá</th>
               <th>Hành Động</th>
@@ -173,20 +189,37 @@ const AdminProduct = () => {
         </table>
       </div>
 
+      {/* Edit Selected Product */}
       {selectedProduct && (
         <div className="admin-product-edit">
           <h2>Sửa Sản Phẩm</h2>
           {Object.keys(selectedProduct).map((key) => (
-            <div key={key}>
-              <label>{key}</label>
-              <input
-                type={typeof selectedProduct[key] === "number" ? "number" : "text"}
-                placeholder={key}
-                value={selectedProduct[key]}
-                onChange={(e) =>
-                  setSelectedProduct({ ...selectedProduct, [key]: e.target.value })
-                }
-              />
+            <div key={key} className="form-group">
+              <label>{fieldLabels[key]}</label>
+              {key === "description" ? (
+                <textarea
+                  placeholder={fieldLabels[key]}
+                  value={selectedProduct[key]}
+                  onChange={(e) =>
+                    setSelectedProduct({
+                      ...selectedProduct,
+                      [key]: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <input
+                  type={typeof selectedProduct[key] === "number" ? "number" : "text"}
+                  placeholder={fieldLabels[key]}
+                  value={selectedProduct[key]}
+                  onChange={(e) =>
+                    setSelectedProduct({
+                      ...selectedProduct,
+                      [key]: e.target.value,
+                    })
+                  }
+                />
+              )}
             </div>
           ))}
           <button onClick={handleUpdateProduct}>Cập Nhật</button>
