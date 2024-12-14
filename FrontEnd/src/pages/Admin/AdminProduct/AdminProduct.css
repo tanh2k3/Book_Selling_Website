@@ -1,0 +1,34 @@
+.admin-product-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .admin-product-actions,
+  .admin-product-edit {
+    margin-bottom: 20px;
+  }
+  
+  .admin-product-actions input,
+  .admin-product-edit input {
+    margin-right: 10px;
+    padding: 5px;
+  }
+  
+  .admin-product-list table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .admin-product-list th,
+  .admin-product-list td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  button {
+    padding: 5px 10px;
+    margin-right: 5px;
+    cursor: pointer;
+  }
+  
