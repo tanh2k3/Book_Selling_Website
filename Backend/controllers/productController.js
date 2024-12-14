@@ -154,5 +154,15 @@ router.post("/list", async (req, res) => {
   
   );
 
+  router.get('/similar/:type', async (req, res) => {
+    try {
+      const { type } = req.params;
+      const books = await Product.find({ type }).limit(10); // Limit results to 10 books
+      res.json(books);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching similar books', error });
+    }
+  });
+
 
 module.exports = router;
