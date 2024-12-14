@@ -397,4 +397,87 @@ button:active {
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  .book-detail {
+    flex-direction: column; /* Stack items vertically for smaller screens */
+  }
+
+  .quantity-price-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .book-details-table td {
+    font-size: 12px; /* Smaller font size for readability */
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 10px; /* Reduce spacing between buttons */
+  }
+
+  .similar-book-card {
+    flex: 0 0 120px;
+  }
+
+  .similar-book-card img {
+    height: 150px;
+  }
+
+  .book-detail-left img {
+    max-width: 100%; /* Ensure images take the full width */
+  }
+
+  .book-title {
+    font-size: 22px; /* Reduce font size for the title */
+  }
+}
+
+@media (max-width: 480px) {
+  .book-title {
+    font-size: 20px; /* Further reduce font size for mobile screens */
+  }
+
+  .quantity-price-row {
+    gap: 10px; /* Reduce gaps between quantity controls */
+  }
+
+  .quantity-control button {
+    font-size: 14px; /* Adjust button font size */
+  }
+
+  .similar-book-card {
+    flex: 0 0 100px; /* Smaller card size */
+  }
+
+  .similar-book-card img {
+    height: 120px;
+  }
+
+  .add-to-cart,
+  .buy-now {
+    font-size: 14px; /* Adjust button font size */
+    padding: 10px; /* Smaller padding for mobile buttons */
+  }
+
+  .feedback-item p {
+    font-size: 12px; /* Smaller font size for feedback text */
+  }
+
+  .feedback-item small {
+    font-size: 10px; /* Adjust font size for feedback time */
+  }
+
+  .feedback-form textarea {
+    font-size: 12px; /* Adjust textarea font size */
+  }
+
+  .feedback-stars {
+    font-size: 18px; /* Reduce star size for mobile */
+  }
+
+  .similar-books-container {
+    gap: 10px; /* Reduce gaps between similar book cards */
+  }
+}
 
