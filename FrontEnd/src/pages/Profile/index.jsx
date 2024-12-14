@@ -140,6 +140,7 @@ function Profile() {
             <div>
             <div style={{height:"20px"}}/>
             <h1>Thông tin cá nhân</h1>
+            <div className='thong-tin-ca-nhan'>
             <div className="info-item">
                 <span>Họ và tên: </span>
                 {isEditingName ? 
@@ -198,8 +199,10 @@ function Profile() {
                 </>)}
             </div>
             {error && <p className="error-message">{error}</p>}
+            </div>
         </div>
 
+        <div style={{height:"20px"}}/>
         <h1>Đơn hàng</h1>
         <div style={{height:"20px"}}/>
         {orders.length === 0 ? <h2 style={{textAlign:"center"}}>Bạn chưa có đơn hàng nào</h2> :

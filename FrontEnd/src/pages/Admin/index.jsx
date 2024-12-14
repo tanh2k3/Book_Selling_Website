@@ -10,7 +10,7 @@ import { AiFillProduct } from "react-icons/ai";
 import { FaUserFriends } from "react-icons/fa";
 import { IoTicket } from "react-icons/io5";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
-import { TbLogout } from "react-icons/tb";
+import { MdLogout } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useUser } from '../../context/UserContext';
 
@@ -42,7 +42,7 @@ function Admin()
                 <button onClick={() => setActiveTab('user')}><FaUserFriends style={{"marginBottom":"-3px"}}/> Khách hàng</button>
                 <button onClick={() => setActiveTab('voucher')}><IoTicket style={{"marginBottom":"-2px"}}/> Voucher</button>
                 </div>
-                <button onClick={handleLogout}><TbLogout style={{"fontSize":"30px","marginBottom":"-6px"}}/> Đăng xuất</button>
+                <button onClick={handleLogout}><MdLogout style={{"fontSize":"30px","marginBottom":"-6px"}}/> Đăng xuất</button>
             </div>
             <div className="Admin-content">
                 {activeTab === 'revenue' && <AdminRevenue/>}

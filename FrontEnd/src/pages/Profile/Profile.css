@@ -139,17 +139,9 @@ tr:nth-child(even) {
   color: #000000;
   background-color: #FFD700;
 }
-/*.ttct{
-    text-align: center;
+.thong-tin-ca-nhan{
+  max-width: 480px;
+  margin: 0 auto; /* Căn giữa theo chiều ngang */
+  text-align: left; /* Giữ chữ căn thẳng bên trái */
+  position: relative; /* Cần nếu dùng flex/absolute để căn giữa */
 }
-.ttct:hover{
-    cursor: pointer;
-    text-decoration: underline;
-}
-  .cart-icon{
-    margin-top: 5px;
-    font-size: 20px;
-    margin-bottom: none;
-    padding: none;
-  }
-  */
