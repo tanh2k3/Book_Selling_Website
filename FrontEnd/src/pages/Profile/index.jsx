@@ -193,23 +193,21 @@ function Profile() {
                         <thead>
                             <tr>
                                 <th>STT</th>
-                                <th>Số lượng sản phẩm</th>
+                                <th>Mã đơn hàng</th>
                                 <th>Tổng giá trị</th>
                                 <th>Trạng thái</th>
                                 <th>Phương thức thanh toán</th>
                                 <th>Ngày đặt</th>
-                                <th>Ngày giao</th>
                             </tr>
                         </thead>
                         <tbody>
                             {orders.map((order, index) => (
                                 <tr key={index}>
                                     <td className="stt">{index+1}</td>
-                                    <td className="stt">{order.total}</td>
+                                    <td className="stt">{order._id}</td>
                                     <td>{order.total}</td>
                                     <td>{order.status}</td>
-                                    <td>{order.total}</td>
-                                    <td>{order.createdAt}</td>
+                                    <td>{order.type}</td>
                                     <td>{order.createdAt}</td>
                                 </tr>
                             ))}

@@ -127,7 +127,7 @@ function AdminOrder()
                     <div className="cardgh" key={index}>
                         <img src={p.imgSrc}/>
                         <div className="cardghh-text">
-                            <p style={{"height" : "40px"}}>{p.title}</p>
+                            <p style={{"height" : "70px"}}>{p.title}</p>
                             <p>Số lượng: {sp.quantity}</p>
                             <p>Giá: {p.price}₫</p>
                           <div className="cardghprice">
