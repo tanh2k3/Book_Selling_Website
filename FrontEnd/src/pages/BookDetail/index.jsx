@@ -56,11 +56,11 @@ const BookDetail = () => {
   };
 
   if (loading) {
-    return <p>Loading book details...</p>;
+    return <p>Đang tải thông tin...</p>;
   }
 
   if (!book) {
-    return <p>No book details available. Please try again later.</p>;
+    return <p>Không có thông tin cuốn sách. Vui lòng thử lại sau.</p>;
   }
 
   const handleBuyNow = () => {
@@ -80,7 +80,7 @@ const BookDetail = () => {
             {/* Action Buttons */}
             <div className="action-buttons">
               <button className="add-to-cart">Thêm vào giỏ hàng</button>
-              <button className="buy-now" onClick={handleBuyNow} >Mua ngay</button>
+              <button className="buy-now" onClick={handleBuyNow} >Yêu thích</button>
             </div>
           </div>
 
@@ -89,11 +89,11 @@ const BookDetail = () => {
             <table className="book-details-table">
               <tbody>
                 <tr>
-                  <td>Author</td>
+                  <td>Tác giả</td>
                   <td>{book.author}</td>
                 </tr>
                 <tr>
-                  <td>Translator</td>
+                  <td>Người dịch</td>
                   <td>{book.translator || "N/A"}</td>
                 </tr>
                 <tr>
@@ -101,31 +101,31 @@ const BookDetail = () => {
                   <td>{book.sku || "N/A"}</td>
                 </tr>
                 <tr>
-                  <td>Publisher</td>
+                  <td>Nhà Xuất Bản</td>
                   <td>{book.publisher || "N/A"}</td>
                 </tr>
                 <tr>
-                  <td>Publication Year</td>
+                  <td>Năm xuất bản</td>
                   <td>{book.publicationYear || "N/A"}</td>
                 </tr>
                 <tr>
-                  <td>Language</td>
+                  <td>Ngôn ngữ</td>
                   <td>{book.language || "N/A"}</td>
                 </tr>
                 <tr>
-                  <td>Weight</td>
+                  <td>Trọng lượng</td>
                   <td>{book.weight || "N/A"}</td>
                 </tr>
                 <tr>
-                  <td>Dimensions</td>
+                  <td>Kích thước</td>
                   <td>{book.dimensions || "N/A"}</td>
                 </tr>
                 <tr>
-                  <td>Pages</td>
+                  <td>Số trang</td>
                   <td>{book.pages || "N/A"}</td>
                 </tr>
                 <tr>
-                  <td>Binding</td>
+                  <td>Loại bìa</td>
                   <td>{book.binding || "N/A"}</td>
                 </tr>
               </tbody>
@@ -138,7 +138,7 @@ const BookDetail = () => {
         </div>
 
         <div className="similar-books-section">
-          <h3>Có thể bạn thích </h3>
+          <h3>Sách liên quan</h3>
           <div className="similar-books-container">
             {book.similarBooks.slice(0, 8).map((similarBook, index) => (
               <div key={index} className="similar-book-card">
