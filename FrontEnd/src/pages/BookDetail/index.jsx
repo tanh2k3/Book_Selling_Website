@@ -177,7 +177,7 @@ const BookDetail = () => {
                 <div
                   key={similarBook._id}
                   className="similar-book-card"
-                  onClick={() => navigate(`/book/${similarBook._id}`)} 
+                  onClick={() => navigate(`/book/${similarBook._id}`)}
                   style={{ cursor: "pointer" }}
                 >
                   <img src={similarBook.imgSrc} alt={similarBook.title} />

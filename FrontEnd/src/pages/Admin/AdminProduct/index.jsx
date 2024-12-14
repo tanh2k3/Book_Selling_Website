@@ -6,16 +6,35 @@ const AdminProduct = () => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [newProduct, setNewProduct] = useState({
+    imgSrc: "",
     title: "",
     author: "",
+    translator: "",
     price: 0,
-    imgSrc: "",
+    originalPrice: 0,
+    discount: 0,
+    rating: 0,
+    reviewsCount: 0,
+    soldCount: 0,
+    features: [],
+    similarBooks: [],
+    sku: "",
+    ageGroup: "",
+    supplier: "",
+    publisher: "",
+    publicationYear: "",
+    language: "",
+    weight: "",
+    dimensions: "",
+    pages: 0,
+    binding: "",
+    description: "",
     type: "",
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // Lấy danh sách sản phẩm
+  // Fetch all products
   useEffect(() => {
     axios
       .get("http://localhost:3001/product")
@@ -24,18 +43,43 @@ const AdminProduct = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Lỗi khi lấy danh sách sản phẩm:", error);
+        console.error("Error fetching products:", error);
         setError("Không thể tải danh sách sản phẩm.");
       });
   }, []);
 
-  // Thêm sản phẩm mới
+  // Add a new product
   const handleAddProduct = () => {
     axios
       .post("http://localhost:3001/product", newProduct)
       .then((response) => {
         setProducts([...products, response.data.data]);
-        setNewProduct({ title: "", author: "", price: 0, imgSrc: "", type: "" });
+        setNewProduct({
+          imgSrc: "",
+          title: "",
+          author: "",
+          translator: "",
+          price: 0,
+          originalPrice: 0,
+          discount: 0,
+          rating: 0,
+          reviewsCount: 0,
+          soldCount: 0,
+          features: [],
+          similarBooks: [],
+          sku: "",
+          ageGroup: "",
+          supplier: "",
+          publisher: "",
+          publicationYear: "",
+          language: "",
+          weight: "",
+          dimensions: "",
+          pages: 0,
+          binding: "",
+          description: "",
+          type: "",
+        });
         alert("Thêm sản phẩm mới thành công!");
       })
       .catch((error) => {
@@ -44,7 +88,7 @@ const AdminProduct = () => {
       });
   };
 
-  // Cập nhật sản phẩm
+  // Update an existing product
   const handleUpdateProduct = () => {
     if (!selectedProduct) return;
     axios
@@ -63,7 +107,7 @@ const AdminProduct = () => {
       });
   };
 
-  // Xóa sản phẩm
+  // Delete a product
   const handleDeleteProduct = (id) => {
     if (!window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) return;
     axios
@@ -86,36 +130,19 @@ const AdminProduct = () => {
       <h1>Quản Lý Sản Phẩm</h1>
       <div className="admin-product-actions">
         <h2>Thêm Sản Phẩm Mới</h2>
-        <input
-          type="text"
-          placeholder="Tên sản phẩm"
-          value={newProduct.title}
-          onChange={(e) => setNewProduct({ ...newProduct, title: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Tác giả"
-          value={newProduct.author}
-          onChange={(e) => setNewProduct({ ...newProduct, author: e.target.value })}
-        />
-        <input
-          type="number"
-          placeholder="Giá"
-          value={newProduct.price}
-          onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Link hình ảnh"
-          value={newProduct.imgSrc}
-          onChange={(e) => setNewProduct({ ...newProduct, imgSrc: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Loại"
-          value={newProduct.type}
-          onChange={(e) => setNewProduct({ ...newProduct, type: e.target.value })}
-        />
+        {Object.keys(newProduct).map((key) => (
+          <div key={key}>
+            <label>{key}</label>
+            <input
+              type={typeof newProduct[key] === "number" ? "number" : "text"}
+              placeholder={key}
+              value={newProduct[key]}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, [key]: e.target.value })
+              }
+            />
+          </div>
+        ))}
         <button onClick={handleAddProduct}>Thêm Sản Phẩm</button>
       </div>
 
@@ -149,46 +176,19 @@ const AdminProduct = () => {
       {selectedProduct && (
         <div className="admin-product-edit">
           <h2>Sửa Sản Phẩm</h2>
-          <input
-            type="text"
-            placeholder="Tên sản phẩm"
-            value={selectedProduct.title}
-            onChange={(e) =>
-              setSelectedProduct({ ...selectedProduct, title: e.target.value })
-            }
-          />
-          <input
-            type="text"
-            placeholder="Tác giả"
-            value={selectedProduct.author}
-            onChange={(e) =>
-              setSelectedProduct({ ...selectedProduct, author: e.target.value })
-            }
-          />
-          <input
-            type="number"
-            placeholder="Giá"
-            value={selectedProduct.price}
-            onChange={(e) =>
-              setSelectedProduct({ ...selectedProduct, price: e.target.value })
-            }
-          />
-          <input
-            type="text"
-            placeholder="Link hình ảnh"
-            value={selectedProduct.imgSrc}
-            onChange={(e) =>
-              setSelectedProduct({ ...selectedProduct, imgSrc: e.target.value })
-            }
-          />
-          <input
-            type="text"
-            placeholder="Loại"
-            value={selectedProduct.type}
-            onChange={(e) =>
-              setSelectedProduct({ ...selectedProduct, type: e.target.value })
-            }
-          />
+          {Object.keys(selectedProduct).map((key) => (
+            <div key={key}>
+              <label>{key}</label>
+              <input
+                type={typeof selectedProduct[key] === "number" ? "number" : "text"}
+                placeholder={key}
+                value={selectedProduct[key]}
+                onChange={(e) =>
+                  setSelectedProduct({ ...selectedProduct, [key]: e.target.value })
+                }
+              />
+            </div>
+          ))}
           <button onClick={handleUpdateProduct}>Cập Nhật</button>
         </div>
       )}
