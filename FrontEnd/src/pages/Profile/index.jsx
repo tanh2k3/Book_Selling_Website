@@ -56,20 +56,6 @@ function Profile() {
         fetchOrders();
       }, []);
 
-    //   router.get("/favorite", checkLogin, async (req, res) => {
-    //     try {
-    //       const user = await User.findById(req.user.userId).populate(
-    //         "favorite.product"
-    //       );
-    //       if (!user) {
-    //         return res.status(404).json({ message: "Người dùng không tồn tại." });
-    //       }
-    //       res.status(200).json({ favorite: user.favorite });
-    //     } catch (error) {
-    //       console.error(error);
-    //       res.status(500).json({ message: "Lỗi khi lấy danh sách yêu thích." });
-    //     }
-    //   });
     const [favorites, setFavorites] = useState([]);
     useEffect(() => {
         const fetchFavorites = async () => {
@@ -109,19 +95,14 @@ function Profile() {
                 data: { productId },
             });
             if (response.status === 200) {
-                setFavorites(favorites.filter(favorite => favorite.product._id !== productId));
+                setUser((prevUser) => ({
+                    ...prevUser,
+                    favorite: prevUser.favorite.filter((item) => item.product !== productId),
+                }));
+                setFavorites(favorites.filter((favorite) => favorite.product._id !== productId));
             } else {
                 alert("Failed to remove favorite");
             }
-            setFavorites(favorites.filter(favorite => favorite.product._id !== productId));
-            const user = JSON.parse(localStorage.getItem("user"));
-            for (let i = 0; i < user.favorite.length; i++) {
-                if (user.favorite[i].product === productId) {
-                    user.favorite.splice(i, 1);
-                    break;
-                }
-            }
-            localStorage.setItem("user", JSON.stringify(user));
         }
         catch (error) {
             console.error('Error removing favorite:', error);

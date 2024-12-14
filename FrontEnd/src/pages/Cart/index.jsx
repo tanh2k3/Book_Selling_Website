@@ -1,170 +1,193 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useUser } from '../../context/UserContext';
 import './Cart.css';
+import { useUser } from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 function Cart() {
-    const { user } = useUser();
     const navigate = useNavigate();
+    const { user, setUser } = useUser();
 
-    const [products, setProducts] = useState([]);
-    const [cartproducts, setCartproducts] = useState([]);
-    const [customerInfo, setCustomerInfo] = useState({
-        name: '',
-        phone: '',
-        address: '',
-        paymentMethod: ''
-    });
+    const [cartItems, setCartItems] = useState([]);
+    const [checkeds, setCheckeds] = useState([]);
+    const [total, setTotal] = useState(0);
+    const [count, setCount] = useState(0);
+    const [discount, setDiscount] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:3001/product")
-            .then((response) => response.json())
-            .then((data) => setProducts(data))
-            .catch((error) => console.error("Error fetching products:", error));
+        const fetchCartItems = async () => {
+            try {
+                const jwt = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:3001/cart', {
+                    headers: {
+                        Authorization: `Bearer ${jwt}`
+                    }
+                });
+                setCartItems(response.data.cart);
+            } catch (error) {
+                console.error("Lỗi khi lấy sản phẩm:", error);
+            }
+        };
+        fetchCartItems();
     }, []);
 
-    // Update cartproducts when products or user.cart changes
-    useEffect(() => {
-        const updatedCartProducts = user.cart.map(cartItem => {
-            const product = products.find(prod => prod._id === cartItem.product);
-            return product ? { ...product, quantity: cartItem.quantity } : null;
-        }).filter(Boolean);
-        setCartproducts(updatedCartProducts);
-    }, [products, user.cart]);
-
-    const calculateTotal = () => {
-        return cartproducts.reduce((total, item) => {
-            return total + item.price * item.quantity;
-        }, 0);
-    };
-
-    const calculateTt = () => {
-        return cartproducts.reduce((tt, item) =>
-            tt + item.quantity, 0);
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setCustomerInfo(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-    };
-
-    const handleclick = (product) => {
-        navigate(`/book/${product._id}`);
-    };
-
-    const handleRemove = (product) => {
-        if (window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không?')) {
-            removeFromCart(product);
+    const handleCheck = (e) => {
+        const { name, checked } = e.target;
+        const item = cartItems.find(item => item.product._id === name);
+        if (checked) {
+            setCheckeds([...checkeds, name]);
+            setTotal(total + item.product.price * item.quantity);
+            setDiscount(discount + item.product.discount*item.product.price*item.quantity/100);
+            setCount(count + 1);
+        } else {
+            setCheckeds(checkeds.filter(id => id !== name));
+            setTotal(total - item.product.price * item.quantity);
+            setDiscount(discount - item.product.discount*item.product.price*item.quantity/100);
+            setCount(count - 1);
         }
     };
 
-    const removeFromCart = async (product) => {
+    const handleDelete = async (id) => {
         try {
-            // Gửi yêu cầu xóa sản phẩm khỏi giỏ hàng
-            await axios.delete(`http://localhost:3001/cart/${user._id}/${product._id}`);
-    
-            // Cập nhật lại giỏ hàng trong giao diện
-            const updatedCartProducts = cartproducts.filter(item => item._id !== product._id);
-            setCartproducts(updatedCartProducts);
-    
-            // Cập nhật giỏ hàng trong context người dùng
-            user.cart = user.cart.filter(cartItem => cartItem.product !== product._id);
-    
-            alert("Sản phẩm đã được xóa khỏi giỏ hàng.");
+            const jwt = localStorage.getItem('token');
+            await axios.delete('http://localhost:3001/cart', {
+                headers: {
+                    Authorization: `Bearer ${jwt}`
+                },
+                data: {
+                    productId: id
+                }
+            });
+            setCartItems(cartItems.filter(item => item.product._id !== id));
+            setUser((prevUsers) => ({
+                ...prevUsers,
+                cart: prevUsers.cart.filter(item => item.product !== id)
+            }));
         } catch (error) {
             console.error("Lỗi khi xóa sản phẩm:", error);
-            alert("Không thể xóa sản phẩm. Vui lòng thử lại.");
-        }
-    };
-    
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!customerInfo.name || !customerInfo.phone || !customerInfo.address || !customerInfo.paymentMethod) {
-            alert('Vui lòng điền đầy đủ thông tin.');
-            return;
-        }
-
-        if (customerInfo.paymentMethod === 'COD') {
-            handleOrder(e);
-        } else if (customerInfo.paymentMethod === 'BANKING') {
-            handlePayment();
         }
     };
 
-    const handleOrder = async (e) => {
-        // Logic đặt hàng
+    const handleDecreaseQuantity = async (id) => {
+        try {
+            const jwt = localStorage.getItem('token');
+            const item = cartItems.find(item => item.product._id === id);
+            if (item.quantity === 1) {
+                return;
+            }
+            const quantity = item.quantity - 1;
+            await axios.post('http://localhost:3001/cart', {
+                productId: id,
+                quantity: quantity
+            }, {
+                headers: {
+                    Authorization: `Bearer ${jwt}`
+                }
+            });
+            const newCartItems = [...cartItems];
+            const index = newCartItems.findIndex(item => item.product._id === id);
+            newCartItems[index].quantity = quantity;
+            setCartItems(newCartItems);
+        } catch (error) {
+            console.error("Lỗi khi giảm số lượng sản phẩm:", error);
+        }
     };
 
-    const handlePayment = () => {
-        navigate('/');
+    const handleIncreaseQuantity = async (id) => {
+        try {
+            const jwt = localStorage.getItem('token');
+            const item = cartItems.find(item => item.product._id === id);
+            const quantity = item.quantity + 1;
+            await axios.post('http://localhost:3001/cart', {
+                productId: id,
+                quantity: quantity
+            }, {
+                headers: {
+                    Authorization: `Bearer ${jwt}`
+                }
+            });
+            const newCartItems = [...cartItems];
+            const index = newCartItems.findIndex(item => item.product._id === id);
+            newCartItems[index].quantity = quantity;
+            setCartItems(newCartItems);
+        } catch (error) {
+            console.error("Lỗi khi tăng số lượng sản phẩm:", error);
+        }
     };
+
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+    }
+
+    const handleCheckout = async () => {
+        const listCheckeds = cartItems.filter(item => checkeds.includes(item.product._id));
+        const order = {
+            products: listCheckeds.map(item => ({
+                id: item.product._id,
+                quantity: item.quantity
+            }))
+        };
+        setUser((prevUsers) => ({
+            ...prevUsers,
+            order: order
+        }));
+        navigate('/order');
+    };
+
+    const handleCheckAll = () => {
+        const listCheckeds = cartItems.map(item => item.product._id);
+        setCheckeds(listCheckeds);
+        setTotal(cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0));
+        setDiscount(cartItems.reduce((total, item) => total + item.product.discount*item.product.price*item.quantity/100, 0));
+        setCount(cartItems.length
+        );
+    };
+
+    const handleUncheckAll = () => {
+        setCheckeds([]);
+        setTotal(0);
+        setDiscount(0);
+        setCount(0);
+    }
+
 
     return (
-        <div>
-            <div style={{ "height": "10px" }}></div>
-            <h1 style={{ fontFamily: 'Arial', marginLeft: '50px' }}>Giỏ hàng của bạn</h1>
-            <h3 style={{ fontFamily: 'Arial', marginLeft: '50px', padding: '10px' }}>TỔNG CỘNG: {calculateTotal()}₫</h3>
-            <div className='giohang'>
-                <div className="cardgh-zone">
-                    {cartproducts.length > 0 ? (
-                        <div className="cart-main">
-                            {cartproducts.map((product, index) => (
-                                <div className="cardgh" key={index}>
-                                    <img onClick={()=>handleclick(product)} src={product.imgSrc} alt={product.title} />
-                                    <div className="cardgh-text">
-                                        <p style={{ "height": "40px" }}>{product.title}</p>
-                                        <p>Số lượng: {product.quantity}</p>
-                                        <p>Giá: {product.price}₫</p>
-                                        <div className="cardghprice">
-                                            <div className="cargh-pr">Tổng: </div>
-                                            <div className="cardgh-price">{product.price * product.quantity}₫</div>
-                                        </div>
-                                    </div>
-                                    <div className='cardgh-button'>
-                                        <button onClick={() => handleRemove(product)}>Xóa</button>
-                                    </div>
-                                </div>
-                            ))}
+        <div className="cart-container">
+            <h2>Giỏ hàng của bạn</h2>
+            <div className="cart-items">
+                {cartItems.map(item => (
+                    <div key={item._id} className="cart-item">
+                        <input
+                            type="checkbox"
+                            name={item.product._id}
+                            checked={checkeds.includes(item.product._id)}
+                            onChange={handleCheck}
+                        />
+                        <img src={item.product.imgSrc} alt={item.product.title} className="cart-item-image" />
+                        <div className="cart-item-info">
+                            <h3 className="cart-item-title">{item.product.title}</h3>
+                            <p>Giá: {formatPrice(item.product.price)}</p>
+                            <p>Giảm giá: {item.product.discount}%</p>
+                            <h4>Số lượng: {item.quantity}</h4>
+                            <p>Thành tiền: {formatPrice(item.product.price * item.quantity)}</p>
                         </div>
-                    ) : (
-                        <p style={{ fontFamily: "Arial", marginLeft: "50px" }}>Giỏ hàng của bạn đang trống.</p>
-                    )}
-                </div>
-                <div className='gh-form'>
-                    <form onSubmit={handleSubmit}>
-                        <h2>Thông tin đặt hàng</h2>
-                        <div>
-                            <input className='gh-form-input' name='name' type='text' placeholder='Họ và tên' value={customerInfo.name} onChange={handleInputChange} />
+                        <div className="cart-item-actions">
+                            <button onClick={() => handleDecreaseQuantity(item.product._id)}>-</button>
+                            <button onClick={() => handleIncreaseQuantity(item.product._id)}>+</button>
+                            <button onClick={() => handleDelete(item.product._id)}>Xóa</button>
                         </div>
-                        <div>
-                            <input className='gh-form-input' name='phone' type='text' placeholder='Số điện thoại' value={customerInfo.phone} onChange={handleInputChange} />
-                        </div>
-                        <div>
-                            <input className='gh-form-input' name='address' type='text' placeholder='Địa chỉ' value={customerInfo.address} onChange={handleInputChange} />
-                        </div>
-                        <div className='gh-form-h'>Tổng giá trị: {calculateTotal()}₫ ({calculateTt()} sản phẩm)</div>
-                        <div className='gh-form-h'>Phương thức thanh toán:</div>
-                        <div className='gh-form-label'>
-                            <label>
-                                <input name='paymentMethod' value="BANKING" type="radio" onChange={handleInputChange} /> BANKING
-                            </label>
-                            <label>
-                                <input name='paymentMethod' value="COD" type="radio" onChange={handleInputChange} /> Thanh toán khi giao hàng
-                            </label>
-                        </div>
-                        <div className='gh-form-h'>Áp dụng Voucher
-                            <input type='text' placeholder='Mã Voucher' />
-                            <button>Áp dụng</button>
-                        </div>
-                        <div>Thanh toán: ₫</div>
-                        <div className='gh-form-button'><button type='submit'>Tiếp tục</button></div>
-                    </form>
-                </div>
+                    </div>
+                ))}
+            </div>
+            <div>
+                <button className="buttonCheckAll" onClick={handleCheckAll}>Chọn tất cả</button>
+                <button className="buttonCheckAll" onClick={handleUncheckAll}>Bỏ chọn tất cả</button>
+            </div>
+            <div className="cart-summary">
+                <p>Số lượng sản phẩm đã chọn: {count}</p>
+                <p>Giảm giá: {formatPrice(discount)}</p>
+                <p>Tổng tiền: {formatPrice(total)}</p>
+                <button className="checkout-button" onClick={handleCheckout} >Đặt hàng</button>
             </div>
         </div>
     );

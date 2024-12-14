@@ -140,4 +140,29 @@ router.delete("/:id", checkAdmin, async (req, res) => {
   }
 });
 
+// get list of products 
+router.post("/list", async (req, res) => {
+  try {
+    const ids = req.body.ids;
+    const products = await Product.find({ _id: { $in: ids } });
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({ status: "error", message: "Server error" });
+  }
+}
+  
+  );
+
+  router.get('/similar/:type', async (req, res) => {
+    try {
+      const { type } = req.params;
+      const books = await Product.find({ type }).limit(10); // Limit results to 10 books
+      res.json(books);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching similar books', error });
+    }
+  });
+
+
 module.exports = router;

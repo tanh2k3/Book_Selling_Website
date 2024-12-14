@@ -113,15 +113,23 @@ a:hover {
     color : whitesmoke !important;
     border-radius: 5px;
 }
+.book-icon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  top: 15px;
+  right: 15px;
+  position: absolute;
+  z-index: 1;
+  flex-direction: column;
+}
 .book-favourite, .book-cart {
   width: 35px;
   height: 35px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  top: 15px;
-  right: 15px;
   display: none;
   background-color: #fff;
   border-radius: 50%;
@@ -139,9 +147,7 @@ a:hover {
   font-size: 20px;
   color: rgb(61, 162, 216);
 }
-.book-cart {
-  top: 55px;
-}
+
 .cardItem{
   position: relative;
 }

@@ -35,6 +35,12 @@ router.get("/user", checkLogin, async (req, res) => {
 router.post("/", checkLogin, async (req, res) => {
   try {
     const order = new Order(req.body);
+    if (order.userId.toString() !== req.user.userId) {
+      console.log(order.userId, );
+      return res
+        .status(403)
+        .json({ status: "error", message: "Permission denied" });
+    }
     await order.save();
     res.status(201).json({ status: "success", data: order });
   } catch (error) {

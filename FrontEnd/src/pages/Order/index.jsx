@@ -1,148 +1,278 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import "./styles.css";
+import { useUser } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Order = () => {
-  const [books, setBooks] = useState([]);
-  const [ids, setIds] = useState([]);
-  const [listorder, setListorder] = useState([]);
-  const [total, setTotal] = useState(0);
 
-  const location = useLocation();
+  const navigate = useNavigate();
+  const { user, setUser } = useUser();
+  const [book, setBook] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedPayment, setSelectedPayment] = useState("cod");
 
-  const fetchData = async (idParams) => {
-    const result = [];
-    const listid = [];
-    for (let i = 0; i < idParams.length; i++) {
-      try {
-        const response = await axios.get(
-          `http://localhost:3001/product/${idParams[i]}`
-        );
-        console.log(response.data); // Log the response data to check its structure
-        result.push(response.data);
-        listid.push({ id: response.data._id, quantity: 1, checked: true });
-      } catch (error) {
-        console.error(`Error fetching product with ID ${idParams[i]}:`, error);
-      }
+  // Lấy dữ liệu sách khi đơn hàng của người dùng thay đổi
+  useEffect(() => {
+    if (user?.order?.products?.length > 0) {
+      const ids = user.order.products.map((item) => item.id);
+
+      const fetchBooks = async () => {
+        try {
+          const res = await axios.post(
+            "http://localhost:3001/product/list",
+            { ids },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          setBook(res.data);
+        } catch (error) {
+          console.error("Lỗi khi lấy danh sách sách:", error);
+        }
+      };
+
+      fetchBooks();
     }
-    setListorder(listid);
-    setBooks(result);
+  }, [user]);
+
+  // Cập nhật trạng thái loading khi đã lấy được dữ liệu sách
+  useEffect(() => {
+    if (book.length === user?.order?.products?.length) {
+      setLoading(false);
+    }
+  }, [book, user?.order?.products?.length]);
+
+  const formatTitle = (title) => {
+    if (title.length > 30) {
+      return title.slice(0, 30) + "...";
+    }
+    return title;
   };
 
-  useEffect(() => {
-    const fetchDataAsync = async () => {
-      // Get IDs from query parameter
-      const searchParams = new URLSearchParams(location.search);
-      const idString = searchParams.get("ids");
-      console.log(idString);
-      if (idString) {
-        const idParams = idString.split("-"); // Split by '-'
-        setIds(idParams);
-        await fetchData(idParams);
+  const formatMoney = (money) => {
+    return money.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+  };
+
+  const handleIncreaseQuantity = (index) => {
+    const updatedProducts = [...user.order.products];
+    updatedProducts[index].quantity += 1;
+    setUser({ ...user, order: { ...user.order, products: updatedProducts } });
+  };
+
+  const handleDecreaseQuantity = (index) => {
+    const updatedProducts = [...user.order.products];
+    if (updatedProducts[index].quantity > 1) {
+      updatedProducts[index].quantity -= 1;
+      setUser({ ...user, order: { ...user.order, products: updatedProducts } });
+    }
+  };
+
+  const handleDelete = (index) => {
+    const updatedProducts = [...user.order.products];
+    updatedProducts.splice(index, 1);
+    setUser({ ...user, order: { ...user.order, products: updatedProducts } });
+  };
+
+  const handlePaymentChange = (event) => {
+    setSelectedPayment(event.target.value);
+  };
+
+  // Sử dụng giá trị mặc định từ context người dùng
+  const [name, setName] = useState(user?.name || "");
+  const [email, setEmail] = useState(user?.email || "");
+  const [phone, setPhone] = useState(user?.phone || "");
+  const [address, setAddress] = useState(user?.address || "");
+  const [total, setTotal] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [type, setType] = useState("cod");
+
+  const handleBuy = async () => {
+    const jwt = localStorage.getItem("token");
+    if (!jwt) {
+      alert("Vui lòng đăng nhập để đặt hàng!");
+      return;
+    }
+    if (name.trim()===""){
+      alert("Vui lòng nhập tên!");
+      return;
+    }
+    if (email.trim()===""){
+      alert("Vui lòng nhập email!");
+      return;
+    }
+    if (phone.trim()===""){
+      alert("Vui lòng nhập số điện thoại!");
+      return;
+    }
+    if (address.trim()===""){
+      alert("Vui lòng nhập địa chỉ!");
+      return;
+    }
+    const orderData = {
+      userId: user._id,
+      name: name,
+      phone: phone,
+      email: email,
+      address: address,
+      type: selectedPayment,
+      products: user.order.products.map((product, index) => ({
+        productId: product.id,
+        quantity: product.quantity,
+      })),
+      total: user.order.products.reduce(
+        (total, item, index) => total + item.quantity * book[index].price,
+        0
+      ),
+      discount: user.order.products.reduce(
+        (total, item, index) =>
+          total +
+          (item.quantity * book[index].price * book[index].discount) / 100,
+        0
+      ),
+    };
+
+    try {
+      const res = await axios.post("http://localhost:3001/order", orderData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      if (res.status === 201) {
+        alert("Đặt hàng thành công!");
+        setUser({ ...user, order: { products: [] } });
+        if (selectedPayment === "online") {
+          // Chuyển hướng sang trang thanh toán
+          navigate(`/payment/${res.data._id}`);
+        }
+        else {
+          navigate("/profile");
+        }
       }
-    };
-
-    fetchDataAsync();
-  }, [location.search]);
-
-  useEffect(() => {
-    const calculateTotal = () => {
-      const totalAmount = listorder.reduce((acc, item) => {
-        const book = books.find((book) => book._id === item.id);
-        return acc + (book ? book.price * item.quantity : 0);
-      }, 0);
-      setTotal(totalAmount);
-    };
-
-    calculateTotal();
-  }, [listorder, books]);
-
-  const handleOrder = async () => {
-    const orderData = listorder
-      .filter((item) => item.checked)
-      .map((item) => ({
-        id: item.id,
-        quantity: item.quantity,
-      }));
-
-    console.log(orderData);
+    } catch (error) {
+      console.error("Lỗi khi đặt hàng:", error);
+      alert("Đặt hàng thất bại!");
+    }
   };
 
   return (
     <>
       <Header />
-      <div>
-        <div className="listproductlayout">
-        <h1>Order Details</h1>
-          <div className="listproduct">
-            {books.length > 0 ? (
-              books.map((book) => (
-                <div key={book._id}>
-                  <h2 className="name_book">Tên sách: {book.title}</h2>
-                  <img src={book.imgSrc} alt={book.title} />
-                  <p className="author_book">Tác giả: {book.author}</p>
-                  <p className="price_book">Giá: {book.price}</p>
-                  <label htmlFor={`quantity-${book._id}`}>Số lượng:</label>
-                  <input
-                    type="number"
-                    id={`quantity-${book._id}`}
-                    name="quantity"
-                    min="1"
-                    max="10"
-                    value={
-                      listorder.find((item) => item.id === book._id)?.quantity ||
-                      1
-                    }
-                    onChange={(e) => {
-                      const newQuantity = parseInt(e.target.value, 10);
-                      setListorder((prev) =>
-                        prev.map((item) =>
-                          item.id === book._id
-                            ? { ...item, quantity: newQuantity }
-                            : item
-                        )
-                      );
-                    }}
+      {loading ? (
+        <h2>Đang tải...</h2>
+      ) : book.length === 0 ? (
+        <h2>Không có đơn hàng nào</h2>
+      ) : (
+        <div className="order-body">
+          <div className="order-layout">
+            <div className="order-details">
+              {book.map((item, index) => (
+                <div key={index} className="order-item">
+                  <img
+                    src={item.imgSrc}
+                    alt={item.title}
+                    className="order-item-image"
                   />
-                  <input type="hidden" name="id" value={book._id} />
-                  <input type="hidden" name="price" value={book.price} />
-                  <input
-                    type="checkbox"
-                    name="checked"
-                    checked={
-                      listorder.find((item) => item.id === book._id)?.checked ||
-                      false
-                    }
-                    onChange={(e) => {
-                      const newChecked = e.target.checked;
-                      setListorder((prev) =>
-                        prev.map((item) =>
-                          item.id === book._id
-                            ? { ...item, checked: newChecked }
-                            : item
-                        )
-                      );
-                    }}
-                  />
+                  <div>
+                    <h3>{formatTitle(item.title)}</h3>
+                    <p>Giá: {formatMoney(item.price)} VND</p>
+                    <p>
+                      <button onClick={() => handleDecreaseQuantity(index)}>
+                        -
+                      </button>
+                      {user.order.products[index].quantity}
+                      <button onClick={() => handleIncreaseQuantity(index)}>
+                        +
+                      </button>
+                    </p>
+                    <p>Giảm giá: {item.discount}%</p>
+                    <button onClick={() => handleDelete(index)}>Xóa</button>
+                  </div>
                 </div>
-              ))
-            ) : (
-              <p>No books found</p>
-            )}
+              ))}
+            </div>
+            <div className="user-info">
+              <h2>Thông tin người dùng</h2>
+              <p>Tên: </p>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="user-info-input"
+                required
+              />
+              <p>Email: </p>
+              <input
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="user-info-input"
+                required
+              />
+              <p>Số điện thoại: </p>
+              <input
+                type="text"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="user-info-input"
+                required
+              />
+              <p>Địa chỉ: </p>
+              <input
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="user-info-input"
+                required
+              />
+              <div className="payment-method">
+                <h3>Phương thức thanh toán</h3>
+                <input
+                  type="radio"
+                  id="cod"
+                  name="payment"
+                  value="cod"
+                  checked={selectedPayment === "cod"}
+                  onChange={handlePaymentChange}
+                />{" "}
+                Thanh toán khi nhận hàng
+                <input
+                  type="radio"
+                  id="online"
+                  name="payment"
+                  value="online"
+                  checked={selectedPayment === "online"}
+                  onChange={handlePaymentChange}
+                />{" "}
+                Online
+              </div>
+            </div>
           </div>
-          <div className="total">Tổng tiền: {total}</div>
-          <button
-            className="btn btn-primary"
-            id="btn_detail"
-            onClick={handleOrder}
-          >
-            Đặt hàng
-          </button>
+          <div className="order-summary">
+            <div>
+              <h2>Tóm tắt đơn hàng</h2>
+              <p>Tổng số sản phẩm: {user.order.products.length}</p>
+              <p>
+                Tổng giá trị:{" "}
+                {formatMoney(
+                  user.order.products.reduce(
+                    (total, item, index) =>
+                      total + item.quantity * book[index].price,
+                    0
+                  )
+                )}{" "}
+                VND
+              </p>
+            </div>
+            <button onClick={handleBuy}>Đặt hàng</button>
+          </div>
         </div>
-      </div>
+      )}
       <Footer />
     </>
   );

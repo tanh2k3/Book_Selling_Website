@@ -248,8 +248,9 @@ router.post("/refresh-token", async (req, res) => {
 });
 
 // API xóa sản phẩm khỏi giỏ hàng
-router.delete("/cart", async (req, res) => {
-  const { userId, productId } = req.body;
+router.delete("/cart",checkLogin, async (req, res) => {
+  const { productId } = req.body;
+  const userId = req.user.userId;
   try {
     // Tìm user theo userId
     const user = await User.findById(userId);
@@ -276,7 +277,6 @@ router.post("/cart", checkLogin, async (req, res) => {
   // req.user.userId
   try {
     // Tìm user theo userId
-    console.log(userId);
     const user = await User.findById(userId);
     // update user cart
     if (!user) {
