@@ -10,6 +10,7 @@ import Footer from "../../components/Footer";
 import { Routes, Route } from "react-router-dom";
 import Profile from "../Profile";
 import Cart from "../Cart";
+import Chat from "../../components/Chat";
 
 const HomePage = () => {
   return (
@@ -26,6 +27,7 @@ const HomePage = () => {
               <VoucherList />
               <ItemsList />
               <ProductsList />
+              <Chat />
             </>
           }
         />

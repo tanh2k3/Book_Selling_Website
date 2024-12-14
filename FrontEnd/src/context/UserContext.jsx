@@ -2,10 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    const userData = localStorage.getItem('user');
-    return userData && userData !== 'undefined' ? JSON.parse(userData) : null;
-  });
+  const [user, setUser] = useState(null);
 
   const updateUser = (user) => {
     setUser(user);

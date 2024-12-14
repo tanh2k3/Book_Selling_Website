@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 //import ProductDetails from './ProductDetails';
 import './AdminUser.css';
-import { TbArrowBackUp } from "react-icons/tb";
+import { FaArrowLeft } from "react-icons/fa6";
 
 function AdminUserDetail(props) 
 {
@@ -47,7 +47,7 @@ function AdminUserDetail(props)
             <div id="user-detail-content">
                 <div className='adusdehd'>
                     <h1>Thông tin chi tiết khách hàng</h1>
-                    <button onClick={props.onClose}><TbArrowBackUp /></button>
+                    <button onClick={props.onClose}><FaArrowLeft/></button>
                 </div>
                 <h3 className='adush3'>Thông tin cá nhân</h3>
                 <div style={{height:"10px"}}/>

@@ -12,11 +12,12 @@ const BookDetail = () => {
   const [feedbackList, setFeedbackList] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [stars, setStars] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [similarBooks, setSimilarBooks] = useState([]);
+  const navigate = useNavigate();
 
-  const nagivate = useNavigate();
-
+  // Fetch book details
   useEffect(() => {
-    // Fetch book details
     fetch(`http://localhost:3001/product/${id}`)
       .then((response) => response.json())
       .then((data) => {
@@ -35,9 +36,25 @@ const BookDetail = () => {
       .catch((error) => console.error("Error fetching feedbacks:", error));
   }, [id]);
 
+  // Fetch similar books
+  useEffect(() => {
+    if (book && book.type) {
+      fetch(`http://localhost:3001/product/similar/${book.type}`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Fetched similar books:", data); // Debugging log
+          setSimilarBooks(data);
+        })
+        .catch((error) => console.error("Error fetching similar books:", error));
+    }
+  }, [book]);
+
   const handleFeedbackSubmit = (e) => {
     e.preventDefault();
-    if (feedback.trim() === "" || stars < 1) return;
+    if (feedback.trim() === "" || stars < 1) {
+      alert("Thêm bình luận để đánh giá.");
+      return;
+    }
 
     fetch(`http://localhost:3001/feedback/${id}`, {
       method: "POST",
@@ -55,17 +72,22 @@ const BookDetail = () => {
       .catch((error) => console.error("Error submitting feedback:", error));
   };
 
+  const handleAddToCart = () => {
+    console.log(`Thêm ${quantity} sách vào giỏ hàng.`);
+    setQuantity(0); // Reset quantity
+  };
+
+  const handleBuyNow = () => {
+    navigate("/order?ids=" + id);
+    console.log("Buy now");
+  };
+
   if (loading) {
-    return <p>Loading book details...</p>;
+    return <p>Đang tải thông tin...</p>;
   }
 
   if (!book) {
-    return <p>No book details available. Please try again later.</p>;
-  }
-
-  const handleBuyNow = () => {
-    nagivate("/order?ids=" + id);
-    console.log("Buy now");
+    return <p>Không có thông tin cuốn sách. Vui lòng thử lại sau.</p>;
   }
 
   return (
@@ -76,11 +98,45 @@ const BookDetail = () => {
         <div className="book-detail">
           <div className="book-detail-left">
             <h1 className="book-title">{book.title}</h1>
-            <img src={book.imgSrc} alt={book.title} className="main-image" />
+            <div className="book-main-content">
+              <img src={book.imgSrc} alt={book.title} className="main-image" />
+
+              {/* Quantity and Price Row */}
+              <div className="quantity-price-row">
+                <div className="quantity-label">
+                  <p>Số lượng:</p>
+                </div>
+                <div className="quantity-control">
+                  <button
+                    className="decrement"
+                    onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+                  >
+                    -
+                  </button>
+                  <span className="quantity">{quantity}</span>
+                  <button
+                    className="increment"
+                    onClick={() => setQuantity(quantity + 1)}
+                  >
+                    +
+                  </button>
+                </div>
+                <div className="book-price">
+                  <p>
+                    Giá: <span className="price">{book.price?.toLocaleString()} VND</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Action Buttons */}
             <div className="action-buttons">
-              <button className="add-to-cart">Thêm vào giỏ hàng</button>
-              <button className="buy-now" onClick={handleBuyNow} >Mua ngay</button>
+              <button className="add-to-cart" onClick={handleAddToCart}>
+                Thêm vào giỏ hàng
+              </button>
+              <button className="buy-now" onClick={handleBuyNow}>
+                Yêu thích
+              </button>
             </div>
           </div>
 
@@ -88,67 +144,54 @@ const BookDetail = () => {
           <div className="book-detail-right">
             <table className="book-details-table">
               <tbody>
-                <tr>
-                  <td>Author</td>
-                  <td>{book.author}</td>
-                </tr>
-                <tr>
-                  <td>Translator</td>
-                  <td>{book.translator || "N/A"}</td>
-                </tr>
-                <tr>
-                  <td>SKU</td>
-                  <td>{book.sku || "N/A"}</td>
-                </tr>
-                <tr>
-                  <td>Publisher</td>
-                  <td>{book.publisher || "N/A"}</td>
-                </tr>
-                <tr>
-                  <td>Publication Year</td>
-                  <td>{book.publicationYear || "N/A"}</td>
-                </tr>
-                <tr>
-                  <td>Language</td>
-                  <td>{book.language || "N/A"}</td>
-                </tr>
-                <tr>
-                  <td>Weight</td>
-                  <td>{book.weight || "N/A"}</td>
-                </tr>
-                <tr>
-                  <td>Dimensions</td>
-                  <td>{book.dimensions || "N/A"}</td>
-                </tr>
-                <tr>
-                  <td>Pages</td>
-                  <td>{book.pages || "N/A"}</td>
-                </tr>
-                <tr>
-                  <td>Binding</td>
-                  <td>{book.binding || "N/A"}</td>
-                </tr>
+                {[
+                  { label: "Tác giả", value: book.author },
+                  { label: "Người dịch", value: book.translator || "N/A" },
+                  { label: "SKU", value: book.sku || "N/A" },
+                  { label: "Nhà Xuất Bản", value: book.publisher || "N/A" },
+                  { label: "Năm xuất bản", value: book.publicationYear || "N/A" },
+                  { label: "Ngôn ngữ", value: book.language || "N/A" },
+                  { label: "Trọng lượng", value: book.weight || "N/A" },
+                  { label: "Kích thước", value: book.dimensions || "N/A" },
+                  { label: "Số trang", value: book.pages || "N/A" },
+                  { label: "Loại bìa", value: book.binding || "N/A" },
+                ].map((row, index) => (
+                  <tr key={index}>
+                    <td>{row.label}</td>
+                    <td>{row.value}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
             <h3>Thông tin cuốn sách</h3>
-            <p className="book-description">
-              {book.description || "No description available for this book."}
-            </p>
+            <p className="book-description">{book.description || "Không có thông tin mô tả."}</p>
           </div>
         </div>
 
+        {/* Similar Books Section */}
         <div className="similar-books-section">
-          <h3>Có thể bạn thích </h3>
+          <h3>Sách liên quan</h3>
           <div className="similar-books-container">
-            {book.similarBooks.slice(0, 8).map((similarBook, index) => (
-              <div key={index} className="similar-book-card">
-                <img src={similarBook.imgSrc} alt={similarBook.title} />
-                <p>{similarBook.title}</p>
-              </div>
-            ))}
+            {similarBooks.length > 0 ? (
+              similarBooks.map((similarBook) => (
+                <div
+                  key={similarBook._id}
+                  className="similar-book-card"
+                  onClick={() => navigate(`/book/${similarBook._id}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <img src={similarBook.imgSrc} alt={similarBook.title} />
+                  <p>{similarBook.title}</p>
+                </div>
+              ))
+            ) : (
+              <p>Không có sách liên quan.</p>
+            )}
           </div>
         </div>
 
+
+        {/* Feedback Section */}
         <div className="feedback-section">
           <h3>Đánh giá của độc giả</h3>
           <ul className="feedback-list">
@@ -175,16 +218,14 @@ const BookDetail = () => {
           </ul>
 
           <form className="feedback-form" onSubmit={handleFeedbackSubmit}>
-            <h4>
-              Hãy đánh giá để giúp những độc giả khác lựa chọn được cuốn sách
-              phù hợp nhất!
-            </h4>
+            <h4>Hãy đánh giá để giúp những độc giả khác lựa chọn được cuốn sách phù hợp nhất!</h4>
             <div className="rating-input">
               {[1, 2, 3, 4, 5].map((star) => (
                 <span
                   key={star}
                   className={`star ${stars >= star ? "filled" : ""}`}
                   onClick={() => setStars(star)}
+                  style={{ cursor: "pointer" }}
                 >
                   ★
                 </span>
