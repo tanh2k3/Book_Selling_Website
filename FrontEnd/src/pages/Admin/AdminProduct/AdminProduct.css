@@ -1,12 +1,9 @@
-/* Base Styles */
-body {
+
+  .admin-product-container {
     font-family: "Arial", sans-serif;
     background-color: #f9f9f9;
     margin: 0;
     padding: 0;
-  }
-  
-  .admin-product-container {
     max-width: 1200px;
     margin: 30px auto;
     padding: 20px;
@@ -15,18 +12,18 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
   
-  h1, h2 {
+  .admin-product-container h1, h2 {
     text-align: center;
     font-weight: bold;
     color: rgba(206, 21, 0, 0.92);
   }
   
-  h1 {
+  .admin-product-container h1 {
     font-size: 32px;
     margin-bottom: 20px;
   }
   
-  h2 {
+  .admin-product-container h2 {
     font-size: 24px;
     margin: 20px 0;
   }
@@ -72,34 +69,34 @@ body {
   }
   
   /* Table Styling */
-  table {
+  .admin-product-container table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     font-size: 16px;
   }
   
-  table thead th {
+  .admin-product-container table thead th {
     background-color: rgba(206, 21, 0, 0.92);
     color: #fff;
     padding: 10px;
     text-align: left;
   }
   
-  table tbody td {
+  .admin-product-container table tbody td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
   }
   
-  table tbody tr:hover {
+  .admin-product-container table tbody tr:hover {
     background-color: rgba(206, 21, 0, 0.1);
   }
   
-  table tbody td:last-child {
+  .admin-product-container table tbody td:last-child {
     text-align: center;
   }
   
-  table button {
+  .admin-product-container table button {
     margin: 0 5px;
     padding: 5px 10px;
     font-size: 14px;
@@ -108,22 +105,22 @@ body {
     cursor: pointer;
   }
   
-  table button:first-child {
+  .admin-product-container table button:first-child {
     background-color: #FFD700;
     color: rgba(206, 21, 0, 0.92);
   }
   
-  table button:first-child:hover {
+  .admin-product-container table button:first-child:hover {
     background-color: rgba(206, 21, 0, 0.92);
     color: #fff;
   }
   
-  table button:last-child {
+  .admin-product-container table button:last-child {
     background-color: rgba(206, 21, 0, 0.92);
     color: #fff;
   }
   
-  table button:last-child:hover {
+  .admin-product-container table button:last-child:hover {
     background-color: #FFD700;
     color: rgba(206, 21, 0, 0.92);
   }
@@ -134,11 +131,11 @@ body {
       padding: 15px;
     }
   
-    table thead {
+    .admin-product-container table thead {
       display: none;
     }
   
-    table tbody tr {
+    .admin-product-container table tbody tr {
       display: block;
       margin-bottom: 15px;
       border: 1px solid #ddd;
@@ -147,20 +144,20 @@ body {
       padding: 10px;
     }
   
-    table tbody td {
+    .admin-product-container table tbody td {
       display: flex;
       justify-content: space-between;
       padding: 5px 0;
       border-bottom: none;
     }
   
-    table tbody td::before {
+    .admin-product-container table tbody td::before {
       content: attr(data-label);
       font-weight: bold;
       color: rgba(206, 21, 0, 0.92);
     }
   
-    table tbody td:last-child {
+    .admin-product-container table tbody td:last-child {
       justify-content: flex-start;
     }
   
@@ -176,15 +173,15 @@ body {
   }
   
   @media (max-width: 480px) {
-    h1 {
+    .admin-product-container h1 {
       font-size: 24px;
     }
   
-    h2 {
+    .admin-product-container h2 {
       font-size: 20px;
     }
   
-    table tbody td {
+    .admin-product-container table tbody td {
       font-size: 14px;
     }
   }

@@ -61,8 +61,13 @@ const AdminProduct = () => {
 
   // Add a new product
   const handleAddProduct = () => {
+    const jwt = localStorage.getItem("token");
     axios
-      .post("http://localhost:3001/product", newProduct)
+      .post("http://localhost:3001/product", newProduct, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
       .then((response) => {
         setProducts([...products, response.data.data]);
         setNewProduct({
@@ -93,9 +98,14 @@ const AdminProduct = () => {
 
   // Update an existing product
   const handleUpdateProduct = () => {
+    const jwt = localStorage.getItem("token");
     if (!selectedProduct) return;
     axios
-      .put(`http://localhost:3001/product/${selectedProduct._id}`, selectedProduct)
+      .put(`http://localhost:3001/product/${selectedProduct._id}`, selectedProduct, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
       .then((response) => {
         const updatedProducts = products.map((product) =>
           product._id === selectedProduct._id ? response.data.data : product
@@ -113,10 +123,16 @@ const AdminProduct = () => {
   // Delete a product
   const handleDeleteProduct = (id) => {
     if (!window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) return;
+    const jwt = localStorage.getItem("token");
     axios
-      .delete(`http://localhost:3001/product/${id}`)
+      .delete(`http://localhost:3001/product/${id}`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
       .then(() => {
-        setProducts(products.filter((product) => product._id !== id));
+        const updatedProducts = products.filter((product) => product._id !== id);
+        setProducts(updatedProducts);
         alert("Xóa sản phẩm thành công!");
       })
       .catch((error) => {
