@@ -12,6 +12,7 @@ import Admin from "./pages/Admin";
 import { useEffect } from "react";
 import axios from "axios";
 import { useUser } from "./context/UserContext";
+import PaymentPage from "./pages/Order/PaymentPage";
 
 function App() {
   const { setUser } = useUser();
@@ -53,6 +54,7 @@ function App() {
           <Route path="/forgot-password" element={<VerifyAccount isresetpass={true} />} />
           <Route path="/voucher" element={<VoucherPage />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/payment" element={<PaymentPage />} />
         </Routes>
       </BrowserRouter>
   );

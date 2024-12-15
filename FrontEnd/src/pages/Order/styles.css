@@ -128,3 +128,39 @@
   .order-body button:hover {
     background: #ff0000;
   }
+
+  .paymentpage{
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+  .paymentpage h1{
+    text-align: center;
+    color: #CD0000;
+    margin-top: 50px;
+  }
+  .paymentpage p{
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .pmqrcode{
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+  .paymentpage button{
+    width: 200px;
+    font-size: 20px;
+    padding: 3px;
+    border: 1.5px solid;
+    border-radius: 5px;
+    background-color: #CD0000;
+    margin-bottom: 50px;
+  }
+  .paymentpage button:hover{
+    cursor: pointer;
+    color: #000000;
+    background-color: #FFD700;
+  }

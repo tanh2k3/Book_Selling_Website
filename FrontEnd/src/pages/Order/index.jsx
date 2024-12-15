@@ -148,7 +148,7 @@ const Order = () => {
         setUser({ ...user, order: { products: [] } });
         if (selectedPayment === "online") {
           // Chuyển hướng sang trang thanh toán
-          navigate(`/payment/${res.data._id}`);
+          navigate("/payment", { state: { total: orderData.total } });
         }
         else {
           navigate("/profile");

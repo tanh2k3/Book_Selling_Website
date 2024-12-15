@@ -10,7 +10,7 @@ function AdminUser()
     const [accs, setAccs] = useState([]);
     const [kh, setKh] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const customersPerPage = 20;
+    const customersPerPage = 10;
     const fetchAccounts = async () => {
         try {
             const response = await axios.get('http://localhost:3001/accs');
