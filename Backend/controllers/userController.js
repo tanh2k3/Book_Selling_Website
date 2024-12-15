@@ -317,6 +317,24 @@ router.get("/cart", checkLogin, async (req, res) => {
     res.status(500).json({ message: "Lỗi khi lấy giỏ hàng." });
   }
 });
+
+router.delete("/cart/list", checkLogin, async (req, res) => {
+  const { ids } = req.body;
+  const userId = req.user.userId;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Người dùng không tồn tại." });
+    }
+    user.cart = user.cart.filter((item) => !ids.includes(item.product.toString()));
+    await user.save();
+    res.status(200).json({ message: "Sản phẩm đã được xóa khỏi giỏ hàng.", cart: user.cart });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Lỗi khi xóa sản phẩm khỏi giỏ hàng." });
+  }
+});
+
 // favorite
 router.get("/favorite", checkLogin, async (req, res) => {
   try {

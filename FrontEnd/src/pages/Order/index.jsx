@@ -90,11 +90,38 @@ const Order = () => {
   const [total, setTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [type, setType] = useState("cod");
+  const [valueVoucher, setValueVoucher] = useState(0);
+  const [voucher, setVoucher] = useState("");
+  const [isApply, setIsApply] = useState(false);
+
+  useEffect(() => {
+    if (book.length > 0) {
+      const total = user.order.products.reduce(
+        (total, item, index) => total + item.quantity * book[index].price,
+        0
+      );
+      const discount = user.order.products.reduce(
+        (total, item, index) =>
+          total + (item.quantity * book[index].price * book[index].discount) / 100,
+        0
+      );
+      setTotal(total);
+      setDiscount(discount);
+    }
+  }, [book, user?.order?.products]);
 
   const handleBuy = async () => {
     const jwt = localStorage.getItem("token");
     if (!jwt) {
       alert("Vui lòng đăng nhập để đặt hàng!");
+      return;
+    }
+    if (user.order.products.length === 0) {
+      alert("Vui lòng thêm sản phẩm vào giỏ hàng!");
+      return;
+    }
+    if (isApply === false){
+      alert("Lỗi khi đặt hàng: Voucher không hợp lệ!");
       return;
     }
     if (name.trim()===""){
@@ -159,7 +186,52 @@ const Order = () => {
       alert("Đặt hàng thất bại!");
     }
   };
-
+  
+  const handleVoucher = async () => {
+    const jwt = localStorage.getItem("token");
+    if (!jwt) {
+      alert("Vui lòng đăng nhập để sử dụng voucher!");
+      return;
+    }
+    try {
+      let res = await axios.get(`http://localhost:3001/voucher/${voucher}`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+      if (res.status === 200) {
+        res = res.data;
+        alert("Sử dụng voucher thành công!");
+        setIsApply(true);
+        const currentTotal = user.order.products.reduce(
+          (total, item, index) => total + item.quantity * book[index].price,
+          0
+        );
+        if (currentTotal < res.data.minOrderValue){
+          alert(`Lỗi khi sử dụng voucher: Đơn hàng không đạt yêu cầu tối thiểu ${res.data.minOrderValue} VND!`);
+          return;
+        }
+        if (res.data.voucherType === 1){
+          let discountValue = res.data.voucherValue;
+          discountValue = discountValue > res.data.maxDiscountValue ? res.data.maxDiscountValue : discountValue;
+          setValueVoucher(discountValue);
+          setTotal(currentTotal - discountValue);
+        }
+        else {
+          console.log(currentTotal);
+          let discountValue = currentTotal * res.data.voucherValue / 100;
+          console.log(res.data);
+          discountValue = discountValue > res.data.maxDiscountValue ? res.data.maxDiscountValue : discountValue;
+          setValueVoucher(discountValue);
+          setTotal(currentTotal - discountValue);
+          console.log(discountValue);
+        }
+      }
+    } catch (error) {
+      console.error("Lỗi khi sử dụng voucher:", error);
+      alert("Sử dụng voucher thất bại!");
+    }
+  }
   return (
     <>
       <Header />
@@ -230,6 +302,14 @@ const Order = () => {
                 className="user-info-input"
                 required
               />
+              <p>Voucher:</p>
+              <input
+                type="text"
+                value={voucher}
+                className="user-info-input"
+                onChange={(e) => {setVoucher(e.target.value); setIsApply(false); setValueVoucher(0);}}
+              />
+              <button onClick={handleVoucher}>Áp dụng</button>
               <div className="payment-method">
                 <h3>Phương thức thanh toán</h3>
                 <input
@@ -258,16 +338,15 @@ const Order = () => {
               <h2>Tóm tắt đơn hàng</h2>
               <p>Tổng số sản phẩm: {user.order.products.length}</p>
               <p>
-                Tổng giá trị:{" "}
-                {formatMoney(
-                  user.order.products.reduce(
-                    (total, item, index) =>
-                      total + item.quantity * book[index].price,
-                    0
-                  )
-                )}{" "}
-                VND
+                Tổng giá trị: {formatMoney(total)} VND
               </p>
+              {
+                valueVoucher > 0 ? (
+                  <p>
+                    Giảm giá từ Voucher: {formatMoney(valueVoucher)} VND
+                  </p>
+                ) : null
+              }
             </div>
             <button onClick={handleBuy}>Đặt hàng</button>
           </div>

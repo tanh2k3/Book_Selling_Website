@@ -119,8 +119,42 @@ function Cart() {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
     }
 
+    // router.delete("/cart", checkLogin, async (req, res) => {
+    //     const { ids } = req.body;
+    //     const userId = req.user.userId;
+    //     try {
+    //       const user = await User.findById(userId);
+    //       if (!user) {
+    //         return res.status(404).json({ message: "Người dùng không tồn tại." });
+    //       }
+    //       user.cart = user.cart.filter((item) => !ids.includes(item.product.toString()));
+    //       await user.save();
+    //       res.status(200).json({ message: "Sản phẩm đã được xóa khỏi giỏ hàng.", cart: user.cart });
+    //     } catch (error) {
+    //       console.error(error);
+    //       res.status(500).json({ message: "Lỗi khi xóa sản phẩm khỏi giỏ hàng." });
+    //     }
+    //   });
+
     const handleCheckout = async () => {
         const listCheckeds = cartItems.filter(item => checkeds.includes(item.product._id));
+        // delete listCheckeds.product in cart
+        const jwt = localStorage.getItem('token');
+        const response = await axios.delete('http://localhost:3001/cart/list', {
+            headers: {
+                Authorization: `Bearer ${jwt}`
+            },
+            data: {
+                ids: listCheckeds.map(item => item.product._id)
+            }
+        });
+        const newCartItems = cartItems.filter(item => !checkeds.includes(item.product._id));
+        setCartItems(newCartItems);
+        setUser((prevUsers) => ({
+            ...prevUsers,
+            cart: newCartItems.map(item => ({ product: item.product._id }))
+        }));
+        //
         const order = {
             products: listCheckeds.map(item => ({
                 id: item.product._id,
