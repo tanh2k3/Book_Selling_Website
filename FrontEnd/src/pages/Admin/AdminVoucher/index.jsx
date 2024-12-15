@@ -10,6 +10,16 @@ function AdminVoucher() {
     const [vouchers, setVouchers] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    // State for adding a voucher
+    const [newVoucher, setNewVoucher] = useState({
+        voucherCode: "",
+        voucherValue: "",
+        voucherType: "", // 1: tiền, 2: %
+        maxDiscountValue: "",
+        minOrderValue: "",
+        voucherExpiration: "",
+    });
+
     // Fetch voucher data from backend
     useEffect(() => {
         fetch("http://localhost:3001/voucher")
@@ -29,7 +39,38 @@ function AdminVoucher() {
             });
     }, []);
 
-    // Delete voucher
+    // Add voucher
+    const handleAddVoucher = async () => {
+        try {
+            const jwt = localStorage.getItem('token');
+            const response = await axios.post("http://localhost:3001/voucher", newVoucher, {
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                },
+            });
+
+            if (response.status === 201 && response.data.status === "success") {
+                setVouchers([...vouchers, response.data.data]); // Cập nhật danh sách voucher
+                alert("Thêm voucher thành công!");
+
+                // Reset form
+                setNewVoucher({
+                    voucherCode: "",
+                    voucherValue: "",
+                    voucherType: 1,
+                    maxDiscountValue: "",
+                    minOrderValue: "",
+                    voucherExpiration: "",
+                });
+            } else {
+                alert("Đã xảy ra lỗi khi thêm voucher!");
+            }
+        } catch (error) {
+            console.error("Error adding voucher:", error);
+            alert("Không thể thêm voucher, vui lòng thử lại!");
+        }
+    };
+
     // Delete voucher
     const handleDelete = async (voucherId) => {
         // Hiển thị cảnh báo xác nhận trước khi xóa
@@ -59,7 +100,6 @@ function AdminVoucher() {
         }
     };
 
-
     if (loading) {
         return <div className="voucher-loading">Đang tải danh sách voucher...</div>;
     }
@@ -81,6 +121,8 @@ function AdminVoucher() {
             <div style={{ height: "20px" }} />
             <h1>Quản lý voucher</h1>
             <div style={{ height: "20px" }} />
+
+            {/* Viewing voucher */}
             <table>
                 <thead>
                     <tr>
@@ -124,6 +166,7 @@ function AdminVoucher() {
                     ))}
                 </tbody>
             </table>
+
             <div className="pagination">
                 <button className="arrow" onClick={handlePrevPage} disabled={currentPage === 1}>
                     <IoMdArrowDropleft style={{ marginBottom: "-3px" }} />
@@ -136,6 +179,63 @@ function AdminVoucher() {
                 >
                     <IoMdArrowDropright style={{ marginBottom: "-3px" }} />
                 </button>
+            </div>
+
+            {/* Adding voucher */}
+            <div className="add-voucher-title">
+                <h1>Thêm voucher mới</h1>
+            </div>
+            <div className="add-voucher-form">
+                <input
+                    type="text"
+                    placeholder="Mã voucher"
+                    value={newVoucher.voucherCode}
+                    onChange={(e) => setNewVoucher({ ...newVoucher, voucherCode: e.target.value })}
+                />
+
+                <select
+                    value={newVoucher.voucherType}
+                    onChange={(e) => setNewVoucher({ ...newVoucher, voucherType: Number(e.target.value) })}
+                    required
+                    style={{
+                        color: newVoucher.voucherType === "" ? "#666" : "#000"
+                    }}
+                >
+                    <option value="" disabled hidden>Loại voucher</option>
+                    <option value={1}>Tiền</option>
+                    <option value={2}>Phần trăm</option>
+                </select>
+
+                <input
+                    type="number"
+                    placeholder="Giá trị"
+                    value={newVoucher.voucherValue}
+                    onChange={(e) => setNewVoucher({ ...newVoucher, voucherValue: e.target.value })}
+                />
+
+                <input
+                    type="number"
+                    placeholder="Giảm tối đa (nếu là %)"
+                    value={newVoucher.maxDiscountValue}
+                    onChange={(e) => setNewVoucher({ ...newVoucher, maxDiscountValue: e.target.value })}
+                />
+
+                <input
+                    type="number"
+                    placeholder="Đơn hàng tối thiểu"
+                    value={newVoucher.minOrderValue}
+                    onChange={(e) => setNewVoucher({ ...newVoucher, minOrderValue: e.target.value })}
+                />
+
+                <input
+                    type="date"
+                    style={{ color: "#666" }}
+                    placeholder="Hạn sử dụng"
+                    value={newVoucher.voucherExpiration}
+                    onChange={(e) => setNewVoucher({ ...newVoucher, voucherExpiration: e.target.value })}
+                />
+
+                <button className="add-btn" onClick={handleAddVoucher}>Thêm voucher</button>
             </div>
         </>
     );
