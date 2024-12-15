@@ -49,7 +49,7 @@ router.delete("/:id", checkAdmin, async (req, res) => {
         .status(404)
         .json({ status: "fail", message: "Voucher not found" });
     }
-    await voucher.remove();
+    await voucher.deleteOne();
     res.status(200).json({ status: "success", data: voucher });
   } catch (error) {
     console.error("Error:", error);

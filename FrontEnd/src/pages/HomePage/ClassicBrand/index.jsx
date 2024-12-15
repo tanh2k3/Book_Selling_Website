@@ -39,7 +39,7 @@ const ClassicBrand = () => {
 
   return (
     <div className="classic-brand">
-      <h2>Các tác giả nổi bật</h2>
+      <h3>CÁC TÁC GIẢ NỔI BẬT</h3>
       <div className="clabra-container">
         {classicBrand.map((brand, index) => (
           <div
