@@ -33,7 +33,7 @@ function Header() {
 
   
   useEffect(() => {
-    if (user) {
+    if (user && user.cart){
       setTotalCart(user.cart.length);
     }
   }, [user]);

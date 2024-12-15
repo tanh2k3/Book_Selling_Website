@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom";
 import "./BookDetail.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { useUser } from "../../context/UserContext";
+import axios from "axios";
 
 const BookDetail = () => {
+  const {user, setUser} = useUser();
   const { id } = useParams();
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -72,15 +75,72 @@ const BookDetail = () => {
       .catch((error) => console.error("Error submitting feedback:", error));
   };
 
-  const handleAddToCart = () => {
-    console.log(`Thêm ${quantity} sách vào giỏ hàng.`);
-    setQuantity(0); // Reset quantity
+  const handleAddToCart = async () => {
+    try {
+      const jwt = localStorage.getItem("token");
+      if (!jwt) {
+        alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
+        return;
+      }
+      const check = user.cart.find((item) => item.product === id);
+      if (check) {
+        alert("Sản phẩm đã có trong giỏ hàng.");
+        return;
+      }
+      const response = await axios.post(
+        "http://localhost:3001/cart",
+        { productId: id, quantity: 1 },
+        { headers: { Authorization: `Bearer ${jwt}` } }
+      );
+      alert("Thêm vào giỏ hàng thành công.");
+      setUser((prevUser) => ({
+        ...prevUser,
+        cart: [...prevUser.cart, { product: id }],
+      }));
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleBuyNow = () => {
-    navigate("/order?ids=" + id);
-    console.log("Buy now");
+  const handleBuyNow = async () => {
+    const order = {
+        products: [
+            { id: id, quantity: quantity }
+        ]
+    };
+    console.log(order);
+    await setUser((prevUsers) => ({
+      ...prevUsers,
+      order: order
+    }));
+    navigate("/order");
   };
+
+  const handleAddToFavorite = async () => {
+    const jwt = localStorage.getItem("token");
+    if (!jwt) {
+      alert("Vui lòng đăng nhập để thêm sản phẩm vào yêu thích.");
+      return;
+    }
+    const check = user.favorite.find((item) => item.product === id);
+    if (check) {
+      alert("Sản phẩm đã có trong danh sách yêu thích.");
+      return;
+    }
+    const response = await axios.post(
+      "http://localhost:3001/favorite",
+      { productId: id },
+      { headers: { Authorization: `Bearer ${jwt}` } }
+    );
+    alert("Thêm vào yêu thích thành công.");
+    setUser((prevUser) => ({
+      ...prevUser,
+      favorite: [...prevUser.favorite, { product: id }],
+    }));
+    console.log(response.data);
+  };
+
 
   if (loading) {
     return <p>Đang tải thông tin...</p>;
@@ -134,8 +194,11 @@ const BookDetail = () => {
               <button className="add-to-cart" onClick={handleAddToCart}>
                 Thêm vào giỏ hàng
               </button>
-              <button className="buy-now" onClick={handleBuyNow}>
+              <button className="buy-now" onClick={handleAddToFavorite}>
                 Yêu thích
+              </button>
+              <button className="buy-now" onClick={handleBuyNow}>
+                Mua ngay
               </button>
             </div>
           </div>

@@ -105,6 +105,7 @@ function ListProduct() {
                 setIsSortByPrice={setIsSortByPrice}
                 setIsSortByRating={setIsSortByRating}
                 setIsSortByDiscount={setIsSortByDiscount}
+                setPage={setPage}
               />
               <ViewData
                 books={books}

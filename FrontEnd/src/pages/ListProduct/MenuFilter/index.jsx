@@ -20,6 +20,7 @@ function MenuFilter({
   setIsSortByPrice,
   setIsSortByRating,
   setIsSortByDiscount,
+  setPage,
 }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -65,6 +66,7 @@ function MenuFilter({
       setLocalMaxPrice(max);
       setMinPrice(min);
       setMaxPrice(max);
+      setPage(1);
     } else {
       alert("Giá tối đa phải lớn hơn giá tối thiểu.");
     }
@@ -100,6 +102,7 @@ function MenuFilter({
     setTitle(localTitle);
     setAuthor(localAuthor);
     setType(localType);
+    setPage(1);
   };
 
   // Enum options for Type

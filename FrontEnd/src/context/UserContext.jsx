@@ -6,17 +6,15 @@ export const UserProvider = ({ children }) => {
 
   const updateUser = (user) => {
     setUser(user);
-    if (user) {
+    if (user !== null && user !== undefined && user !== "undefined") {
       localStorage.setItem('user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('user');
-    }
+    } 
   };
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    if (storedUser !== null && storedUser !== undefined && storedUser !== "undefined") {
+      setUser(JSON.stringify(storedUser));
     }
   }, []);
 

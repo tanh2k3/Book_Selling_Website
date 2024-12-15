@@ -14,7 +14,7 @@ const CardItem = ({ book }) => {
   const [isCart, setIsCart] = useState(false);
 
   useEffect(() => {
-    if (user) {
+    if (user && user.favorite && user.cart) {
       setIsFavourite(user.favorite.some((item) => item.product === book._id));
       setIsCart(user.cart.some((item) => item.product === book._id));
     }
