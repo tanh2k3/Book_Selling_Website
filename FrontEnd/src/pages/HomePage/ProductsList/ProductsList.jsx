@@ -16,7 +16,7 @@ const ProductsList = () => {
   return (
     <div className="top-selling-product">
       <div className="title-componet">
-        <h3>Danh sách sản phẩm</h3>
+        <h3>DANH SÁCH SẢN PHẨM</h3>
         <Link to="/list" className="viewAll">
           Xem tất cả
         </Link>

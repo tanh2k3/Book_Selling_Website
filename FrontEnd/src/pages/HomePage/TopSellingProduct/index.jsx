@@ -28,7 +28,7 @@ const TopSellingProduct = () => {
     <div className="top-selling-product">
       <div className="title-componet">
         <h3>
-          <FaFire /> Sản phẩm bán chạy
+          <FaFire /> SẢN PHẨM BÁN CHẠY
         </h3>
         <Link to="/list" className="viewAll">
           Xem tất cả
