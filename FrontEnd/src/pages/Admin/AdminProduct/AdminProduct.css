@@ -185,4 +185,37 @@
       font-size: 14px;
     }
   }
-  
+  .upload-container {
+    padding: 10px;
+    border: 1px solid rgba(206, 21, 0, 0.92);
+    border-radius: 10px;
+    background-color: #fff7e0;
+  }
+
+  .upload-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgba(206, 21, 0, 0.92);
+    margin-bottom: 10px;
+  }
+
+  .upload-container input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(206, 21, 0, 0.92);
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .upload-container input[type="file"]:focus {
+    outline: none;
+    border-color: #FFD700;
+    box-shadow: 0 0 5px #FFD700;
+  }
+
+  .upload-container p {
+    font-size: 16px;
+    color: #333;
+    margin-top: 10px;
+  }

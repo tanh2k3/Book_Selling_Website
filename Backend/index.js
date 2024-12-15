@@ -31,6 +31,8 @@ const startServer = async () => {
   app.use("/review", require("./controllers/reviewController"));
   app.use("/feedback", require("./controllers/feedbackController"));
   app.use("/revenue", require("./controllers/revenueController"));
+
+  app.use("/upload", require("./controllers/uploadController"));
   // Start the server
   const port = process.env.PORT || 3001;
   app.listen(port, () => console.log(`Server is running on port ${port}`));

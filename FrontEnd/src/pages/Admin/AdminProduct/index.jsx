@@ -144,10 +144,45 @@ const AdminProduct = () => {
   if (loading) return <p>Đang tải dữ liệu...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
+  // upload image
+//   const express = require('express');
+// const multer = require('multer');
+// const storage = require('../services/cloudinary.config');
+// const router = express.Router();
+
+// const upload = multer({ storage });
+
+// router.post('/', upload.single('imageUrl'), (req, res) => {
+//   if (!req.file) {
+//     return res.status(500).json({ message: 'No file uploaded' });
+//   }
+//   res.status(200).json({ imageUrl: req.file.path });
+// });
+
+//module.exports = router;
+
+  const handleUploadImage = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("imageUrl", file);
+    try {
+      const response = await axios.post("http://localhost:3001/upload", formData);
+      setNewProduct({ ...newProduct, imgSrc: response.data.imageUrl });
+      alert("Upload ảnh thành công!");
+    } catch (error) {
+      console.error("Lỗi khi upload ảnh:", error);
+      alert("Upload ảnh thất bại.");
+    }
+  }
+
   return (
     <div className="admin-product-container">
       <h1>Quản Lý Sản Phẩm</h1>
-
+      <div className="upload-container">
+        <h2>Upload Ảnh</h2>
+        <input type="file" onChange={handleUploadImage} />
+        <p> URL Ảnh: {newProduct.imgSrc}</p>
+      </div>
       {/* Add New Product */}
       <div className="admin-product-actions">
         <h2>Thêm Sản Phẩm Mới</h2>
