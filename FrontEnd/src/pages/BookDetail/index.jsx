@@ -104,6 +104,11 @@ const BookDetail = () => {
   };
 
   const handleBuyNow = async () => {
+    const jwt = localStorage.getItem("token");
+    if (!jwt) {
+      alert("Vui lòng đăng nhập để mua sản phẩm.");
+      return;
+    }
     const order = {
         products: [
             { id: id, quantity: quantity }

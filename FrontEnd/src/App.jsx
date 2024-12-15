@@ -15,7 +15,7 @@ import { useUser } from "./context/UserContext";
 import PaymentPage from "./pages/Order/PaymentPage";
 
 function App() {
-  const { setUser } = useUser();
+  const { user,setUser } = useUser();
 
   useEffect(() => {
     const refreshToken = async () => {
@@ -53,8 +53,10 @@ function App() {
           <Route path="/order" element={<Order />} />
           <Route path="/forgot-password" element={<VerifyAccount isresetpass={true} />} />
           <Route path="/voucher" element={<VoucherPage />} />
-          <Route path="/admin" element={<Admin />} />
           <Route path="/payment" element={<PaymentPage />} />
+          {
+            user && user.role === "admin" ? <Route path="/admin" element={<Admin />} /> : null
+          }
         </Routes>
       </BrowserRouter>
   );
