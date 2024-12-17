@@ -26,7 +26,7 @@ function AdminVoucher() {
             .then((response) => response.json())
             .then((data) => {
                 if (data.status === "success") {
-                    const sortedData = data.data.sort((a, b) => a.usedCount - b.usedCount);
+                    const sortedData = data.data.sort((a, b) => b.usedCount - a.usedCount);
                     setVouchers(sortedData);
                 } else {
                     console.error("Error fetching vouchers:", data.message);
@@ -39,8 +39,73 @@ function AdminVoucher() {
             });
     }, []);
 
+    // // Add voucher
+    // const handleAddVoucher = async () => {
+    //     try {
+    //         const jwt = localStorage.getItem('token');
+    //         const response = await axios.post("http://localhost:3001/voucher", newVoucher, {
+    //             headers: {
+    //                 Authorization: `Bearer ${jwt}`,
+    //             },
+    //         });
+
+    //         if (response.status === 201 && response.data.status === "success") {
+    //             setVouchers([...vouchers, response.data.data]); // Cập nhật danh sách voucher
+    //             alert("Thêm voucher thành công!");
+
+    //             // Reset form
+    //             setNewVoucher({
+    //                 voucherCode: "",
+    //                 voucherValue: "",
+    //                 voucherType: 1,
+    //                 maxDiscountValue: "",
+    //                 minOrderValue: "",
+    //                 voucherExpiration: "",
+    //             });
+    //         } else {
+    //             alert("Đã xảy ra lỗi khi thêm voucher!");
+    //         }
+    //     } catch (error) {
+    //         console.error("Error adding voucher:", error);
+    //         alert("Không thể thêm voucher, vui lòng thử lại!");
+    //     }
+    // };
+
     // Add voucher
     const handleAddVoucher = async () => {
+        // Kiểm tra các trường bắt buộc
+        if (!newVoucher.voucherCode) {
+            alert("Vui lòng nhập Mã voucher!");
+            return;
+        }
+        if (!newVoucher.voucherType) {
+            alert("Vui lòng chọn Loại voucher!");
+            return;
+        }
+        if (!newVoucher.voucherValue) {
+            alert("Vui lòng nhập Giá trị voucher!");
+            return;
+        }
+        if (newVoucher.voucherType === 2 && !newVoucher.maxDiscountValue) {
+            alert("Vui lòng nhập Giá trị giảm tối đa cho voucher!");
+            return;
+        }
+        if (!newVoucher.minOrderValue) {
+            alert("Vui lòng nhập Giá trị đơn hàng tối thiểu!");
+            return;
+        }
+        if (!newVoucher.voucherExpiration) {
+            alert("Vui lòng nhập Ngày hết hạn!");
+            return;
+        }
+
+        // Kiểm tra mã voucher đã tồn tại
+        const isVoucherExist = vouchers.some(voucher => voucher.voucherCode === newVoucher.voucherCode);
+        if (isVoucherExist) {
+            alert("Mã voucher đã tồn tại!");
+            return;
+        }
+
         try {
             const jwt = localStorage.getItem('token');
             const response = await axios.post("http://localhost:3001/voucher", newVoucher, {
@@ -57,7 +122,7 @@ function AdminVoucher() {
                 setNewVoucher({
                     voucherCode: "",
                     voucherValue: "",
-                    voucherType: 1,
+                    voucherType: "",
                     maxDiscountValue: "",
                     minOrderValue: "",
                     voucherExpiration: "",
@@ -149,7 +214,7 @@ function AdminVoucher() {
                             <td>
                                 {voucher.voucherType === 1
                                     ? `${voucher.voucherValue.toLocaleString()}₫`
-                                    : `${voucher.maxDiscountValue.toLocaleString()}₫`}
+                                    : voucher.maxDiscountValue === null ? '' : `${voucher.maxDiscountValue.toLocaleString()}₫`}
                             </td>
                             <td>{voucher.minOrderValue.toLocaleString()}₫</td>
                             <td>{voucher.voucherExpiration}</td>
@@ -227,7 +292,7 @@ function AdminVoucher() {
                     onChange={(e) => setNewVoucher({ ...newVoucher, minOrderValue: e.target.value })}
                 />
 
-                <input
+                <input className="date-input"
                     type="date"
                     style={{ color: "#666" }}
                     placeholder="Hạn sử dụng"
