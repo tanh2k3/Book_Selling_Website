@@ -63,6 +63,36 @@ function AdminUserDetail(props) {
                     <h3 className='adush3'>Đơn hàng</h3>
 
                     {orders.length === 0 ? <p style={{ textAlign: "center" }}>Không có đơn hàng nào</p> :
+                        // <div id="orders">
+                        //     <table>
+                        //         <thead>
+                        //             <tr>
+                        //                 <th>STT</th>
+                        //                 <th>Số lượng sản phẩm</th>
+                        //                 <th>Tổng giá trị</th>
+                        //                 <th>Trạng thái</th>
+                        //                 <th>Phương thức thanh toán</th>
+                        //                 <th>Ngày đặt</th>
+                        //                 <th>Ngày giao</th>
+                        //             </tr>
+                        //         </thead>
+                        //         <tbody>
+                        //             {orders.map((order, index) => (
+                        //                 <tr key={index}>
+                        //                     <td className="stt">{index + 1}</td>
+                        //                     {/* <td className="stt">{order.total}</td> */}
+                        //                     <td className="stt">{order.products.reduce((sum, product) => sum + product.quantity, 0)}</td>
+                        //                     <td>{order.total.toLocaleString("vi-VN")}₫</td>
+                        //                     <td>{order.status}</td>
+                        //                     <td>{order.type}</td>
+                        //                     <td>{order.createdAt}</td>
+                        //                     {/* <td>{order.createdAt}</td> */}
+                        //                     <td>{new Date(new Date(order.createdAt).getTime() + 4 * 25 * 60 * 60 * 1000).toLocaleDateString("vi-VN")}</td>
+                        //                 </tr>
+                        //             ))}
+                        //         </tbody>
+                        //     </table>
+                        // </div>}
                         <div id="orders">
                             <table>
                                 <thead>
@@ -77,22 +107,50 @@ function AdminUserDetail(props) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {orders.map((order, index) => (
-                                        <tr key={index}>
-                                            <td className="stt">{index + 1}</td>
-                                            {/* <td className="stt">{order.total}</td> */}
-                                            <td className="stt">{order.products.reduce((sum, product) => sum + product.quantity, 0)}</td>
-                                            <td>{order.total.toLocaleString("vi-VN")}₫</td>
-                                            <td>{order.status}</td>
-                                            <td>{order.type}</td>
-                                            <td>{order.createdAt}</td>
-                                            {/* <td>{order.createdAt}</td> */}
-                                            <td>{new Date(new Date(order.createdAt).getTime() + 4 * 25 * 60 * 60 * 1000).toLocaleDateString("vi-VN")}</td>
-                                        </tr>
-                                    ))}
+                                    {orders.map((order, index) => {
+                                        // Ngày hôm nay
+                                        const today = new Date();
+                                        // Ngày 3 ngày sau ngày đặt
+                                        const threeDaysAfterOrder = new Date(
+                                            new Date(order.createdAt).getTime() + 3 * 24 * 60 * 60 * 1000
+                                        );
+                                        // Ngày 3 ngày sau hôm nay
+                                        const threeDaysFromNow = new Date(today.getTime() + 3 * 24 * 60 * 60 * 1000);
+                                        // Xác định ngày giao
+                                        let deliveryDate;
+                                        if (order.status === "Hoàn tất") {
+                                            deliveryDate = threeDaysAfterOrder < today ? threeDaysAfterOrder : today;
+                                        } else {
+                                            if (order.status === "Đơn hoàn" || order.status === "Đơn hủy") {
+                                                deliveryDate = "Không áp dụng";
+                                            } else {
+                                                deliveryDate = threeDaysFromNow;
+                                            }
+                                        }
+
+                                        return (
+                                            <tr key={index}>
+                                                <td className="stt">{index + 1}</td>
+                                                <td className="stt">
+                                                    {order.products.reduce((sum, product) => sum + product.quantity, 0)}
+                                                </td>
+                                                <td>{order.total.toLocaleString("vi-VN")}₫</td>
+                                                <td>{order.status}</td>
+                                                <td>{order.type}</td>
+                                                <td>{new Date(order.createdAt).toLocaleDateString("vi-VN")}</td>
+                                                <td>
+                                                    {deliveryDate !== "Không áp dụng"
+                                                        ? new Date(deliveryDate).toLocaleDateString("vi-VN")
+                                                        : deliveryDate}
+                                                </td>
+
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                         </div>}
+
 
                     <h3 className='adush3'>Sản phẩm yêu thích</h3>
                     {favoriteProducts.length === 0 ? <p style={{ textAlign: "center" }}>Không có sản phẩm yêu thích nào</p> :
