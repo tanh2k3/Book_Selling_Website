@@ -50,6 +50,9 @@ function Cart() {
     const handleDelete = async (id) => {
         try {
             const jwt = localStorage.getItem('token');
+            if (!window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) {
+                return;
+            }
             await axios.delete('http://localhost:3001/cart', {
                 headers: {
                     Authorization: `Bearer ${jwt}`

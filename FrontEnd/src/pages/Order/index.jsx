@@ -151,16 +151,8 @@ const Order = () => {
         productId: product.id,
         quantity: product.quantity,
       })),
-      total: user.order.products.reduce(
-        (total, item, index) => total + item.quantity * book[index].price,
-        0
-      ),
-      discount: user.order.products.reduce(
-        (total, item, index) =>
-          total +
-          (item.quantity * book[index].price * book[index].discount) / 100,
-        0
-      ),
+      total: total,
+      discount: discount + valueVoucher ? valueVoucher : 0,
     };
 
     try {

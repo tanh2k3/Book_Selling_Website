@@ -88,6 +88,9 @@ function Profile() {
             if (!jwt) {
                 alert("Vui lòng đăng nhập để xóa sản phẩm khỏi danh sách yêu thích.");
             }
+            if (!window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi danh sách yêu thích?")) {
+                return;
+            }
             const response = await axios.delete("http://localhost:3001/favorite", {
                 headers: {
                     Authorization: `Bearer ${jwt}`,

@@ -64,6 +64,7 @@ const CardItem = ({ book }) => {
 
       setIsFavourite(true);
       console.log(response.data);
+      alert("Thêm sản phẩm vào danh sách yêu thích thành công!");
     } catch (error) {
       console.error(error);
     }
@@ -74,6 +75,10 @@ const CardItem = ({ book }) => {
       const jwt = localStorage.getItem("token");
       if (!jwt) {
         alert("Vui lòng đăng nhập để xóa sản phẩm khỏi danh sách yêu thích.");
+        return;
+      }
+      // add popup confirm
+      if (!window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi danh sách yêu thích?")) {
         return;
       }
       const response = await axios.delete("http://localhost:3001/favorite", {
@@ -105,7 +110,6 @@ const CardItem = ({ book }) => {
         { productId: _id, quantity: 1 },
         { headers: { Authorization: `Bearer ${jwt}` } }
       );
-
       setUser((prevUser) => ({
         ...prevUser,
         cart: [...prevUser.cart, { product: _id }],
@@ -113,6 +117,7 @@ const CardItem = ({ book }) => {
 
       setIsCart(true);
       console.log(response.data);
+      alert("Thêm sản phẩm vào giỏ hàng thành công!");
     } catch (error) {
       console.error(error);
     }
@@ -123,6 +128,9 @@ const CardItem = ({ book }) => {
       const jwt = localStorage.getItem("token");
       if (!jwt) {
         alert("Vui lòng đăng nhập để xóa sản phẩm khỏi giỏ hàng.");
+        return;
+      }
+      if (!window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) {
         return;
       }
       const response = await axios.delete("http://localhost:3001/cart", {
@@ -137,6 +145,7 @@ const CardItem = ({ book }) => {
 
       setIsCart(false);
       console.log(response.data);
+      alert("Xóa sản phẩm khỏi giỏ hàng thành công!");
     } catch (error) {
       console.error(error);
     }

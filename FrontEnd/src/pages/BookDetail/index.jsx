@@ -148,11 +148,23 @@ const BookDetail = () => {
 
 
   if (loading) {
-    return <p>Đang tải thông tin...</p>;
+    return (
+      <>
+        <Header />
+        <p>Đang tải dữ liệu...</p>
+        <Footer />
+      </>
+    )
   }
 
   if (!book) {
-    return <p>Không có thông tin cuốn sách. Vui lòng thử lại sau.</p>;
+    return (
+      <>
+        <Header />
+        <p>Không tìm thấy sách.</p>
+        <Footer />
+      </>
+    )
   }
 
   return (
